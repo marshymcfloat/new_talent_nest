@@ -1,0 +1,11 @@
+import { z } from 'zod';
+import type { Prisma } from '@prisma/client';
+import { JobApplicationWhereInputObjectSchema } from './JobApplicationWhereInput.schema'
+
+const makeSchema = (): z.ZodObject<any> => z.object({
+  every: z.lazy(() => JobApplicationWhereInputObjectSchema).optional(),
+  some: z.lazy(() => JobApplicationWhereInputObjectSchema).optional(),
+  none: z.lazy(() => JobApplicationWhereInputObjectSchema).optional()
+}).strict();
+export const JobApplicationListRelationFilterObjectSchema: z.ZodType<Prisma.JobApplicationListRelationFilter> = makeSchema();
+export const JobApplicationListRelationFilterObjectZodSchema = makeSchema();

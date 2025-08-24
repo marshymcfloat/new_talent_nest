@@ -1,0 +1,10 @@
+import { z } from 'zod';
+import type { Prisma } from '@prisma/client';
+
+
+const makeSchema = (): z.ZodObject<any> => z.object({
+  id: z.string().optional(),
+  jobId: z.string()
+}).strict();
+export const JobApplicationCreateManyUserInputObjectSchema: z.ZodType<Prisma.JobApplicationCreateManyUserInput> = makeSchema();
+export const JobApplicationCreateManyUserInputObjectZodSchema = makeSchema();
