@@ -3,6 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 import { NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
+import { UserUpdateresumesInputObjectSchema } from './UserUpdateresumesInput.schema';
 import { AccountUpdateManyWithoutUserNestedInputObjectSchema } from './AccountUpdateManyWithoutUserNestedInput.schema';
 import { SessionUpdateManyWithoutUserNestedInputObjectSchema } from './SessionUpdateManyWithoutUserNestedInput.schema'
 
@@ -14,8 +15,9 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
   username: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
   password: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
+  resumes: z.union([z.lazy(() => UserUpdateresumesInputObjectSchema), z.string().array()]).optional(),
   accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputObjectSchema).optional(),
   sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputObjectSchema).optional()
 }).strict();
-export const UserUpdateWithoutJobApplicationInputObjectSchema: z.ZodType<Prisma.UserUpdateWithoutJobApplicationInput> = makeSchema();
+export const UserUpdateWithoutJobApplicationInputObjectSchema: z.ZodType<Prisma.UserUpdateWithoutJobApplicationInput> = makeSchema() as unknown as z.ZodType<Prisma.UserUpdateWithoutJobApplicationInput>;
 export const UserUpdateWithoutJobApplicationInputObjectZodSchema = makeSchema();

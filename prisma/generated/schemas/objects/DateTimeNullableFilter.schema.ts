@@ -12,5 +12,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   gte: z.date().optional(),
   not: z.union([z.date(), z.lazy(() => NestedDateTimeNullableFilterObjectSchema)]).nullish()
 }).strict();
-export const DateTimeNullableFilterObjectSchema: z.ZodType<Prisma.DateTimeNullableFilter> = makeSchema();
+export const DateTimeNullableFilterObjectSchema: z.ZodType<Prisma.DateTimeNullableFilter> = makeSchema() as unknown as z.ZodType<Prisma.DateTimeNullableFilter>;
 export const DateTimeNullableFilterObjectZodSchema = makeSchema();

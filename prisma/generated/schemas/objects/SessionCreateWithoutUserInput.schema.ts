@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   sessionToken: z.string(),
   expires: z.date()
 }).strict();
-export const SessionCreateWithoutUserInputObjectSchema: z.ZodType<Prisma.SessionCreateWithoutUserInput> = makeSchema();
+export const SessionCreateWithoutUserInputObjectSchema: z.ZodType<Prisma.SessionCreateWithoutUserInput> = makeSchema() as unknown as z.ZodType<Prisma.SessionCreateWithoutUserInput>;
 export const SessionCreateWithoutUserInputObjectZodSchema = makeSchema();

@@ -5,6 +5,8 @@ import { EnumJobTypeWithAggregatesFilterObjectSchema } from './EnumJobTypeWithAg
 import { JobTypeSchema } from '../enums/JobType.schema';
 import { EnumJobClassWithAggregatesFilterObjectSchema } from './EnumJobClassWithAggregatesFilter.schema';
 import { JobClassSchema } from '../enums/JobClass.schema';
+import { StringNullableWithAggregatesFilterObjectSchema } from './StringNullableWithAggregatesFilter.schema';
+import { StringNullableListFilterObjectSchema } from './StringNullableListFilter.schema';
 import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema'
 
 const makeSchema = (): z.ZodObject<any> => z.object({
@@ -17,25 +19,15 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   location: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   type: z.union([z.lazy(() => EnumJobTypeWithAggregatesFilterObjectSchema), JobTypeSchema]).optional(),
   salary: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
-  JobClass: z.union([z.lazy(() => EnumJobClassWithAggregatesFilterObjectSchema), JobClassSchema]).optional(),
+  jobClass: z.union([z.lazy(() => EnumJobClassWithAggregatesFilterObjectSchema), JobClassSchema]).optional(),
+  summary: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  qualifications: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  responsibilities: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  benefits: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
+  employerQuestions: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
+  tags: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
   createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional()
 }).strict();
-export const JobScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.JobScalarWhereWithAggregatesInput> = makeSchema();
+export const JobScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.JobScalarWhereWithAggregatesInput> = makeSchema() as unknown as z.ZodType<Prisma.JobScalarWhereWithAggregatesInput>;
 export const JobScalarWhereWithAggregatesInputObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type JobScalarWhereWithAggregatesInput = {
-  AND?: JobScalarWhereWithAggregatesInput | JobScalarWhereWithAggregatesInput[];
-  OR?: JobScalarWhereWithAggregatesInput[];
-  NOT?: JobScalarWhereWithAggregatesInput | JobScalarWhereWithAggregatesInput[];
-  id?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  company?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  title?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  location?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  type?: z.infer<typeof EnumJobTypeWithAggregatesFilterObjectSchema> | unknown;
-  salary?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  JobClass?: z.infer<typeof EnumJobClassWithAggregatesFilterObjectSchema> | unknown;
-  createdAt?: z.infer<typeof DateTimeWithAggregatesFilterObjectSchema> | Date;
-  updatedAt?: z.infer<typeof DateTimeWithAggregatesFilterObjectSchema> | Date;
-};
-(JobScalarWhereWithAggregatesInputObjectZodSchema satisfies z.ZodType<JobScalarWhereWithAggregatesInput>);

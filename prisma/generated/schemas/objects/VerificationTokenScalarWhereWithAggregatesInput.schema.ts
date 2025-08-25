@@ -11,15 +11,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   token: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   expires: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional()
 }).strict();
-export const VerificationTokenScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.VerificationTokenScalarWhereWithAggregatesInput> = makeSchema();
+export const VerificationTokenScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.VerificationTokenScalarWhereWithAggregatesInput> = makeSchema() as unknown as z.ZodType<Prisma.VerificationTokenScalarWhereWithAggregatesInput>;
 export const VerificationTokenScalarWhereWithAggregatesInputObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type VerificationTokenScalarWhereWithAggregatesInput = {
-  AND?: VerificationTokenScalarWhereWithAggregatesInput | VerificationTokenScalarWhereWithAggregatesInput[];
-  OR?: VerificationTokenScalarWhereWithAggregatesInput[];
-  NOT?: VerificationTokenScalarWhereWithAggregatesInput | VerificationTokenScalarWhereWithAggregatesInput[];
-  identifier?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  token?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  expires?: z.infer<typeof DateTimeWithAggregatesFilterObjectSchema> | Date;
-};
-(VerificationTokenScalarWhereWithAggregatesInputObjectZodSchema satisfies z.ZodType<VerificationTokenScalarWhereWithAggregatesInput>);

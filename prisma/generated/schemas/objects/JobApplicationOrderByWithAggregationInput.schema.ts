@@ -13,5 +13,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   _max: z.lazy(() => JobApplicationMaxOrderByAggregateInputObjectSchema).optional(),
   _min: z.lazy(() => JobApplicationMinOrderByAggregateInputObjectSchema).optional()
 }).strict();
-export const JobApplicationOrderByWithAggregationInputObjectSchema: z.ZodType<Prisma.JobApplicationOrderByWithAggregationInput> = makeSchema();
+export const JobApplicationOrderByWithAggregationInputObjectSchema: z.ZodType<Prisma.JobApplicationOrderByWithAggregationInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationOrderByWithAggregationInput>;
 export const JobApplicationOrderByWithAggregationInputObjectZodSchema = makeSchema();

@@ -5,5 +5,5 @@ import { SortOrderSchema } from '../enums/SortOrder.schema'
 const makeSchema = (): z.ZodObject<any> => z.object({
   _count: SortOrderSchema.optional()
 }).strict();
-export const SessionOrderByRelationAggregateInputObjectSchema: z.ZodType<Prisma.SessionOrderByRelationAggregateInput> = makeSchema();
+export const SessionOrderByRelationAggregateInputObjectSchema: z.ZodType<Prisma.SessionOrderByRelationAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.SessionOrderByRelationAggregateInput>;
 export const SessionOrderByRelationAggregateInputObjectZodSchema = makeSchema();

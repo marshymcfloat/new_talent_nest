@@ -9,6 +9,7 @@ export const UserModelSchema = z.object({
     image: z.string().nullable(),
     username: z.string().nullable(),
     password: z.string().nullable(),
+    resumes: z.array(z.string()),
     JobApplication: z.array(z.unknown()),
     accounts: z.array(z.unknown()),
     sessions: z.array(z.unknown())

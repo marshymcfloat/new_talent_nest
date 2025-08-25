@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   Job: z.union([z.boolean(), z.lazy(() => JobArgsObjectSchema)]).optional(),
   User: z.union([z.boolean(), z.lazy(() => UserArgsObjectSchema)]).optional()
 }).strict();
-export const JobApplicationIncludeObjectSchema: z.ZodType<Prisma.JobApplicationInclude> = makeSchema();
+export const JobApplicationIncludeObjectSchema: z.ZodType<Prisma.JobApplicationInclude> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationInclude>;
 export const JobApplicationIncludeObjectZodSchema = makeSchema();

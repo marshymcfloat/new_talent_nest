@@ -8,5 +8,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   expires: z.date(),
   user: z.lazy(() => UserCreateNestedOneWithoutSessionsInputObjectSchema)
 }).strict();
-export const SessionCreateInputObjectSchema: z.ZodType<Prisma.SessionCreateInput> = makeSchema();
+export const SessionCreateInputObjectSchema: z.ZodType<Prisma.SessionCreateInput> = makeSchema() as unknown as z.ZodType<Prisma.SessionCreateInput>;
 export const SessionCreateInputObjectZodSchema = makeSchema();

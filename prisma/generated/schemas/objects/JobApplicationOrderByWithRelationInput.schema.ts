@@ -11,5 +11,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   Job: z.lazy(() => JobOrderByWithRelationInputObjectSchema).optional(),
   User: z.lazy(() => UserOrderByWithRelationInputObjectSchema).optional()
 }).strict();
-export const JobApplicationOrderByWithRelationInputObjectSchema: z.ZodType<Prisma.JobApplicationOrderByWithRelationInput> = makeSchema();
+export const JobApplicationOrderByWithRelationInputObjectSchema: z.ZodType<Prisma.JobApplicationOrderByWithRelationInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationOrderByWithRelationInput>;
 export const JobApplicationOrderByWithRelationInputObjectZodSchema = makeSchema();

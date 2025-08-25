@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   email: z.string(),
   username: z.string()
 }).strict();
-export const UserWhereUniqueInputObjectSchema: z.ZodType<Prisma.UserWhereUniqueInput> = makeSchema();
+export const UserWhereUniqueInputObjectSchema: z.ZodType<Prisma.UserWhereUniqueInput> = makeSchema() as unknown as z.ZodType<Prisma.UserWhereUniqueInput>;
 export const UserWhereUniqueInputObjectZodSchema = makeSchema();

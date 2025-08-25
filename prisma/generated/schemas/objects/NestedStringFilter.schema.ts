@@ -15,20 +15,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   endsWith: z.string().optional(),
   not: z.union([z.string(), z.lazy(makeSchema)]).optional()
 }).strict();
-export const NestedStringFilterObjectSchema: z.ZodType<Prisma.NestedStringFilter> = makeSchema();
+export const NestedStringFilterObjectSchema: z.ZodType<Prisma.NestedStringFilter> = makeSchema() as unknown as z.ZodType<Prisma.NestedStringFilter>;
 export const NestedStringFilterObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type NestedStringFilter = {
-  equals?: string;
-  in?: string[];
-  notIn?: string[];
-  lt?: string;
-  lte?: string;
-  gt?: string;
-  gte?: string;
-  contains?: string;
-  startsWith?: string;
-  endsWith?: string;
-  not?: string | NestedStringFilter;
-};
-(NestedStringFilterObjectZodSchema satisfies z.ZodType<NestedStringFilter>);

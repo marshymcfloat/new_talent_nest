@@ -12,7 +12,7 @@ export const VerificationTokenFindFirstSelectSchema: z.ZodType<Prisma.Verificati
     identifier: z.boolean().optional(),
     token: z.boolean().optional(),
     expires: z.boolean().optional()
-  }).strict();
+  }).strict() as unknown as z.ZodType<Prisma.VerificationTokenSelect>;
 
 export const VerificationTokenFindFirstSelectZodSchema = z.object({
     identifier: z.boolean().optional(),
@@ -20,6 +20,6 @@ export const VerificationTokenFindFirstSelectZodSchema = z.object({
     expires: z.boolean().optional()
   }).strict();
 
-export const VerificationTokenFindFirstSchema: z.ZodType<Prisma.VerificationTokenFindFirstArgs> = z.object({ select: VerificationTokenFindFirstSelectSchema.optional(),  orderBy: z.union([VerificationTokenOrderByWithRelationInputObjectSchema, VerificationTokenOrderByWithRelationInputObjectSchema.array()]).optional(), where: VerificationTokenWhereInputObjectSchema.optional(), cursor: VerificationTokenWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.VerificationTokenScalarFieldEnum), z.nativeEnum(Prisma.VerificationTokenScalarFieldEnum).array()]).optional() }).strict();
+export const VerificationTokenFindFirstSchema: z.ZodType<Prisma.VerificationTokenFindFirstArgs> = z.object({ select: VerificationTokenFindFirstSelectSchema.optional(),  orderBy: z.union([VerificationTokenOrderByWithRelationInputObjectSchema, VerificationTokenOrderByWithRelationInputObjectSchema.array()]).optional(), where: VerificationTokenWhereInputObjectSchema.optional(), cursor: VerificationTokenWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.VerificationTokenScalarFieldEnum), z.nativeEnum(Prisma.VerificationTokenScalarFieldEnum).array()]).optional() }).strict() as unknown as z.ZodType<Prisma.VerificationTokenFindFirstArgs>;
 
 export const VerificationTokenFindFirstZodSchema = z.object({ select: VerificationTokenFindFirstSelectSchema.optional(),  orderBy: z.union([VerificationTokenOrderByWithRelationInputObjectSchema, VerificationTokenOrderByWithRelationInputObjectSchema.array()]).optional(), where: VerificationTokenWhereInputObjectSchema.optional(), cursor: VerificationTokenWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.VerificationTokenScalarFieldEnum), z.nativeEnum(Prisma.VerificationTokenScalarFieldEnum).array()]).optional() }).strict();

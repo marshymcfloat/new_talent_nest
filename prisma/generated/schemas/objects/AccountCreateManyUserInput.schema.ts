@@ -15,5 +15,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   id_token: z.string().nullish(),
   session_state: z.string().nullish()
 }).strict();
-export const AccountCreateManyUserInputObjectSchema: z.ZodType<Prisma.AccountCreateManyUserInput> = makeSchema();
+export const AccountCreateManyUserInputObjectSchema: z.ZodType<Prisma.AccountCreateManyUserInput> = makeSchema() as unknown as z.ZodType<Prisma.AccountCreateManyUserInput>;
 export const AccountCreateManyUserInputObjectZodSchema = makeSchema();

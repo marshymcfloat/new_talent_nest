@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.string(),
   jobId: z.string()
 }).strict();
-export const JobApplicationCreateManyInputObjectSchema: z.ZodType<Prisma.JobApplicationCreateManyInput> = makeSchema();
+export const JobApplicationCreateManyInputObjectSchema: z.ZodType<Prisma.JobApplicationCreateManyInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationCreateManyInput>;
 export const JobApplicationCreateManyInputObjectZodSchema = makeSchema();

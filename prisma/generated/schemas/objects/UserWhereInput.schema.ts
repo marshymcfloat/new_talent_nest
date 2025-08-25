@@ -3,6 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { StringFilterObjectSchema } from './StringFilter.schema';
 import { StringNullableFilterObjectSchema } from './StringNullableFilter.schema';
 import { DateTimeNullableFilterObjectSchema } from './DateTimeNullableFilter.schema';
+import { StringNullableListFilterObjectSchema } from './StringNullableListFilter.schema';
 import { JobApplicationListRelationFilterObjectSchema } from './JobApplicationListRelationFilter.schema';
 import { AccountListRelationFilterObjectSchema } from './AccountListRelationFilter.schema';
 import { SessionListRelationFilterObjectSchema } from './SessionListRelationFilter.schema'
@@ -18,26 +19,10 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
   username: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
   password: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
+  resumes: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationListRelationFilterObjectSchema).optional(),
   accounts: z.lazy(() => AccountListRelationFilterObjectSchema).optional(),
   sessions: z.lazy(() => SessionListRelationFilterObjectSchema).optional()
 }).strict();
-export const UserWhereInputObjectSchema: z.ZodType<Prisma.UserWhereInput> = makeSchema();
+export const UserWhereInputObjectSchema: z.ZodType<Prisma.UserWhereInput> = makeSchema() as unknown as z.ZodType<Prisma.UserWhereInput>;
 export const UserWhereInputObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type UserWhereInput = {
-  AND?: UserWhereInput | UserWhereInput[];
-  OR?: UserWhereInput[];
-  NOT?: UserWhereInput | UserWhereInput[];
-  id?: z.infer<typeof StringFilterObjectSchema> | string;
-  name?: z.infer<typeof StringNullableFilterObjectSchema> | string;
-  email?: z.infer<typeof StringNullableFilterObjectSchema> | string;
-  emailVerified?: z.infer<typeof DateTimeNullableFilterObjectSchema> | Date;
-  image?: z.infer<typeof StringNullableFilterObjectSchema> | string;
-  username?: z.infer<typeof StringNullableFilterObjectSchema> | string;
-  password?: z.infer<typeof StringNullableFilterObjectSchema> | string;
-  JobApplication?: z.infer<typeof JobApplicationListRelationFilterObjectSchema>;
-  accounts?: z.infer<typeof AccountListRelationFilterObjectSchema>;
-  sessions?: z.infer<typeof SessionListRelationFilterObjectSchema>;
-};
-(UserWhereInputObjectZodSchema satisfies z.ZodType<UserWhereInput>);

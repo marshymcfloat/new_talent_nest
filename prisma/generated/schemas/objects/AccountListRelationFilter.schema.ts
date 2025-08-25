@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   some: z.lazy(() => AccountWhereInputObjectSchema).optional(),
   none: z.lazy(() => AccountWhereInputObjectSchema).optional()
 }).strict();
-export const AccountListRelationFilterObjectSchema: z.ZodType<Prisma.AccountListRelationFilter> = makeSchema();
+export const AccountListRelationFilterObjectSchema: z.ZodType<Prisma.AccountListRelationFilter> = makeSchema() as unknown as z.ZodType<Prisma.AccountListRelationFilter>;
 export const AccountListRelationFilterObjectZodSchema = makeSchema();

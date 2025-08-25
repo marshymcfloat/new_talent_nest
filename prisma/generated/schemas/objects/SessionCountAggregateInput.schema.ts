@@ -9,5 +9,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   expires: z.literal(true).optional(),
   _all: z.literal(true).optional()
 }).strict();
-export const SessionCountAggregateInputObjectSchema: z.ZodType<Prisma.SessionCountAggregateInputType> = makeSchema();
+export const SessionCountAggregateInputObjectSchema: z.ZodType<Prisma.SessionCountAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.SessionCountAggregateInputType>;
 export const SessionCountAggregateInputObjectZodSchema = makeSchema();

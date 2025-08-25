@@ -21,24 +21,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   id_token: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
   session_state: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish()
 }).strict();
-export const AccountScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.AccountScalarWhereWithAggregatesInput> = makeSchema();
+export const AccountScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.AccountScalarWhereWithAggregatesInput> = makeSchema() as unknown as z.ZodType<Prisma.AccountScalarWhereWithAggregatesInput>;
 export const AccountScalarWhereWithAggregatesInputObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type AccountScalarWhereWithAggregatesInput = {
-  AND?: AccountScalarWhereWithAggregatesInput | AccountScalarWhereWithAggregatesInput[];
-  OR?: AccountScalarWhereWithAggregatesInput[];
-  NOT?: AccountScalarWhereWithAggregatesInput | AccountScalarWhereWithAggregatesInput[];
-  id?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  userId?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  type?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  provider?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  providerAccountId?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  refresh_token?: z.infer<typeof StringNullableWithAggregatesFilterObjectSchema> | string;
-  access_token?: z.infer<typeof StringNullableWithAggregatesFilterObjectSchema> | string;
-  expires_at?: z.infer<typeof IntNullableWithAggregatesFilterObjectSchema> | number;
-  token_type?: z.infer<typeof StringNullableWithAggregatesFilterObjectSchema> | string;
-  scope?: z.infer<typeof StringNullableWithAggregatesFilterObjectSchema> | string;
-  id_token?: z.infer<typeof StringNullableWithAggregatesFilterObjectSchema> | string;
-  session_state?: z.infer<typeof StringNullableWithAggregatesFilterObjectSchema> | string;
-};
-(AccountScalarWhereWithAggregatesInputObjectZodSchema satisfies z.ZodType<AccountScalarWhereWithAggregatesInput>);

@@ -15,7 +15,7 @@ export const SessionFindFirstSelectSchema: z.ZodType<Prisma.SessionSelect> = z.o
     userId: z.boolean().optional(),
     expires: z.boolean().optional(),
     user: z.boolean().optional()
-  }).strict();
+  }).strict() as unknown as z.ZodType<Prisma.SessionSelect>;
 
 export const SessionFindFirstSelectZodSchema = z.object({
     id: z.boolean().optional(),
@@ -25,6 +25,6 @@ export const SessionFindFirstSelectZodSchema = z.object({
     user: z.boolean().optional()
   }).strict();
 
-export const SessionFindFirstSchema: z.ZodType<Prisma.SessionFindFirstArgs> = z.object({ select: SessionFindFirstSelectSchema.optional(), include: z.lazy(() => SessionIncludeObjectSchema.optional()), orderBy: z.union([SessionOrderByWithRelationInputObjectSchema, SessionOrderByWithRelationInputObjectSchema.array()]).optional(), where: SessionWhereInputObjectSchema.optional(), cursor: SessionWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.SessionScalarFieldEnum), z.nativeEnum(Prisma.SessionScalarFieldEnum).array()]).optional() }).strict();
+export const SessionFindFirstSchema: z.ZodType<Prisma.SessionFindFirstArgs> = z.object({ select: SessionFindFirstSelectSchema.optional(), include: z.lazy(() => SessionIncludeObjectSchema.optional()), orderBy: z.union([SessionOrderByWithRelationInputObjectSchema, SessionOrderByWithRelationInputObjectSchema.array()]).optional(), where: SessionWhereInputObjectSchema.optional(), cursor: SessionWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.SessionScalarFieldEnum), z.nativeEnum(Prisma.SessionScalarFieldEnum).array()]).optional() }).strict() as unknown as z.ZodType<Prisma.SessionFindFirstArgs>;
 
 export const SessionFindFirstZodSchema = z.object({ select: SessionFindFirstSelectSchema.optional(), include: z.lazy(() => SessionIncludeObjectSchema.optional()), orderBy: z.union([SessionOrderByWithRelationInputObjectSchema, SessionOrderByWithRelationInputObjectSchema.array()]).optional(), where: SessionWhereInputObjectSchema.optional(), cursor: SessionWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.SessionScalarFieldEnum), z.nativeEnum(Prisma.SessionScalarFieldEnum).array()]).optional() }).strict();

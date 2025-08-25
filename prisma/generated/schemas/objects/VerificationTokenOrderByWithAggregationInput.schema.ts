@@ -13,5 +13,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   _max: z.lazy(() => VerificationTokenMaxOrderByAggregateInputObjectSchema).optional(),
   _min: z.lazy(() => VerificationTokenMinOrderByAggregateInputObjectSchema).optional()
 }).strict();
-export const VerificationTokenOrderByWithAggregationInputObjectSchema: z.ZodType<Prisma.VerificationTokenOrderByWithAggregationInput> = makeSchema();
+export const VerificationTokenOrderByWithAggregationInputObjectSchema: z.ZodType<Prisma.VerificationTokenOrderByWithAggregationInput> = makeSchema() as unknown as z.ZodType<Prisma.VerificationTokenOrderByWithAggregationInput>;
 export const VerificationTokenOrderByWithAggregationInputObjectZodSchema = makeSchema();

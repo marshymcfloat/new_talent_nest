@@ -6,5 +6,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   is: z.lazy(() => UserWhereInputObjectSchema).optional(),
   isNot: z.lazy(() => UserWhereInputObjectSchema).optional()
 }).strict();
-export const UserScalarRelationFilterObjectSchema: z.ZodType<Prisma.UserScalarRelationFilter> = makeSchema();
+export const UserScalarRelationFilterObjectSchema: z.ZodType<Prisma.UserScalarRelationFilter> = makeSchema() as unknown as z.ZodType<Prisma.UserScalarRelationFilter>;
 export const UserScalarRelationFilterObjectZodSchema = makeSchema();

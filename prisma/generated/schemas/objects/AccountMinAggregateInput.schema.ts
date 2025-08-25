@@ -16,5 +16,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   id_token: z.literal(true).optional(),
   session_state: z.literal(true).optional()
 }).strict();
-export const AccountMinAggregateInputObjectSchema: z.ZodType<Prisma.AccountMinAggregateInputType> = makeSchema();
+export const AccountMinAggregateInputObjectSchema: z.ZodType<Prisma.AccountMinAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.AccountMinAggregateInputType>;
 export const AccountMinAggregateInputObjectZodSchema = makeSchema();

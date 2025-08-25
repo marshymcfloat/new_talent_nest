@@ -5,5 +5,5 @@ import { UserArgsObjectSchema } from './UserArgs.schema'
 const makeSchema = (): z.ZodObject<any> => z.object({
   user: z.union([z.boolean(), z.lazy(() => UserArgsObjectSchema)]).optional()
 }).strict();
-export const SessionIncludeObjectSchema: z.ZodType<Prisma.SessionInclude> = makeSchema();
+export const SessionIncludeObjectSchema: z.ZodType<Prisma.SessionInclude> = makeSchema() as unknown as z.ZodType<Prisma.SessionInclude>;
 export const SessionIncludeObjectZodSchema = makeSchema();

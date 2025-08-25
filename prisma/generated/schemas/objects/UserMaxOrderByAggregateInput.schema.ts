@@ -11,5 +11,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   username: SortOrderSchema.optional(),
   password: SortOrderSchema.optional()
 }).strict();
-export const UserMaxOrderByAggregateInputObjectSchema: z.ZodType<Prisma.UserMaxOrderByAggregateInput> = makeSchema();
+export const UserMaxOrderByAggregateInputObjectSchema: z.ZodType<Prisma.UserMaxOrderByAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.UserMaxOrderByAggregateInput>;
 export const UserMaxOrderByAggregateInputObjectZodSchema = makeSchema();

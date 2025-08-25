@@ -8,5 +8,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   token: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   expires: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional()
 }).strict();
-export const VerificationTokenUpdateManyMutationInputObjectSchema: z.ZodType<Prisma.VerificationTokenUpdateManyMutationInput> = makeSchema();
+export const VerificationTokenUpdateManyMutationInputObjectSchema: z.ZodType<Prisma.VerificationTokenUpdateManyMutationInput> = makeSchema() as unknown as z.ZodType<Prisma.VerificationTokenUpdateManyMutationInput>;
 export const VerificationTokenUpdateManyMutationInputObjectZodSchema = makeSchema();

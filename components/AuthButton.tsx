@@ -37,7 +37,7 @@ const AuthButton = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.15, ease: "easeInOut" }}
                 exit={{ opacity: 0, scale: 0 }}
-                className="bg-black/40 backdrop-blur-md shadow-2xl  origin-top-right flex flex-col gap-4 p-4 rounded-2xl lg:min-w-[200px] absolute bottom-[-130px] right-10"
+                className="bg-black/40 backdrop-blur-[2px] rounded-tr-none  shadow-2xl  z-50 origin-top-right flex flex-col gap-4 p-4 rounded-4xl lg:min-w-[200px] absolute bottom-[-130px] right-10"
               >
                 <h1 className="text-md">
                   Hi, <span className="font-medium">{session.user.name}</span>

@@ -14,5 +14,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   _max: z.lazy(() => SessionMaxOrderByAggregateInputObjectSchema).optional(),
   _min: z.lazy(() => SessionMinOrderByAggregateInputObjectSchema).optional()
 }).strict();
-export const SessionOrderByWithAggregationInputObjectSchema: z.ZodType<Prisma.SessionOrderByWithAggregationInput> = makeSchema();
+export const SessionOrderByWithAggregationInputObjectSchema: z.ZodType<Prisma.SessionOrderByWithAggregationInput> = makeSchema() as unknown as z.ZodType<Prisma.SessionOrderByWithAggregationInput>;
 export const SessionOrderByWithAggregationInputObjectZodSchema = makeSchema();

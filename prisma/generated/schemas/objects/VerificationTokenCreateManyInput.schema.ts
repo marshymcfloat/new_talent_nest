@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   token: z.string(),
   expires: z.date()
 }).strict();
-export const VerificationTokenCreateManyInputObjectSchema: z.ZodType<Prisma.VerificationTokenCreateManyInput> = makeSchema();
+export const VerificationTokenCreateManyInputObjectSchema: z.ZodType<Prisma.VerificationTokenCreateManyInput> = makeSchema() as unknown as z.ZodType<Prisma.VerificationTokenCreateManyInput>;
 export const VerificationTokenCreateManyInputObjectZodSchema = makeSchema();

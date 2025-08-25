@@ -16,5 +16,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   id_token: z.literal(true).optional(),
   session_state: z.literal(true).optional()
 }).strict();
-export const AccountMaxAggregateInputObjectSchema: z.ZodType<Prisma.AccountMaxAggregateInputType> = makeSchema();
+export const AccountMaxAggregateInputObjectSchema: z.ZodType<Prisma.AccountMaxAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.AccountMaxAggregateInputType>;
 export const AccountMaxAggregateInputObjectZodSchema = makeSchema();

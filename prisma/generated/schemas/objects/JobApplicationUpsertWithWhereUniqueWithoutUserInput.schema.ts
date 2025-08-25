@@ -11,5 +11,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   update: z.union([z.lazy(() => JobApplicationUpdateWithoutUserInputObjectSchema), z.lazy(() => JobApplicationUncheckedUpdateWithoutUserInputObjectSchema)]),
   create: z.union([z.lazy(() => JobApplicationCreateWithoutUserInputObjectSchema), z.lazy(() => JobApplicationUncheckedCreateWithoutUserInputObjectSchema)])
 }).strict();
-export const JobApplicationUpsertWithWhereUniqueWithoutUserInputObjectSchema: z.ZodType<Prisma.JobApplicationUpsertWithWhereUniqueWithoutUserInput> = makeSchema();
+export const JobApplicationUpsertWithWhereUniqueWithoutUserInputObjectSchema: z.ZodType<Prisma.JobApplicationUpsertWithWhereUniqueWithoutUserInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationUpsertWithWhereUniqueWithoutUserInput>;
 export const JobApplicationUpsertWithWhereUniqueWithoutUserInputObjectZodSchema = makeSchema();

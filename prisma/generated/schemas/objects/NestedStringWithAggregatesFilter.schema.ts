@@ -19,23 +19,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   _min: z.lazy(() => NestedStringFilterObjectSchema).optional(),
   _max: z.lazy(() => NestedStringFilterObjectSchema).optional()
 }).strict();
-export const NestedStringWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedStringWithAggregatesFilter> = makeSchema();
+export const NestedStringWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedStringWithAggregatesFilter> = makeSchema() as unknown as z.ZodType<Prisma.NestedStringWithAggregatesFilter>;
 export const NestedStringWithAggregatesFilterObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type NestedStringWithAggregatesFilter = {
-  equals?: string;
-  in?: string[];
-  notIn?: string[];
-  lt?: string;
-  lte?: string;
-  gt?: string;
-  gte?: string;
-  contains?: string;
-  startsWith?: string;
-  endsWith?: string;
-  not?: string | NestedStringWithAggregatesFilter;
-  _count?: z.infer<typeof NestedIntFilterObjectSchema>;
-  _min?: z.infer<typeof NestedStringFilterObjectSchema>;
-  _max?: z.infer<typeof NestedStringFilterObjectSchema>;
-};
-(NestedStringWithAggregatesFilterObjectZodSchema satisfies z.ZodType<NestedStringWithAggregatesFilter>);

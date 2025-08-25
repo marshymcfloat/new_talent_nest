@@ -9,5 +9,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   expires: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional()
 }).strict();
-export const SessionUncheckedUpdateManyInputObjectSchema: z.ZodType<Prisma.SessionUncheckedUpdateManyInput> = makeSchema();
+export const SessionUncheckedUpdateManyInputObjectSchema: z.ZodType<Prisma.SessionUncheckedUpdateManyInput> = makeSchema() as unknown as z.ZodType<Prisma.SessionUncheckedUpdateManyInput>;
 export const SessionUncheckedUpdateManyInputObjectZodSchema = makeSchema();

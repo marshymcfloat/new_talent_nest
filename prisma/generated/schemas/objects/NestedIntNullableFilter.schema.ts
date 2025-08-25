@@ -12,17 +12,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   gte: z.number().int().optional(),
   not: z.union([z.number().int(), z.lazy(makeSchema)]).nullish()
 }).strict();
-export const NestedIntNullableFilterObjectSchema: z.ZodType<Prisma.NestedIntNullableFilter> = makeSchema();
+export const NestedIntNullableFilterObjectSchema: z.ZodType<Prisma.NestedIntNullableFilter> = makeSchema() as unknown as z.ZodType<Prisma.NestedIntNullableFilter>;
 export const NestedIntNullableFilterObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type NestedIntNullableFilter = {
-  equals?: number;
-  in?: number[];
-  notIn?: number[];
-  lt?: number;
-  lte?: number;
-  gt?: number;
-  gte?: number;
-  not?: number | NestedIntNullableFilter;
-};
-(NestedIntNullableFilterObjectZodSchema satisfies z.ZodType<NestedIntNullableFilter>);

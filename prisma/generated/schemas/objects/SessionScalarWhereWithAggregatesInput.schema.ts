@@ -12,16 +12,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   expires: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional()
 }).strict();
-export const SessionScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.SessionScalarWhereWithAggregatesInput> = makeSchema();
+export const SessionScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.SessionScalarWhereWithAggregatesInput> = makeSchema() as unknown as z.ZodType<Prisma.SessionScalarWhereWithAggregatesInput>;
 export const SessionScalarWhereWithAggregatesInputObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type SessionScalarWhereWithAggregatesInput = {
-  AND?: SessionScalarWhereWithAggregatesInput | SessionScalarWhereWithAggregatesInput[];
-  OR?: SessionScalarWhereWithAggregatesInput[];
-  NOT?: SessionScalarWhereWithAggregatesInput | SessionScalarWhereWithAggregatesInput[];
-  id?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  sessionToken?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  userId?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  expires?: z.infer<typeof DateTimeWithAggregatesFilterObjectSchema> | Date;
-};
-(SessionScalarWhereWithAggregatesInputObjectZodSchema satisfies z.ZodType<SessionScalarWhereWithAggregatesInput>);

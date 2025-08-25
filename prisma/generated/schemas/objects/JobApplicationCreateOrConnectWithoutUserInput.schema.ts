@@ -8,5 +8,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   where: z.lazy(() => JobApplicationWhereUniqueInputObjectSchema),
   create: z.union([z.lazy(() => JobApplicationCreateWithoutUserInputObjectSchema), z.lazy(() => JobApplicationUncheckedCreateWithoutUserInputObjectSchema)])
 }).strict();
-export const JobApplicationCreateOrConnectWithoutUserInputObjectSchema: z.ZodType<Prisma.JobApplicationCreateOrConnectWithoutUserInput> = makeSchema();
+export const JobApplicationCreateOrConnectWithoutUserInputObjectSchema: z.ZodType<Prisma.JobApplicationCreateOrConnectWithoutUserInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationCreateOrConnectWithoutUserInput>;
 export const JobApplicationCreateOrConnectWithoutUserInputObjectZodSchema = makeSchema();

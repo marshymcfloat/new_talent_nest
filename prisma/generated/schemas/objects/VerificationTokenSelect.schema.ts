@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   token: z.boolean().optional(),
   expires: z.boolean().optional()
 }).strict();
-export const VerificationTokenSelectObjectSchema: z.ZodType<Prisma.VerificationTokenSelect> = makeSchema();
+export const VerificationTokenSelectObjectSchema: z.ZodType<Prisma.VerificationTokenSelect> = makeSchema() as unknown as z.ZodType<Prisma.VerificationTokenSelect>;
 export const VerificationTokenSelectObjectZodSchema = makeSchema();

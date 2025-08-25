@@ -9,9 +9,15 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   location: SortOrderSchema.optional(),
   type: SortOrderSchema.optional(),
   salary: SortOrderSchema.optional(),
-  JobClass: SortOrderSchema.optional(),
+  jobClass: SortOrderSchema.optional(),
+  summary: SortOrderSchema.optional(),
+  qualifications: SortOrderSchema.optional(),
+  responsibilities: SortOrderSchema.optional(),
+  benefits: SortOrderSchema.optional(),
+  employerQuestions: SortOrderSchema.optional(),
+  tags: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),
   updatedAt: SortOrderSchema.optional()
 }).strict();
-export const JobCountOrderByAggregateInputObjectSchema: z.ZodType<Prisma.JobCountOrderByAggregateInput> = makeSchema();
+export const JobCountOrderByAggregateInputObjectSchema: z.ZodType<Prisma.JobCountOrderByAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.JobCountOrderByAggregateInput>;
 export const JobCountOrderByAggregateInputObjectZodSchema = makeSchema();

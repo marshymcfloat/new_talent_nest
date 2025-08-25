@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: SortOrderSchema.optional(),
   jobId: SortOrderSchema.optional()
 }).strict();
-export const JobApplicationMaxOrderByAggregateInputObjectSchema: z.ZodType<Prisma.JobApplicationMaxOrderByAggregateInput> = makeSchema();
+export const JobApplicationMaxOrderByAggregateInputObjectSchema: z.ZodType<Prisma.JobApplicationMaxOrderByAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationMaxOrderByAggregateInput>;
 export const JobApplicationMaxOrderByAggregateInputObjectZodSchema = makeSchema();

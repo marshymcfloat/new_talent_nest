@@ -7,6 +7,7 @@ export const UserGroupByResultSchema = z.array(z.object({
   image: z.string(),
   username: z.string(),
   password: z.string(),
+  resumes: z.array(z.string()),
   _count: z.object({
     id: z.number(),
     name: z.number(),
@@ -15,6 +16,7 @@ export const UserGroupByResultSchema = z.array(z.object({
     image: z.number(),
     username: z.number(),
     password: z.number(),
+    resumes: z.number(),
     JobApplication: z.number(),
     accounts: z.number(),
     sessions: z.number()
@@ -26,7 +28,8 @@ export const UserGroupByResultSchema = z.array(z.object({
     emailVerified: z.date().nullable(),
     image: z.string().nullable(),
     username: z.string().nullable(),
-    password: z.string().nullable()
+    password: z.string().nullable(),
+    resumes: z.array(z.string()).nullable()
   }).nullable().optional(),
   _max: z.object({
     id: z.string().nullable(),
@@ -35,6 +38,7 @@ export const UserGroupByResultSchema = z.array(z.object({
     emailVerified: z.date().nullable(),
     image: z.string().nullable(),
     username: z.string().nullable(),
-    password: z.string().nullable()
+    password: z.string().nullable(),
+    resumes: z.array(z.string()).nullable()
   }).nullable().optional()
 }));

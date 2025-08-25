@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   token: SortOrderSchema.optional(),
   expires: SortOrderSchema.optional()
 }).strict();
-export const VerificationTokenOrderByWithRelationInputObjectSchema: z.ZodType<Prisma.VerificationTokenOrderByWithRelationInput> = makeSchema();
+export const VerificationTokenOrderByWithRelationInputObjectSchema: z.ZodType<Prisma.VerificationTokenOrderByWithRelationInput> = makeSchema() as unknown as z.ZodType<Prisma.VerificationTokenOrderByWithRelationInput>;
 export const VerificationTokenOrderByWithRelationInputObjectZodSchema = makeSchema();

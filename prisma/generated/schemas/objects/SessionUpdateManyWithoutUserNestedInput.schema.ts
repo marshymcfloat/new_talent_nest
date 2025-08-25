@@ -23,5 +23,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   updateMany: z.union([z.lazy(() => SessionUpdateManyWithWhereWithoutUserInputObjectSchema), z.lazy(() => SessionUpdateManyWithWhereWithoutUserInputObjectSchema).array()]).optional(),
   deleteMany: z.union([z.lazy(() => SessionScalarWhereInputObjectSchema), z.lazy(() => SessionScalarWhereInputObjectSchema).array()]).optional()
 }).strict();
-export const SessionUpdateManyWithoutUserNestedInputObjectSchema: z.ZodType<Prisma.SessionUpdateManyWithoutUserNestedInput> = makeSchema();
+export const SessionUpdateManyWithoutUserNestedInputObjectSchema: z.ZodType<Prisma.SessionUpdateManyWithoutUserNestedInput> = makeSchema() as unknown as z.ZodType<Prisma.SessionUpdateManyWithoutUserNestedInput>;
 export const SessionUpdateManyWithoutUserNestedInputObjectZodSchema = makeSchema();

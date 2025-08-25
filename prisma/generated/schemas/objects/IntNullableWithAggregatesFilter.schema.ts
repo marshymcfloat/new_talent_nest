@@ -19,5 +19,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   _min: z.lazy(() => NestedIntNullableFilterObjectSchema).optional(),
   _max: z.lazy(() => NestedIntNullableFilterObjectSchema).optional()
 }).strict();
-export const IntNullableWithAggregatesFilterObjectSchema: z.ZodType<Prisma.IntNullableWithAggregatesFilter> = makeSchema();
+export const IntNullableWithAggregatesFilterObjectSchema: z.ZodType<Prisma.IntNullableWithAggregatesFilter> = makeSchema() as unknown as z.ZodType<Prisma.IntNullableWithAggregatesFilter>;
 export const IntNullableWithAggregatesFilterObjectZodSchema = makeSchema();

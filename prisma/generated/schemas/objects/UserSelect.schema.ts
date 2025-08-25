@@ -13,10 +13,11 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.boolean().optional(),
   username: z.boolean().optional(),
   password: z.boolean().optional(),
+  resumes: z.boolean().optional(),
   JobApplication: z.union([z.boolean(), z.lazy(() => JobApplicationFindManySchema)]).optional(),
   accounts: z.union([z.boolean(), z.lazy(() => AccountFindManySchema)]).optional(),
   sessions: z.union([z.boolean(), z.lazy(() => SessionFindManySchema)]).optional(),
   _count: z.union([z.boolean(), z.lazy(() => UserCountOutputTypeArgsObjectSchema)]).optional()
 }).strict();
-export const UserSelectObjectSchema: z.ZodType<Prisma.UserSelect> = makeSchema();
+export const UserSelectObjectSchema: z.ZodType<Prisma.UserSelect> = makeSchema() as unknown as z.ZodType<Prisma.UserSelect>;
 export const UserSelectObjectZodSchema = makeSchema();

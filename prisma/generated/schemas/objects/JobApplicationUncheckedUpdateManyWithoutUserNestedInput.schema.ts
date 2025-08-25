@@ -23,5 +23,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   updateMany: z.union([z.lazy(() => JobApplicationUpdateManyWithWhereWithoutUserInputObjectSchema), z.lazy(() => JobApplicationUpdateManyWithWhereWithoutUserInputObjectSchema).array()]).optional(),
   deleteMany: z.union([z.lazy(() => JobApplicationScalarWhereInputObjectSchema), z.lazy(() => JobApplicationScalarWhereInputObjectSchema).array()]).optional()
 }).strict();
-export const JobApplicationUncheckedUpdateManyWithoutUserNestedInputObjectSchema: z.ZodType<Prisma.JobApplicationUncheckedUpdateManyWithoutUserNestedInput> = makeSchema();
+export const JobApplicationUncheckedUpdateManyWithoutUserNestedInputObjectSchema: z.ZodType<Prisma.JobApplicationUncheckedUpdateManyWithoutUserNestedInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationUncheckedUpdateManyWithoutUserNestedInput>;
 export const JobApplicationUncheckedUpdateManyWithoutUserNestedInputObjectZodSchema = makeSchema();

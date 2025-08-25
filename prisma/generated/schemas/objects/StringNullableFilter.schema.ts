@@ -17,5 +17,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   mode: QueryModeSchema.optional(),
   not: z.union([z.string(), z.lazy(() => NestedStringNullableFilterObjectSchema)]).nullish()
 }).strict();
-export const StringNullableFilterObjectSchema: z.ZodType<Prisma.StringNullableFilter> = makeSchema();
+export const StringNullableFilterObjectSchema: z.ZodType<Prisma.StringNullableFilter> = makeSchema() as unknown as z.ZodType<Prisma.StringNullableFilter>;
 export const StringNullableFilterObjectZodSchema = makeSchema();

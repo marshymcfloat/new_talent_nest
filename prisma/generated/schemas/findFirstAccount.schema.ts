@@ -23,7 +23,7 @@ export const AccountFindFirstSelectSchema: z.ZodType<Prisma.AccountSelect> = z.o
     id_token: z.boolean().optional(),
     session_state: z.boolean().optional(),
     user: z.boolean().optional()
-  }).strict();
+  }).strict() as unknown as z.ZodType<Prisma.AccountSelect>;
 
 export const AccountFindFirstSelectZodSchema = z.object({
     id: z.boolean().optional(),
@@ -41,6 +41,6 @@ export const AccountFindFirstSelectZodSchema = z.object({
     user: z.boolean().optional()
   }).strict();
 
-export const AccountFindFirstSchema: z.ZodType<Prisma.AccountFindFirstArgs> = z.object({ select: AccountFindFirstSelectSchema.optional(), include: z.lazy(() => AccountIncludeObjectSchema.optional()), orderBy: z.union([AccountOrderByWithRelationInputObjectSchema, AccountOrderByWithRelationInputObjectSchema.array()]).optional(), where: AccountWhereInputObjectSchema.optional(), cursor: AccountWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.AccountScalarFieldEnum), z.nativeEnum(Prisma.AccountScalarFieldEnum).array()]).optional() }).strict();
+export const AccountFindFirstSchema: z.ZodType<Prisma.AccountFindFirstArgs> = z.object({ select: AccountFindFirstSelectSchema.optional(), include: z.lazy(() => AccountIncludeObjectSchema.optional()), orderBy: z.union([AccountOrderByWithRelationInputObjectSchema, AccountOrderByWithRelationInputObjectSchema.array()]).optional(), where: AccountWhereInputObjectSchema.optional(), cursor: AccountWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.AccountScalarFieldEnum), z.nativeEnum(Prisma.AccountScalarFieldEnum).array()]).optional() }).strict() as unknown as z.ZodType<Prisma.AccountFindFirstArgs>;
 
 export const AccountFindFirstZodSchema = z.object({ select: AccountFindFirstSelectSchema.optional(), include: z.lazy(() => AccountIncludeObjectSchema.optional()), orderBy: z.union([AccountOrderByWithRelationInputObjectSchema, AccountOrderByWithRelationInputObjectSchema.array()]).optional(), where: AccountWhereInputObjectSchema.optional(), cursor: AccountWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.AccountScalarFieldEnum), z.nativeEnum(Prisma.AccountScalarFieldEnum).array()]).optional() }).strict();

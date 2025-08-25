@@ -8,5 +8,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.literal(true).optional(),
   expires: z.literal(true).optional()
 }).strict();
-export const SessionMaxAggregateInputObjectSchema: z.ZodType<Prisma.SessionMaxAggregateInputType> = makeSchema();
+export const SessionMaxAggregateInputObjectSchema: z.ZodType<Prisma.SessionMaxAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.SessionMaxAggregateInputType>;
 export const SessionMaxAggregateInputObjectZodSchema = makeSchema();

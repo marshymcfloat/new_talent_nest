@@ -12,5 +12,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   createMany: z.lazy(() => AccountCreateManyUserInputEnvelopeObjectSchema).optional(),
   connect: z.union([z.lazy(() => AccountWhereUniqueInputObjectSchema), z.lazy(() => AccountWhereUniqueInputObjectSchema).array()]).optional()
 }).strict();
-export const AccountUncheckedCreateNestedManyWithoutUserInputObjectSchema: z.ZodType<Prisma.AccountUncheckedCreateNestedManyWithoutUserInput> = makeSchema();
+export const AccountUncheckedCreateNestedManyWithoutUserInputObjectSchema: z.ZodType<Prisma.AccountUncheckedCreateNestedManyWithoutUserInput> = makeSchema() as unknown as z.ZodType<Prisma.AccountUncheckedCreateNestedManyWithoutUserInput>;
 export const AccountUncheckedCreateNestedManyWithoutUserInputObjectZodSchema = makeSchema();

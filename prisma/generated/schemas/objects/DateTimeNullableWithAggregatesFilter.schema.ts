@@ -17,5 +17,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   _min: z.lazy(() => NestedDateTimeNullableFilterObjectSchema).optional(),
   _max: z.lazy(() => NestedDateTimeNullableFilterObjectSchema).optional()
 }).strict();
-export const DateTimeNullableWithAggregatesFilterObjectSchema: z.ZodType<Prisma.DateTimeNullableWithAggregatesFilter> = makeSchema();
+export const DateTimeNullableWithAggregatesFilterObjectSchema: z.ZodType<Prisma.DateTimeNullableWithAggregatesFilter> = makeSchema() as unknown as z.ZodType<Prisma.DateTimeNullableWithAggregatesFilter>;
 export const DateTimeNullableWithAggregatesFilterObjectZodSchema = makeSchema();

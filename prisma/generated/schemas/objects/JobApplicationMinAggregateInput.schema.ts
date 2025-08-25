@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.literal(true).optional(),
   jobId: z.literal(true).optional()
 }).strict();
-export const JobApplicationMinAggregateInputObjectSchema: z.ZodType<Prisma.JobApplicationMinAggregateInputType> = makeSchema();
+export const JobApplicationMinAggregateInputObjectSchema: z.ZodType<Prisma.JobApplicationMinAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationMinAggregateInputType>;
 export const JobApplicationMinAggregateInputObjectZodSchema = makeSchema();

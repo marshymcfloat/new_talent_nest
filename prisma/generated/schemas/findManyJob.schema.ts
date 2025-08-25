@@ -17,12 +17,18 @@ export const JobFindManySelectSchema: z.ZodType<Prisma.JobSelect> = z.object({
     location: z.boolean().optional(),
     type: z.boolean().optional(),
     salary: z.boolean().optional(),
-    JobClass: z.boolean().optional(),
+    jobClass: z.boolean().optional(),
+    summary: z.boolean().optional(),
+    qualifications: z.boolean().optional(),
+    responsibilities: z.boolean().optional(),
+    benefits: z.boolean().optional(),
+    employerQuestions: z.boolean().optional(),
+    tags: z.boolean().optional(),
     createdAt: z.boolean().optional(),
     updatedAt: z.boolean().optional(),
     JobApplication: z.boolean().optional(),
     _count: z.boolean().optional()
-  }).strict();
+  }).strict() as unknown as z.ZodType<Prisma.JobSelect>;
 
 export const JobFindManySelectZodSchema = z.object({
     id: z.boolean().optional(),
@@ -31,13 +37,19 @@ export const JobFindManySelectZodSchema = z.object({
     location: z.boolean().optional(),
     type: z.boolean().optional(),
     salary: z.boolean().optional(),
-    JobClass: z.boolean().optional(),
+    jobClass: z.boolean().optional(),
+    summary: z.boolean().optional(),
+    qualifications: z.boolean().optional(),
+    responsibilities: z.boolean().optional(),
+    benefits: z.boolean().optional(),
+    employerQuestions: z.boolean().optional(),
+    tags: z.boolean().optional(),
     createdAt: z.boolean().optional(),
     updatedAt: z.boolean().optional(),
     JobApplication: z.boolean().optional(),
     _count: z.boolean().optional()
   }).strict();
 
-export const JobFindManySchema: z.ZodType<Prisma.JobFindManyArgs> = z.object({ select: JobFindManySelectSchema.optional(), include: z.lazy(() => JobIncludeObjectSchema.optional()), orderBy: z.union([JobOrderByWithRelationInputObjectSchema, JobOrderByWithRelationInputObjectSchema.array()]).optional(), where: JobWhereInputObjectSchema.optional(), cursor: JobWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.JobScalarFieldEnum), z.nativeEnum(Prisma.JobScalarFieldEnum).array()]).optional() }).strict();
+export const JobFindManySchema: z.ZodType<Prisma.JobFindManyArgs> = z.object({ select: JobFindManySelectSchema.optional(), include: z.lazy(() => JobIncludeObjectSchema.optional()), orderBy: z.union([JobOrderByWithRelationInputObjectSchema, JobOrderByWithRelationInputObjectSchema.array()]).optional(), where: JobWhereInputObjectSchema.optional(), cursor: JobWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.JobScalarFieldEnum), z.nativeEnum(Prisma.JobScalarFieldEnum).array()]).optional() }).strict() as unknown as z.ZodType<Prisma.JobFindManyArgs>;
 
 export const JobFindManyZodSchema = z.object({ select: JobFindManySelectSchema.optional(), include: z.lazy(() => JobIncludeObjectSchema.optional()), orderBy: z.union([JobOrderByWithRelationInputObjectSchema, JobOrderByWithRelationInputObjectSchema.array()]).optional(), where: JobWhereInputObjectSchema.optional(), cursor: JobWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.JobScalarFieldEnum), z.nativeEnum(Prisma.JobScalarFieldEnum).array()]).optional() }).strict();

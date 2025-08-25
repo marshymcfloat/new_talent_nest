@@ -17,5 +17,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   session_state: z.literal(true).optional(),
   _all: z.literal(true).optional()
 }).strict();
-export const AccountCountAggregateInputObjectSchema: z.ZodType<Prisma.AccountCountAggregateInputType> = makeSchema();
+export const AccountCountAggregateInputObjectSchema: z.ZodType<Prisma.AccountCountAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.AccountCountAggregateInputType>;
 export const AccountCountAggregateInputObjectZodSchema = makeSchema();

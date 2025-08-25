@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   some: z.lazy(() => JobApplicationWhereInputObjectSchema).optional(),
   none: z.lazy(() => JobApplicationWhereInputObjectSchema).optional()
 }).strict();
-export const JobApplicationListRelationFilterObjectSchema: z.ZodType<Prisma.JobApplicationListRelationFilter> = makeSchema();
+export const JobApplicationListRelationFilterObjectSchema: z.ZodType<Prisma.JobApplicationListRelationFilter> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationListRelationFilter>;
 export const JobApplicationListRelationFilterObjectZodSchema = makeSchema();

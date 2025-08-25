@@ -9,5 +9,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   notIn: JobClassSchema.array().optional(),
   not: z.union([JobClassSchema, z.lazy(() => NestedEnumJobClassFilterObjectSchema)]).optional()
 }).strict();
-export const EnumJobClassFilterObjectSchema: z.ZodType<Prisma.EnumJobClassFilter> = makeSchema();
+export const EnumJobClassFilterObjectSchema: z.ZodType<Prisma.EnumJobClassFilter> = makeSchema() as unknown as z.ZodType<Prisma.EnumJobClassFilter>;
 export const EnumJobClassFilterObjectZodSchema = makeSchema();

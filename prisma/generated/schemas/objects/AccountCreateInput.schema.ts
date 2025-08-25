@@ -16,5 +16,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   session_state: z.string().nullish(),
   user: z.lazy(() => UserCreateNestedOneWithoutAccountsInputObjectSchema)
 }).strict();
-export const AccountCreateInputObjectSchema: z.ZodType<Prisma.AccountCreateInput> = makeSchema();
+export const AccountCreateInputObjectSchema: z.ZodType<Prisma.AccountCreateInput> = makeSchema() as unknown as z.ZodType<Prisma.AccountCreateInput>;
 export const AccountCreateInputObjectZodSchema = makeSchema();

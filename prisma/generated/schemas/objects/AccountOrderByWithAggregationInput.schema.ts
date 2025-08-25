@@ -27,5 +27,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   _min: z.lazy(() => AccountMinOrderByAggregateInputObjectSchema).optional(),
   _sum: z.lazy(() => AccountSumOrderByAggregateInputObjectSchema).optional()
 }).strict();
-export const AccountOrderByWithAggregationInputObjectSchema: z.ZodType<Prisma.AccountOrderByWithAggregationInput> = makeSchema();
+export const AccountOrderByWithAggregationInputObjectSchema: z.ZodType<Prisma.AccountOrderByWithAggregationInput> = makeSchema() as unknown as z.ZodType<Prisma.AccountOrderByWithAggregationInput>;
 export const AccountOrderByWithAggregationInputObjectZodSchema = makeSchema();

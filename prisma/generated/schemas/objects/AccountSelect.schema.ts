@@ -17,5 +17,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   session_state: z.boolean().optional(),
   user: z.union([z.boolean(), z.lazy(() => UserArgsObjectSchema)]).optional()
 }).strict();
-export const AccountSelectObjectSchema: z.ZodType<Prisma.AccountSelect> = makeSchema();
+export const AccountSelectObjectSchema: z.ZodType<Prisma.AccountSelect> = makeSchema() as unknown as z.ZodType<Prisma.AccountSelect>;
 export const AccountSelectObjectZodSchema = makeSchema();

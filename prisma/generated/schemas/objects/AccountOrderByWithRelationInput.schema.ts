@@ -19,5 +19,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   session_state: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputObjectSchema).optional()
 }).strict();
-export const AccountOrderByWithRelationInputObjectSchema: z.ZodType<Prisma.AccountOrderByWithRelationInput> = makeSchema();
+export const AccountOrderByWithRelationInputObjectSchema: z.ZodType<Prisma.AccountOrderByWithRelationInput> = makeSchema() as unknown as z.ZodType<Prisma.AccountOrderByWithRelationInput>;
 export const AccountOrderByWithRelationInputObjectZodSchema = makeSchema();

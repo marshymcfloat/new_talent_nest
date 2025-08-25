@@ -8,5 +8,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   where: z.lazy(() => AccountWhereUniqueInputObjectSchema),
   data: z.union([z.lazy(() => AccountUpdateWithoutUserInputObjectSchema), z.lazy(() => AccountUncheckedUpdateWithoutUserInputObjectSchema)])
 }).strict();
-export const AccountUpdateWithWhereUniqueWithoutUserInputObjectSchema: z.ZodType<Prisma.AccountUpdateWithWhereUniqueWithoutUserInput> = makeSchema();
+export const AccountUpdateWithWhereUniqueWithoutUserInputObjectSchema: z.ZodType<Prisma.AccountUpdateWithWhereUniqueWithoutUserInput> = makeSchema() as unknown as z.ZodType<Prisma.AccountUpdateWithWhereUniqueWithoutUserInput>;
 export const AccountUpdateWithWhereUniqueWithoutUserInputObjectZodSchema = makeSchema();

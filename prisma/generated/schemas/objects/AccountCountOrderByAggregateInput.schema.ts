@@ -16,5 +16,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   id_token: SortOrderSchema.optional(),
   session_state: SortOrderSchema.optional()
 }).strict();
-export const AccountCountOrderByAggregateInputObjectSchema: z.ZodType<Prisma.AccountCountOrderByAggregateInput> = makeSchema();
+export const AccountCountOrderByAggregateInputObjectSchema: z.ZodType<Prisma.AccountCountOrderByAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.AccountCountOrderByAggregateInput>;
 export const AccountCountOrderByAggregateInputObjectZodSchema = makeSchema();

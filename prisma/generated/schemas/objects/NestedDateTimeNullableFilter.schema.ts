@@ -12,17 +12,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   gte: z.date().optional(),
   not: z.union([z.date(), z.lazy(makeSchema)]).nullish()
 }).strict();
-export const NestedDateTimeNullableFilterObjectSchema: z.ZodType<Prisma.NestedDateTimeNullableFilter> = makeSchema();
+export const NestedDateTimeNullableFilterObjectSchema: z.ZodType<Prisma.NestedDateTimeNullableFilter> = makeSchema() as unknown as z.ZodType<Prisma.NestedDateTimeNullableFilter>;
 export const NestedDateTimeNullableFilterObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type NestedDateTimeNullableFilter = {
-  equals?: Date;
-  in?: Date | string[];
-  notIn?: Date | string[];
-  lt?: Date;
-  lte?: Date;
-  gt?: Date;
-  gte?: Date;
-  not?: Date | NestedDateTimeNullableFilter;
-};
-(NestedDateTimeNullableFilterObjectZodSchema satisfies z.ZodType<NestedDateTimeNullableFilter>);

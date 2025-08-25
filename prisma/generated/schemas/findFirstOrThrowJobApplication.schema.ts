@@ -15,7 +15,7 @@ export const JobApplicationFindFirstOrThrowSelectSchema: z.ZodType<Prisma.JobApp
     jobId: z.boolean().optional(),
     Job: z.boolean().optional(),
     User: z.boolean().optional()
-  }).strict();
+  }).strict() as unknown as z.ZodType<Prisma.JobApplicationSelect>;
 
 export const JobApplicationFindFirstOrThrowSelectZodSchema = z.object({
     id: z.boolean().optional(),
@@ -25,6 +25,6 @@ export const JobApplicationFindFirstOrThrowSelectZodSchema = z.object({
     User: z.boolean().optional()
   }).strict();
 
-export const JobApplicationFindFirstOrThrowSchema: z.ZodType<Prisma.JobApplicationFindFirstOrThrowArgs> = z.object({ select: JobApplicationFindFirstOrThrowSelectSchema.optional(), include: z.lazy(() => JobApplicationIncludeObjectSchema.optional()), orderBy: z.union([JobApplicationOrderByWithRelationInputObjectSchema, JobApplicationOrderByWithRelationInputObjectSchema.array()]).optional(), where: JobApplicationWhereInputObjectSchema.optional(), cursor: JobApplicationWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.JobApplicationScalarFieldEnum), z.nativeEnum(Prisma.JobApplicationScalarFieldEnum).array()]).optional() }).strict();
+export const JobApplicationFindFirstOrThrowSchema: z.ZodType<Prisma.JobApplicationFindFirstOrThrowArgs> = z.object({ select: JobApplicationFindFirstOrThrowSelectSchema.optional(), include: z.lazy(() => JobApplicationIncludeObjectSchema.optional()), orderBy: z.union([JobApplicationOrderByWithRelationInputObjectSchema, JobApplicationOrderByWithRelationInputObjectSchema.array()]).optional(), where: JobApplicationWhereInputObjectSchema.optional(), cursor: JobApplicationWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.JobApplicationScalarFieldEnum), z.nativeEnum(Prisma.JobApplicationScalarFieldEnum).array()]).optional() }).strict() as unknown as z.ZodType<Prisma.JobApplicationFindFirstOrThrowArgs>;
 
 export const JobApplicationFindFirstOrThrowZodSchema = z.object({ select: JobApplicationFindFirstOrThrowSelectSchema.optional(), include: z.lazy(() => JobApplicationIncludeObjectSchema.optional()), orderBy: z.union([JobApplicationOrderByWithRelationInputObjectSchema, JobApplicationOrderByWithRelationInputObjectSchema.array()]).optional(), where: JobApplicationWhereInputObjectSchema.optional(), cursor: JobApplicationWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.JobApplicationScalarFieldEnum), z.nativeEnum(Prisma.JobApplicationScalarFieldEnum).array()]).optional() }).strict();

@@ -8,5 +8,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   jobId: z.literal(true).optional(),
   _all: z.literal(true).optional()
 }).strict();
-export const JobApplicationCountAggregateInputObjectSchema: z.ZodType<Prisma.JobApplicationCountAggregateInputType> = makeSchema();
+export const JobApplicationCountAggregateInputObjectSchema: z.ZodType<Prisma.JobApplicationCountAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationCountAggregateInputType>;
 export const JobApplicationCountAggregateInputObjectZodSchema = makeSchema();

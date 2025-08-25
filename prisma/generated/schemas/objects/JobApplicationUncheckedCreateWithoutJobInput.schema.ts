@@ -6,5 +6,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   id: z.string().optional(),
   userId: z.string()
 }).strict();
-export const JobApplicationUncheckedCreateWithoutJobInputObjectSchema: z.ZodType<Prisma.JobApplicationUncheckedCreateWithoutJobInput> = makeSchema();
+export const JobApplicationUncheckedCreateWithoutJobInputObjectSchema: z.ZodType<Prisma.JobApplicationUncheckedCreateWithoutJobInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationUncheckedCreateWithoutJobInput>;
 export const JobApplicationUncheckedCreateWithoutJobInputObjectZodSchema = makeSchema();

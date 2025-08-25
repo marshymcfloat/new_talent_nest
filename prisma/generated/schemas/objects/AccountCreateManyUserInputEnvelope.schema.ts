@@ -6,5 +6,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   data: z.union([z.lazy(() => AccountCreateManyUserInputObjectSchema), z.lazy(() => AccountCreateManyUserInputObjectSchema).array()]),
   skipDuplicates: z.boolean().optional()
 }).strict();
-export const AccountCreateManyUserInputEnvelopeObjectSchema: z.ZodType<Prisma.AccountCreateManyUserInputEnvelope> = makeSchema();
+export const AccountCreateManyUserInputEnvelopeObjectSchema: z.ZodType<Prisma.AccountCreateManyUserInputEnvelope> = makeSchema() as unknown as z.ZodType<Prisma.AccountCreateManyUserInputEnvelope>;
 export const AccountCreateManyUserInputEnvelopeObjectZodSchema = makeSchema();

@@ -16,5 +16,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   id_token: SortOrderSchema.optional(),
   session_state: SortOrderSchema.optional()
 }).strict();
-export const AccountMinOrderByAggregateInputObjectSchema: z.ZodType<Prisma.AccountMinOrderByAggregateInput> = makeSchema();
+export const AccountMinOrderByAggregateInputObjectSchema: z.ZodType<Prisma.AccountMinOrderByAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.AccountMinOrderByAggregateInput>;
 export const AccountMinOrderByAggregateInputObjectZodSchema = makeSchema();

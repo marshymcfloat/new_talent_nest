@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   token: z.literal(true).optional(),
   expires: z.literal(true).optional()
 }).strict();
-export const VerificationTokenMinAggregateInputObjectSchema: z.ZodType<Prisma.VerificationTokenMinAggregateInputType> = makeSchema();
+export const VerificationTokenMinAggregateInputObjectSchema: z.ZodType<Prisma.VerificationTokenMinAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.VerificationTokenMinAggregateInputType>;
 export const VerificationTokenMinAggregateInputObjectZodSchema = makeSchema();

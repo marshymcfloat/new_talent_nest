@@ -16,17 +16,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   Job: z.union([z.lazy(() => JobScalarRelationFilterObjectSchema), z.lazy(() => JobWhereInputObjectSchema)]).optional(),
   User: z.union([z.lazy(() => UserScalarRelationFilterObjectSchema), z.lazy(() => UserWhereInputObjectSchema)]).optional()
 }).strict();
-export const JobApplicationWhereInputObjectSchema: z.ZodType<Prisma.JobApplicationWhereInput> = makeSchema();
+export const JobApplicationWhereInputObjectSchema: z.ZodType<Prisma.JobApplicationWhereInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationWhereInput>;
 export const JobApplicationWhereInputObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type JobApplicationWhereInput = {
-  AND?: JobApplicationWhereInput | JobApplicationWhereInput[];
-  OR?: JobApplicationWhereInput[];
-  NOT?: JobApplicationWhereInput | JobApplicationWhereInput[];
-  id?: z.infer<typeof StringFilterObjectSchema> | string;
-  userId?: z.infer<typeof StringFilterObjectSchema> | string;
-  jobId?: z.infer<typeof StringFilterObjectSchema> | string;
-  Job?: z.infer<typeof JobScalarRelationFilterObjectSchema> | z.infer<typeof JobWhereInputObjectSchema>;
-  User?: z.infer<typeof UserScalarRelationFilterObjectSchema> | z.infer<typeof UserWhereInputObjectSchema>;
-};
-(JobApplicationWhereInputObjectZodSchema satisfies z.ZodType<JobApplicationWhereInput>);

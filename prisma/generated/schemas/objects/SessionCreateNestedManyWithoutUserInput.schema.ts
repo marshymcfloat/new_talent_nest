@@ -12,5 +12,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   createMany: z.lazy(() => SessionCreateManyUserInputEnvelopeObjectSchema).optional(),
   connect: z.union([z.lazy(() => SessionWhereUniqueInputObjectSchema), z.lazy(() => SessionWhereUniqueInputObjectSchema).array()]).optional()
 }).strict();
-export const SessionCreateNestedManyWithoutUserInputObjectSchema: z.ZodType<Prisma.SessionCreateNestedManyWithoutUserInput> = makeSchema();
+export const SessionCreateNestedManyWithoutUserInputObjectSchema: z.ZodType<Prisma.SessionCreateNestedManyWithoutUserInput> = makeSchema() as unknown as z.ZodType<Prisma.SessionCreateNestedManyWithoutUserInput>;
 export const SessionCreateNestedManyWithoutUserInputObjectZodSchema = makeSchema();

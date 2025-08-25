@@ -17,5 +17,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   _min: z.lazy(() => NestedDateTimeFilterObjectSchema).optional(),
   _max: z.lazy(() => NestedDateTimeFilterObjectSchema).optional()
 }).strict();
-export const DateTimeWithAggregatesFilterObjectSchema: z.ZodType<Prisma.DateTimeWithAggregatesFilter> = makeSchema();
+export const DateTimeWithAggregatesFilterObjectSchema: z.ZodType<Prisma.DateTimeWithAggregatesFilter> = makeSchema() as unknown as z.ZodType<Prisma.DateTimeWithAggregatesFilter>;
 export const DateTimeWithAggregatesFilterObjectZodSchema = makeSchema();

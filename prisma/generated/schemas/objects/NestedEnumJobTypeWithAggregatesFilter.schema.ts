@@ -13,16 +13,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   _min: z.lazy(() => NestedEnumJobTypeFilterObjectSchema).optional(),
   _max: z.lazy(() => NestedEnumJobTypeFilterObjectSchema).optional()
 }).strict();
-export const NestedEnumJobTypeWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedEnumJobTypeWithAggregatesFilter> = makeSchema();
+export const NestedEnumJobTypeWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedEnumJobTypeWithAggregatesFilter> = makeSchema() as unknown as z.ZodType<Prisma.NestedEnumJobTypeWithAggregatesFilter>;
 export const NestedEnumJobTypeWithAggregatesFilterObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type NestedEnumJobTypeWithAggregatesFilter = {
-  equals?: unknown;
-  in?: unknown[];
-  notIn?: unknown[];
-  not?: NestedEnumJobTypeWithAggregatesFilter;
-  _count?: z.infer<typeof NestedIntFilterObjectSchema>;
-  _min?: z.infer<typeof NestedEnumJobTypeFilterObjectSchema>;
-  _max?: z.infer<typeof NestedEnumJobTypeFilterObjectSchema>;
-};
-(NestedEnumJobTypeWithAggregatesFilterObjectZodSchema satisfies z.ZodType<NestedEnumJobTypeWithAggregatesFilter>);

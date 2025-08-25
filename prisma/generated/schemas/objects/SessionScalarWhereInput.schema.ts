@@ -12,16 +12,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   expires: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional()
 }).strict();
-export const SessionScalarWhereInputObjectSchema: z.ZodType<Prisma.SessionScalarWhereInput> = makeSchema();
+export const SessionScalarWhereInputObjectSchema: z.ZodType<Prisma.SessionScalarWhereInput> = makeSchema() as unknown as z.ZodType<Prisma.SessionScalarWhereInput>;
 export const SessionScalarWhereInputObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type SessionScalarWhereInput = {
-  AND?: SessionScalarWhereInput | SessionScalarWhereInput[];
-  OR?: SessionScalarWhereInput[];
-  NOT?: SessionScalarWhereInput | SessionScalarWhereInput[];
-  id?: z.infer<typeof StringFilterObjectSchema> | string;
-  sessionToken?: z.infer<typeof StringFilterObjectSchema> | string;
-  userId?: z.infer<typeof StringFilterObjectSchema> | string;
-  expires?: z.infer<typeof DateTimeFilterObjectSchema> | Date;
-};
-(SessionScalarWhereInputObjectZodSchema satisfies z.ZodType<SessionScalarWhereInput>);

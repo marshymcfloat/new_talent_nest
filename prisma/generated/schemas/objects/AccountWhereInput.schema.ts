@@ -24,25 +24,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   session_state: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
   user: z.union([z.lazy(() => UserScalarRelationFilterObjectSchema), z.lazy(() => UserWhereInputObjectSchema)]).optional()
 }).strict();
-export const AccountWhereInputObjectSchema: z.ZodType<Prisma.AccountWhereInput> = makeSchema();
+export const AccountWhereInputObjectSchema: z.ZodType<Prisma.AccountWhereInput> = makeSchema() as unknown as z.ZodType<Prisma.AccountWhereInput>;
 export const AccountWhereInputObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type AccountWhereInput = {
-  AND?: AccountWhereInput | AccountWhereInput[];
-  OR?: AccountWhereInput[];
-  NOT?: AccountWhereInput | AccountWhereInput[];
-  id?: z.infer<typeof StringFilterObjectSchema> | string;
-  userId?: z.infer<typeof StringFilterObjectSchema> | string;
-  type?: z.infer<typeof StringFilterObjectSchema> | string;
-  provider?: z.infer<typeof StringFilterObjectSchema> | string;
-  providerAccountId?: z.infer<typeof StringFilterObjectSchema> | string;
-  refresh_token?: z.infer<typeof StringNullableFilterObjectSchema> | string;
-  access_token?: z.infer<typeof StringNullableFilterObjectSchema> | string;
-  expires_at?: z.infer<typeof IntNullableFilterObjectSchema> | number;
-  token_type?: z.infer<typeof StringNullableFilterObjectSchema> | string;
-  scope?: z.infer<typeof StringNullableFilterObjectSchema> | string;
-  id_token?: z.infer<typeof StringNullableFilterObjectSchema> | string;
-  session_state?: z.infer<typeof StringNullableFilterObjectSchema> | string;
-  user?: z.infer<typeof UserScalarRelationFilterObjectSchema> | z.infer<typeof UserWhereInputObjectSchema>;
-};
-(AccountWhereInputObjectZodSchema satisfies z.ZodType<AccountWhereInput>);

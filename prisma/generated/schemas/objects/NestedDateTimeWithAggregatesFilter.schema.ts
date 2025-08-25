@@ -16,20 +16,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   _min: z.lazy(() => NestedDateTimeFilterObjectSchema).optional(),
   _max: z.lazy(() => NestedDateTimeFilterObjectSchema).optional()
 }).strict();
-export const NestedDateTimeWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedDateTimeWithAggregatesFilter> = makeSchema();
+export const NestedDateTimeWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedDateTimeWithAggregatesFilter> = makeSchema() as unknown as z.ZodType<Prisma.NestedDateTimeWithAggregatesFilter>;
 export const NestedDateTimeWithAggregatesFilterObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type NestedDateTimeWithAggregatesFilter = {
-  equals?: Date;
-  in?: Date | string[];
-  notIn?: Date | string[];
-  lt?: Date;
-  lte?: Date;
-  gt?: Date;
-  gte?: Date;
-  not?: Date | NestedDateTimeWithAggregatesFilter;
-  _count?: z.infer<typeof NestedIntFilterObjectSchema>;
-  _min?: z.infer<typeof NestedDateTimeFilterObjectSchema>;
-  _max?: z.infer<typeof NestedDateTimeFilterObjectSchema>;
-};
-(NestedDateTimeWithAggregatesFilterObjectZodSchema satisfies z.ZodType<NestedDateTimeWithAggregatesFilter>);

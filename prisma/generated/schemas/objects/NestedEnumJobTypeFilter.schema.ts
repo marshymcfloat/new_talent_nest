@@ -8,13 +8,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   notIn: JobTypeSchema.array().optional(),
   not: z.union([JobTypeSchema, z.lazy(makeSchema)]).optional()
 }).strict();
-export const NestedEnumJobTypeFilterObjectSchema: z.ZodType<Prisma.NestedEnumJobTypeFilter> = makeSchema();
+export const NestedEnumJobTypeFilterObjectSchema: z.ZodType<Prisma.NestedEnumJobTypeFilter> = makeSchema() as unknown as z.ZodType<Prisma.NestedEnumJobTypeFilter>;
 export const NestedEnumJobTypeFilterObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type NestedEnumJobTypeFilter = {
-  equals?: unknown;
-  in?: unknown[];
-  notIn?: unknown[];
-  not?: NestedEnumJobTypeFilter;
-};
-(NestedEnumJobTypeFilterObjectZodSchema satisfies z.ZodType<NestedEnumJobTypeFilter>);

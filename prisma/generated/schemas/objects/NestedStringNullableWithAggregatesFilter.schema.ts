@@ -19,23 +19,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   _min: z.lazy(() => NestedStringNullableFilterObjectSchema).optional(),
   _max: z.lazy(() => NestedStringNullableFilterObjectSchema).optional()
 }).strict();
-export const NestedStringNullableWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedStringNullableWithAggregatesFilter> = makeSchema();
+export const NestedStringNullableWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedStringNullableWithAggregatesFilter> = makeSchema() as unknown as z.ZodType<Prisma.NestedStringNullableWithAggregatesFilter>;
 export const NestedStringNullableWithAggregatesFilterObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type NestedStringNullableWithAggregatesFilter = {
-  equals?: string;
-  in?: string[];
-  notIn?: string[];
-  lt?: string;
-  lte?: string;
-  gt?: string;
-  gte?: string;
-  contains?: string;
-  startsWith?: string;
-  endsWith?: string;
-  not?: string | NestedStringNullableWithAggregatesFilter;
-  _count?: z.infer<typeof NestedIntNullableFilterObjectSchema>;
-  _min?: z.infer<typeof NestedStringNullableFilterObjectSchema>;
-  _max?: z.infer<typeof NestedStringNullableFilterObjectSchema>;
-};
-(NestedStringNullableWithAggregatesFilterObjectZodSchema satisfies z.ZodType<NestedStringNullableWithAggregatesFilter>);

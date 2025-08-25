@@ -14,5 +14,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   _min: z.lazy(() => NestedEnumJobTypeFilterObjectSchema).optional(),
   _max: z.lazy(() => NestedEnumJobTypeFilterObjectSchema).optional()
 }).strict();
-export const EnumJobTypeWithAggregatesFilterObjectSchema: z.ZodType<Prisma.EnumJobTypeWithAggregatesFilter> = makeSchema();
+export const EnumJobTypeWithAggregatesFilterObjectSchema: z.ZodType<Prisma.EnumJobTypeWithAggregatesFilter> = makeSchema() as unknown as z.ZodType<Prisma.EnumJobTypeWithAggregatesFilter>;
 export const EnumJobTypeWithAggregatesFilterObjectZodSchema = makeSchema();

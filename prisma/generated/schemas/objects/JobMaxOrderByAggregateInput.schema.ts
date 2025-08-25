@@ -9,9 +9,13 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   location: SortOrderSchema.optional(),
   type: SortOrderSchema.optional(),
   salary: SortOrderSchema.optional(),
-  JobClass: SortOrderSchema.optional(),
+  jobClass: SortOrderSchema.optional(),
+  summary: SortOrderSchema.optional(),
+  qualifications: SortOrderSchema.optional(),
+  responsibilities: SortOrderSchema.optional(),
+  benefits: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),
   updatedAt: SortOrderSchema.optional()
 }).strict();
-export const JobMaxOrderByAggregateInputObjectSchema: z.ZodType<Prisma.JobMaxOrderByAggregateInput> = makeSchema();
+export const JobMaxOrderByAggregateInputObjectSchema: z.ZodType<Prisma.JobMaxOrderByAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.JobMaxOrderByAggregateInput>;
 export const JobMaxOrderByAggregateInputObjectZodSchema = makeSchema();

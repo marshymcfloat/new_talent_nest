@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   sort: SortOrderSchema,
   nulls: NullsOrderSchema.optional()
 }).strict();
-export const SortOrderInputObjectSchema: z.ZodType<Prisma.SortOrderInput> = makeSchema();
+export const SortOrderInputObjectSchema: z.ZodType<Prisma.SortOrderInput> = makeSchema() as unknown as z.ZodType<Prisma.SortOrderInput>;
 export const SortOrderInputObjectZodSchema = makeSchema();

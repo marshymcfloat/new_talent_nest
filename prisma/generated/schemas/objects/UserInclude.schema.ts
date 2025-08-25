@@ -11,5 +11,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   sessions: z.union([z.boolean(), z.lazy(() => SessionFindManySchema)]).optional(),
   _count: z.union([z.boolean(), z.lazy(() => UserCountOutputTypeArgsObjectSchema)]).optional()
 }).strict();
-export const UserIncludeObjectSchema: z.ZodType<Prisma.UserInclude> = makeSchema();
+export const UserIncludeObjectSchema: z.ZodType<Prisma.UserInclude> = makeSchema() as unknown as z.ZodType<Prisma.UserInclude>;
 export const UserIncludeObjectZodSchema = makeSchema();

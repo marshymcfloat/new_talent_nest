@@ -18,5 +18,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   id_token: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
   session_state: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish()
 }).strict();
-export const AccountUncheckedUpdateInputObjectSchema: z.ZodType<Prisma.AccountUncheckedUpdateInput> = makeSchema();
+export const AccountUncheckedUpdateInputObjectSchema: z.ZodType<Prisma.AccountUncheckedUpdateInput> = makeSchema() as unknown as z.ZodType<Prisma.AccountUncheckedUpdateInput>;
 export const AccountUncheckedUpdateInputObjectZodSchema = makeSchema();

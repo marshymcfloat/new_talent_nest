@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   jobId: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional()
 }).strict();
-export const JobApplicationUncheckedUpdateInputObjectSchema: z.ZodType<Prisma.JobApplicationUncheckedUpdateInput> = makeSchema();
+export const JobApplicationUncheckedUpdateInputObjectSchema: z.ZodType<Prisma.JobApplicationUncheckedUpdateInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationUncheckedUpdateInput>;
 export const JobApplicationUncheckedUpdateInputObjectZodSchema = makeSchema();

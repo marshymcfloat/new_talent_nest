@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   token: SortOrderSchema.optional(),
   expires: SortOrderSchema.optional()
 }).strict();
-export const VerificationTokenMaxOrderByAggregateInputObjectSchema: z.ZodType<Prisma.VerificationTokenMaxOrderByAggregateInput> = makeSchema();
+export const VerificationTokenMaxOrderByAggregateInputObjectSchema: z.ZodType<Prisma.VerificationTokenMaxOrderByAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.VerificationTokenMaxOrderByAggregateInput>;
 export const VerificationTokenMaxOrderByAggregateInputObjectZodSchema = makeSchema();

@@ -10,15 +10,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   jobId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional()
 }).strict();
-export const JobApplicationScalarWhereInputObjectSchema: z.ZodType<Prisma.JobApplicationScalarWhereInput> = makeSchema();
+export const JobApplicationScalarWhereInputObjectSchema: z.ZodType<Prisma.JobApplicationScalarWhereInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationScalarWhereInput>;
 export const JobApplicationScalarWhereInputObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type JobApplicationScalarWhereInput = {
-  AND?: JobApplicationScalarWhereInput | JobApplicationScalarWhereInput[];
-  OR?: JobApplicationScalarWhereInput[];
-  NOT?: JobApplicationScalarWhereInput | JobApplicationScalarWhereInput[];
-  id?: z.infer<typeof StringFilterObjectSchema> | string;
-  userId?: z.infer<typeof StringFilterObjectSchema> | string;
-  jobId?: z.infer<typeof StringFilterObjectSchema> | string;
-};
-(JobApplicationScalarWhereInputObjectZodSchema satisfies z.ZodType<JobApplicationScalarWhereInput>);

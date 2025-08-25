@@ -16,20 +16,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   _min: z.lazy(() => NestedDateTimeNullableFilterObjectSchema).optional(),
   _max: z.lazy(() => NestedDateTimeNullableFilterObjectSchema).optional()
 }).strict();
-export const NestedDateTimeNullableWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedDateTimeNullableWithAggregatesFilter> = makeSchema();
+export const NestedDateTimeNullableWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedDateTimeNullableWithAggregatesFilter> = makeSchema() as unknown as z.ZodType<Prisma.NestedDateTimeNullableWithAggregatesFilter>;
 export const NestedDateTimeNullableWithAggregatesFilterObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type NestedDateTimeNullableWithAggregatesFilter = {
-  equals?: Date;
-  in?: Date | string[];
-  notIn?: Date | string[];
-  lt?: Date;
-  lte?: Date;
-  gt?: Date;
-  gte?: Date;
-  not?: Date | NestedDateTimeNullableWithAggregatesFilter;
-  _count?: z.infer<typeof NestedIntNullableFilterObjectSchema>;
-  _min?: z.infer<typeof NestedDateTimeNullableFilterObjectSchema>;
-  _max?: z.infer<typeof NestedDateTimeNullableFilterObjectSchema>;
-};
-(NestedDateTimeNullableWithAggregatesFilterObjectZodSchema satisfies z.ZodType<NestedDateTimeNullableWithAggregatesFilter>);

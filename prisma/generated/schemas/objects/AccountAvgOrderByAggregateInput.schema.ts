@@ -5,5 +5,5 @@ import { SortOrderSchema } from '../enums/SortOrder.schema'
 const makeSchema = (): z.ZodObject<any> => z.object({
   expires_at: SortOrderSchema.optional()
 }).strict();
-export const AccountAvgOrderByAggregateInputObjectSchema: z.ZodType<Prisma.AccountAvgOrderByAggregateInput> = makeSchema();
+export const AccountAvgOrderByAggregateInputObjectSchema: z.ZodType<Prisma.AccountAvgOrderByAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.AccountAvgOrderByAggregateInput>;
 export const AccountAvgOrderByAggregateInputObjectZodSchema = makeSchema();

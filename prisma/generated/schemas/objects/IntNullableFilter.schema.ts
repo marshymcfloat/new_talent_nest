@@ -12,5 +12,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   gte: z.number().int().optional(),
   not: z.union([z.number().int(), z.lazy(() => NestedIntNullableFilterObjectSchema)]).nullish()
 }).strict();
-export const IntNullableFilterObjectSchema: z.ZodType<Prisma.IntNullableFilter> = makeSchema();
+export const IntNullableFilterObjectSchema: z.ZodType<Prisma.IntNullableFilter> = makeSchema() as unknown as z.ZodType<Prisma.IntNullableFilter>;
 export const IntNullableFilterObjectZodSchema = makeSchema();

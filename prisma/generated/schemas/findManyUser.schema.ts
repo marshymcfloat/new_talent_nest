@@ -18,11 +18,12 @@ export const UserFindManySelectSchema: z.ZodType<Prisma.UserSelect> = z.object({
     image: z.boolean().optional(),
     username: z.boolean().optional(),
     password: z.boolean().optional(),
+    resumes: z.boolean().optional(),
     JobApplication: z.boolean().optional(),
     accounts: z.boolean().optional(),
     sessions: z.boolean().optional(),
     _count: z.boolean().optional()
-  }).strict();
+  }).strict() as unknown as z.ZodType<Prisma.UserSelect>;
 
 export const UserFindManySelectZodSchema = z.object({
     id: z.boolean().optional(),
@@ -32,12 +33,13 @@ export const UserFindManySelectZodSchema = z.object({
     image: z.boolean().optional(),
     username: z.boolean().optional(),
     password: z.boolean().optional(),
+    resumes: z.boolean().optional(),
     JobApplication: z.boolean().optional(),
     accounts: z.boolean().optional(),
     sessions: z.boolean().optional(),
     _count: z.boolean().optional()
   }).strict();
 
-export const UserFindManySchema: z.ZodType<Prisma.UserFindManyArgs> = z.object({ select: UserFindManySelectSchema.optional(), include: z.lazy(() => UserIncludeObjectSchema.optional()), orderBy: z.union([UserOrderByWithRelationInputObjectSchema, UserOrderByWithRelationInputObjectSchema.array()]).optional(), where: UserWhereInputObjectSchema.optional(), cursor: UserWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.UserScalarFieldEnum), z.nativeEnum(Prisma.UserScalarFieldEnum).array()]).optional() }).strict();
+export const UserFindManySchema: z.ZodType<Prisma.UserFindManyArgs> = z.object({ select: UserFindManySelectSchema.optional(), include: z.lazy(() => UserIncludeObjectSchema.optional()), orderBy: z.union([UserOrderByWithRelationInputObjectSchema, UserOrderByWithRelationInputObjectSchema.array()]).optional(), where: UserWhereInputObjectSchema.optional(), cursor: UserWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.UserScalarFieldEnum), z.nativeEnum(Prisma.UserScalarFieldEnum).array()]).optional() }).strict() as unknown as z.ZodType<Prisma.UserFindManyArgs>;
 
 export const UserFindManyZodSchema = z.object({ select: UserFindManySelectSchema.optional(), include: z.lazy(() => UserIncludeObjectSchema.optional()), orderBy: z.union([UserOrderByWithRelationInputObjectSchema, UserOrderByWithRelationInputObjectSchema.array()]).optional(), where: UserWhereInputObjectSchema.optional(), cursor: UserWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.UserScalarFieldEnum), z.nativeEnum(Prisma.UserScalarFieldEnum).array()]).optional() }).strict();

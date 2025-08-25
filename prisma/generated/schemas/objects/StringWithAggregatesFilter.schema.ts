@@ -22,5 +22,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   _min: z.lazy(() => NestedStringFilterObjectSchema).optional(),
   _max: z.lazy(() => NestedStringFilterObjectSchema).optional()
 }).strict();
-export const StringWithAggregatesFilterObjectSchema: z.ZodType<Prisma.StringWithAggregatesFilter> = makeSchema();
+export const StringWithAggregatesFilterObjectSchema: z.ZodType<Prisma.StringWithAggregatesFilter> = makeSchema() as unknown as z.ZodType<Prisma.StringWithAggregatesFilter>;
 export const StringWithAggregatesFilterObjectZodSchema = makeSchema();

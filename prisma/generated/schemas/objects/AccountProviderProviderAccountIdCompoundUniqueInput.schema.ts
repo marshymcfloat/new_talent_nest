@@ -6,5 +6,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   provider: z.string(),
   providerAccountId: z.string()
 }).strict();
-export const AccountProviderProviderAccountIdCompoundUniqueInputObjectSchema: z.ZodType<Prisma.AccountProviderProviderAccountIdCompoundUniqueInput> = makeSchema();
+export const AccountProviderProviderAccountIdCompoundUniqueInputObjectSchema: z.ZodType<Prisma.AccountProviderProviderAccountIdCompoundUniqueInput> = makeSchema() as unknown as z.ZodType<Prisma.AccountProviderProviderAccountIdCompoundUniqueInput>;
 export const AccountProviderProviderAccountIdCompoundUniqueInputObjectZodSchema = makeSchema();

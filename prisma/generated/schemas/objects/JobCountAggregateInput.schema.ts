@@ -9,10 +9,16 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   location: z.literal(true).optional(),
   type: z.literal(true).optional(),
   salary: z.literal(true).optional(),
-  JobClass: z.literal(true).optional(),
+  jobClass: z.literal(true).optional(),
+  summary: z.literal(true).optional(),
+  qualifications: z.literal(true).optional(),
+  responsibilities: z.literal(true).optional(),
+  benefits: z.literal(true).optional(),
+  employerQuestions: z.literal(true).optional(),
+  tags: z.literal(true).optional(),
   createdAt: z.literal(true).optional(),
   updatedAt: z.literal(true).optional(),
   _all: z.literal(true).optional()
 }).strict();
-export const JobCountAggregateInputObjectSchema: z.ZodType<Prisma.JobCountAggregateInputType> = makeSchema();
+export const JobCountAggregateInputObjectSchema: z.ZodType<Prisma.JobCountAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.JobCountAggregateInputType>;
 export const JobCountAggregateInputObjectZodSchema = makeSchema();

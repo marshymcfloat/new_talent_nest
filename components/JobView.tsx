@@ -1,0 +1,50 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import Jobslist from "./Jobslist";
+import JobDescription from "./JobDescription";
+
+import { useQuery } from "@tanstack/react-query";
+import { Job } from "@prisma/client";
+import { Card } from "./ui/card";
+
+const JobView = () => {
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["jobs"],
+    queryFn: async () => {
+      const response = await fetch("http://localhost:3000/api/jobs");
+
+      if (!response.ok) throw new Error("Failed to fetch jobs");
+
+      return await response.json();
+    },
+  });
+
+  return (
+    <>
+      <div className="w-1/3 p-4">
+        <Jobslist
+          selected={selectedJob?.title}
+          data={data}
+          isLoading={isLoading}
+          onSelect={setSelectedJob}
+        />
+      </div>
+      <div className="w-2/3 p-4">
+        {selectedJob ? (
+          <JobDescription {...selectedJob} />
+        ) : (
+          <Card className="w-full flex justify-center items-center lg:h-[800px]">
+            <h1 className="uppercase font-bold text-2xl">
+              please select a job
+            </h1>
+          </Card>
+        )}
+      </div>
+    </>
+  );
+};
+
+export default JobView;

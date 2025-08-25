@@ -15,20 +15,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   endsWith: z.string().optional(),
   not: z.union([z.string(), z.lazy(makeSchema)]).nullish()
 }).strict();
-export const NestedStringNullableFilterObjectSchema: z.ZodType<Prisma.NestedStringNullableFilter> = makeSchema();
+export const NestedStringNullableFilterObjectSchema: z.ZodType<Prisma.NestedStringNullableFilter> = makeSchema() as unknown as z.ZodType<Prisma.NestedStringNullableFilter>;
 export const NestedStringNullableFilterObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type NestedStringNullableFilter = {
-  equals?: string;
-  in?: string[];
-  notIn?: string[];
-  lt?: string;
-  lte?: string;
-  gt?: string;
-  gte?: string;
-  contains?: string;
-  startsWith?: string;
-  endsWith?: string;
-  not?: string | NestedStringNullableFilter;
-};
-(NestedStringNullableFilterObjectZodSchema satisfies z.ZodType<NestedStringNullableFilter>);

@@ -10,15 +10,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   jobId: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional()
 }).strict();
-export const JobApplicationScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.JobApplicationScalarWhereWithAggregatesInput> = makeSchema();
+export const JobApplicationScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.JobApplicationScalarWhereWithAggregatesInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationScalarWhereWithAggregatesInput>;
 export const JobApplicationScalarWhereWithAggregatesInputObjectZodSchema = makeSchema();
-// Sanity-check the output type WITHOUT changing the variable’s type:
-type JobApplicationScalarWhereWithAggregatesInput = {
-  AND?: JobApplicationScalarWhereWithAggregatesInput | JobApplicationScalarWhereWithAggregatesInput[];
-  OR?: JobApplicationScalarWhereWithAggregatesInput[];
-  NOT?: JobApplicationScalarWhereWithAggregatesInput | JobApplicationScalarWhereWithAggregatesInput[];
-  id?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  userId?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-  jobId?: z.infer<typeof StringWithAggregatesFilterObjectSchema> | string;
-};
-(JobApplicationScalarWhereWithAggregatesInputObjectZodSchema satisfies z.ZodType<JobApplicationScalarWhereWithAggregatesInput>);

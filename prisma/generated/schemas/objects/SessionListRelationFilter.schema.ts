@@ -7,5 +7,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   some: z.lazy(() => SessionWhereInputObjectSchema).optional(),
   none: z.lazy(() => SessionWhereInputObjectSchema).optional()
 }).strict();
-export const SessionListRelationFilterObjectSchema: z.ZodType<Prisma.SessionListRelationFilter> = makeSchema();
+export const SessionListRelationFilterObjectSchema: z.ZodType<Prisma.SessionListRelationFilter> = makeSchema() as unknown as z.ZodType<Prisma.SessionListRelationFilter>;
 export const SessionListRelationFilterObjectZodSchema = makeSchema();
