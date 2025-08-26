@@ -36,7 +36,7 @@ const JobView = () => {
         {selectedJob ? (
           <JobDescription {...selectedJob} />
         ) : (
-          <Card className="w-full flex justify-center items-center lg:h-[800px]">
+          <Card className="w-[64%] bg-purple-200 fixed  flex justify-center items-center lg:h-[800px]">
             <h1 className="uppercase font-bold text-2xl">
               please select a job
             </h1>

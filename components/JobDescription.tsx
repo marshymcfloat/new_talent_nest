@@ -30,7 +30,7 @@ const JobDescription = ({
   updatedAt,
 }: Job) => {
   return (
-    <Card className="lg:fixed">
+    <Card className="lg:fixed  bg-purple-200 border-none">
       <CardHeader>
         <CardTitle className="capitalize lg:text-3xl">{title}</CardTitle>
         <CardDescription className="flex flex-col gap-2 ">
@@ -51,7 +51,11 @@ const JobDescription = ({
           </p>
         </CardDescription>
         <CardAction className="flex gap-4">
-          <ApplyButton title={title} summary={summary} />
+          <ApplyButton
+            title={title}
+            summary={summary}
+            questions={employerQuestions}
+          />
 
           <Button className="flex items-center bg-blue-400 hover:bg-blue-400/80 cursor-pointer gap-2 min-w-[120px]">
             <Bookmark /> Save

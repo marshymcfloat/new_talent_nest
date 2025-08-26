@@ -29,7 +29,7 @@ const JobCard = ({
 }: Job & { selected: string | undefined } & ComponentProps<"div">) => {
   return (
     <Card
-      className={`lg:min-w-[200px] border-2 ${selected === title && "border-blue-400 transition-all duration-150 shadow-md"} `}
+      className={`lg:min-w-[200px] bg-purple-200 border-2 ${selected === title && "border-fuchsia-400 transition-all duration-500 shadow-xl "} `}
       {...rest}
     >
       <CardHeader>

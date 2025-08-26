@@ -13,18 +13,24 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { signIn, useSession } from "next-auth/react";
-import { FileTextIcon, XIcon } from "lucide-react"; // Nice icons for feedback
+import { FileTextIcon, XIcon } from "lucide-react";
+import { Textarea } from "./ui/textarea";
 
 const ApplyButton = ({
   title,
+  questions,
   summary,
 }: {
   title: string;
   summary: string;
+  questions: string[];
 }) => {
   const [resume, setResume] = useState<File | null>(null);
-  const [previewURL, setPreviewURL] = useState<string | null>(null); // Use lowercase 'string'
-  const { data, status } = useSession();
+  const [previewURL, setPreviewURL] = useState<string | null>(null);
+  const [questionsInput, setQuestionsInput] = useState<Record<string, string>>(
+    {}
+  );
+  const { status } = useSession();
 
   useEffect(() => {
     if (!resume) {
@@ -35,7 +41,6 @@ const ApplyButton = ({
     const objectURL = URL.createObjectURL(resume);
     setPreviewURL(objectURL);
 
-    // Cleanup function to avoid memory leaks
     return () => URL.revokeObjectURL(objectURL);
   }, [resume]);
 
@@ -47,11 +52,14 @@ const ApplyButton = ({
     <>
       <Sheet>
         {status === "unauthenticated" ? (
-          <Button className="min-w-[120px]" onClick={() => signIn()}>
+          <Button
+            className=" text-white rounded-md justify-center cursor-pointer flex items-center bg-purple-800 duration-150 transition-all hover:bg-purple-800/80 h-10 px-4 py-2 min-w-[120px]"
+            onClick={() => signIn()}
+          >
             Apply
           </Button>
         ) : (
-          <SheetTrigger className="text-white rounded-md justify-center flex items-center bg-purple-800 duration-150 transition-all hover:bg-purple-800/80 h-10 px-4 py-2 min-w-[120px]">
+          <SheetTrigger className="text-white rounded-md justify-center cursor-pointer flex items-center bg-purple-800 duration-150 transition-all hover:bg-purple-800/80 h-10 px-4 py-2 min-w-[120px]">
             Apply
           </SheetTrigger>
         )}
@@ -61,11 +69,10 @@ const ApplyButton = ({
             <SheetTitle>Apply for {title}</SheetTitle>
             <SheetDescription>{summary}</SheetDescription>
           </SheetHeader>
-          <div className="mt-4 space-y-2">
+          <div className="mt-4 space-y-4">
             <Label>Resume (PDF or DOCX)</Label>
             {resume && previewURL ? (
               <div className="space-y-2">
-                {/* PDF Preview with iframe */}
                 {resume.type === "application/pdf" ? (
                   <iframe
                     src={previewURL}
@@ -73,7 +80,6 @@ const ApplyButton = ({
                     title="Resume Preview"
                   />
                 ) : (
-                  // Fallback for DOCX and other files - NO PREVIEW
                   <div className="w-full border rounded-md p-4 flex flex-col items-center justify-center bg-gray-50 text-center">
                     <FileTextIcon className="w-10 h-10 text-gray-400" />
                     <p className="text-sm font-semibold mt-2 break-all">
@@ -100,6 +106,23 @@ const ApplyButton = ({
                 }}
               />
             )}
+            <div className="flex flex-col gap-6 my-8">
+              {questions?.map((question) => (
+                <div className=" flex flex-col gap-4" key={question}>
+                  <Label>{question}</Label>
+                  <Textarea
+                    value={questionsInput[question]}
+                    name={question}
+                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                      setQuestionsInput((prev) => ({
+                        ...prev,
+                        [e.target.name]: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+              ))}
+            </div>
             <Button className="w-full mt-4" disabled={!resume}>
               Submit Application
             </Button>

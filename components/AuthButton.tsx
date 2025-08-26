@@ -6,6 +6,9 @@ import { Skeleton } from "./ui/skeleton";
 import { useEffect, useRef, useState } from "react";
 import { LogOut } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+
+import ProfileListButtonGroup from "./ProfileListButtonGroup";
+
 const AuthButton = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { data: session, status } = useSession();
@@ -37,11 +40,13 @@ const AuthButton = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.15, ease: "easeInOut" }}
                 exit={{ opacity: 0, scale: 0 }}
-                className="bg-black/40 backdrop-blur-[2px] rounded-tr-none  shadow-2xl  z-50 origin-top-right flex flex-col gap-4 p-4 rounded-4xl lg:min-w-[200px] absolute bottom-[-130px] right-10"
+                className="bg-gradient-to-tl from-purple-950/80 text-white to-purple-400/60  gap-4 backdrop-blur-[2px] rounded-tr-none  shadow-2xl  z-50 origin-top-right flex flex-col p-4 rounded-4xl lg:min-w-[200px] absolute bottom-[-230px] right-10"
               >
-                <h1 className="text-md">
+                <h1 className="text-md text-white">
                   Hi, <span className="font-medium">{session.user.name}</span>
                 </h1>
+
+                <ProfileListButtonGroup />
                 <button
                   onClick={() => signOut()}
                   className="flex gap-2 hover:bg-black/70 duration-150 transition-all py-1  cursor-pointer hover:border-black/70 items-center border-2 border-black bg-black text-white font-medium   rounded-md px-4 w-full"
