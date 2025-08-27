@@ -29,12 +29,12 @@ const JobCard = ({
 }: Job & { selected: string | undefined } & ComponentProps<"div">) => {
   return (
     <Card
-      className={`lg:min-w-[200px] bg-purple-200 border-2 ${selected === title && "border-fuchsia-400 transition-all duration-500 shadow-xl "} `}
+      className={`lg:min-w-[200px] text-white/90 bg-gradient-to-tl from-bg-zinc-900 to-purple-900 border-2 border-purple-900 ${selected === title && "border-fuchsia-400/50 transition-all duration-500 shadow-xl "} `}
       {...rest}
     >
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        <CardDescription className="flex flex-col gap-2">
+        <CardDescription className="flex  text-white/60 flex-col gap-2">
           <p>{company}</p>
 
           <p className="capitalize max-h-[100px]">{summary}</p>

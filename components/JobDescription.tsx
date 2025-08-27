@@ -30,10 +30,10 @@ const JobDescription = ({
   updatedAt,
 }: Job) => {
   return (
-    <Card className="lg:fixed  bg-purple-200 border-none">
+    <Card className="lg:fixed mr-8 bg-gradient-to-tl from-bg-zinc-900 text-white/80 to-purple-900 border-none">
       <CardHeader>
         <CardTitle className="capitalize lg:text-3xl">{title}</CardTitle>
-        <CardDescription className="flex flex-col gap-2 ">
+        <CardDescription className="flex  text-white/80 flex-col gap-2 ">
           <h3 className="font-medium">{company}</h3>
           <div className="flex flex-col ">
             <p className="flex gap-4 items-center">

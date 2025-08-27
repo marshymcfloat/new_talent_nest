@@ -64,7 +64,7 @@ const ApplyButton = ({
           </SheetTrigger>
         )}
 
-        <SheetContent className="p-4">
+        <SheetContent className="p-4 bg-purple-300">
           <SheetHeader>
             <SheetTitle>Apply for {title}</SheetTitle>
             <SheetDescription>{summary}</SheetDescription>
@@ -98,6 +98,7 @@ const ApplyButton = ({
             ) : (
               <Input
                 type="file"
+                className="border-black"
                 accept=".pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   if (e.target.files && e.target.files[0]) {
@@ -113,6 +114,7 @@ const ApplyButton = ({
                   <Textarea
                     value={questionsInput[question]}
                     name={question}
+                    className="border-black"
                     onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                       setQuestionsInput((prev) => ({
                         ...prev,
