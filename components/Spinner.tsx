@@ -1,7 +1,6 @@
-// components/Spinner.tsx
 "use client";
 
-import { cn } from "@/lib/utils"; // optional, if you use tailwind-variants or a className merge util
+import { cn } from "@/lib/utils";
 
 interface SpinnerProps {
   size?: "sm" | "md" | "lg";

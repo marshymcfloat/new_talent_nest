@@ -1,5 +1,3 @@
-// prisma/seed.ts
-
 import { PrismaClient, JobClass, JobType, QuestionType } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -7,16 +5,13 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Start seeding...");
 
-  // 1. Clean up existing data to make the seed script idempotent
   console.log("Deleting existing questions and jobs...");
   await prisma.employerQuestion.deleteMany();
   await prisma.job.deleteMany();
   console.log("Existing data deleted.");
 
-  // 2. Create new jobs with nested questions
   console.log("Creating new jobs with questions...");
 
-  // Job 1: IT
   await prisma.job.create({
     data: {
       company: "InnovateTech Solutions",
@@ -60,7 +55,6 @@ async function main() {
     },
   });
 
-  // Job 2: Sales
   await prisma.job.create({
     data: {
       company: "GrowthLeap Dynamics",
@@ -98,7 +92,6 @@ async function main() {
     },
   });
 
-  // Job 3: Accounting
   await prisma.job.create({
     data: {
       company: "Fiscal Integrity Inc.",
@@ -131,7 +124,6 @@ async function main() {
     },
   });
 
-  // Job 4: Construction
   await prisma.job.create({
     data: {
       company: "BuildRight Constructors",
@@ -164,7 +156,6 @@ async function main() {
     },
   });
 
-  // Job 5: Support
   await prisma.job.create({
     data: {
       company: "HelpSphere",

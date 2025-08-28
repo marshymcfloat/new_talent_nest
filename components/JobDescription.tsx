@@ -31,7 +31,7 @@ const JobDescription = ({
   updatedAt,
 }: JobWithQuestions) => {
   return (
-    <Card className="lg:fixed mr-8 bg-gradient-to-tl from-bg-zinc-900 text-white/80 to-purple-900 border-none">
+    <Card className="lg:fixed  bg-gradient-to-tl from-bg-zinc-900 text-white/80 to-purple-900 border-none lg:min-w-[1200px]">
       <CardHeader>
         <CardTitle className="capitalize lg:text-3xl">{title}</CardTitle>
         <CardDescription className="flex  text-white/80 flex-col gap-2 ">

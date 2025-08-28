@@ -12,7 +12,7 @@ import { ResumeCountOutputTypeArgsObjectSchema } from './objects/ResumeCountOutp
 
 export const ResumeFindFirstOrThrowSelectSchema: z.ZodType<Prisma.ResumeSelect> = z.object({
     id: z.boolean().optional(),
-    Title: z.boolean().optional(),
+    title: z.boolean().optional(),
     url: z.boolean().optional(),
     isPrimary: z.boolean().optional(),
     userId: z.boolean().optional(),
@@ -25,7 +25,7 @@ export const ResumeFindFirstOrThrowSelectSchema: z.ZodType<Prisma.ResumeSelect> 
 
 export const ResumeFindFirstOrThrowSelectZodSchema = z.object({
     id: z.boolean().optional(),
-    Title: z.boolean().optional(),
+    title: z.boolean().optional(),
     url: z.boolean().optional(),
     isPrimary: z.boolean().optional(),
     userId: z.boolean().optional(),

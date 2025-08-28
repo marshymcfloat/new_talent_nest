@@ -6,7 +6,7 @@ import { ResumeCountOutputTypeArgsObjectSchema } from './ResumeCountOutputTypeAr
 
 const makeSchema = (): z.ZodObject<any> => z.object({
   id: z.boolean().optional(),
-  Title: z.boolean().optional(),
+  title: z.boolean().optional(),
   url: z.boolean().optional(),
   isPrimary: z.boolean().optional(),
   userId: z.boolean().optional(),

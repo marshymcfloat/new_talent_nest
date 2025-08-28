@@ -4,7 +4,7 @@ import { SortOrderSchema } from '../enums/SortOrder.schema'
 
 const makeSchema = (): z.ZodObject<any> => z.object({
   id: SortOrderSchema.optional(),
-  Title: SortOrderSchema.optional(),
+  title: SortOrderSchema.optional(),
   url: SortOrderSchema.optional(),
   isPrimary: SortOrderSchema.optional(),
   userId: SortOrderSchema.optional(),

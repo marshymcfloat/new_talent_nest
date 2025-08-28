@@ -1,27 +1,5 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
-
-import GithubProvider from "next-auth/providers/github";
-import FacebookProvder from "next-auth/providers/facebook";
-
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "@/lib/prisma";
-export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
-  providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string,
-    }),
-    FacebookProvder({
-      clientId: process.env.FACEBOOK_ID as string,
-      clientSecret: process.env.FACEBOOK_SECRET as string,
-    }),
-  ],
-  session: {
-    strategy: "database",
-  },
-  secret: process.env.NEXTAUTH_SECRET,
-};
+import NextAuth from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 const handler = NextAuth(authOptions);
 

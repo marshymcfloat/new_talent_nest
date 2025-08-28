@@ -9,7 +9,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   OR: z.lazy(makeSchema).array().optional(),
   NOT: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
   id: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
-  Title: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  title: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   url: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   isPrimary: z.union([z.lazy(() => BoolWithAggregatesFilterObjectSchema), z.boolean()]).optional(),
   userId: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),

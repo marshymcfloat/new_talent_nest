@@ -4,6 +4,7 @@ import AuthProvder from "@/components/Providers/AuthProvder";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
 import TanstackProvider from "@/components/Providers/TanstackProvider";
+import { Toaster } from "sonner";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
           <AuthProvder>
             <Navbar />
             {children}
+            <Toaster />
           </AuthProvder>
         </TanstackProvider>
       </body>

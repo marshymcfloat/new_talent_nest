@@ -1,7 +1,7 @@
 import { z } from 'zod';
 export const ResumeGroupByResultSchema = z.array(z.object({
   id: z.string(),
-  Title: z.string(),
+  title: z.string(),
   url: z.string(),
   isPrimary: z.boolean(),
   userId: z.string(),
@@ -9,7 +9,7 @@ export const ResumeGroupByResultSchema = z.array(z.object({
   updatedAt: z.date(),
   _count: z.object({
     id: z.number(),
-    Title: z.number(),
+    title: z.number(),
     url: z.number(),
     isPrimary: z.number(),
     userId: z.number(),
@@ -20,7 +20,7 @@ export const ResumeGroupByResultSchema = z.array(z.object({
   }).optional(),
   _min: z.object({
     id: z.string().nullable(),
-    Title: z.string().nullable(),
+    title: z.string().nullable(),
     url: z.string().nullable(),
     userId: z.string().nullable(),
     createdAt: z.date().nullable(),
@@ -28,7 +28,7 @@ export const ResumeGroupByResultSchema = z.array(z.object({
   }).nullable().optional(),
   _max: z.object({
     id: z.string().nullable(),
-    Title: z.string().nullable(),
+    title: z.string().nullable(),
     url: z.string().nullable(),
     userId: z.string().nullable(),
     createdAt: z.date().nullable(),

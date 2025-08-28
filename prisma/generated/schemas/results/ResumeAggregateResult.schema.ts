@@ -1,7 +1,7 @@
 import { z } from 'zod';
 export const ResumeAggregateResultSchema = z.object({  _count: z.object({
     id: z.number(),
-    Title: z.number(),
+    title: z.number(),
     url: z.number(),
     isPrimary: z.number(),
     userId: z.number(),
@@ -12,7 +12,7 @@ export const ResumeAggregateResultSchema = z.object({  _count: z.object({
   }).optional(),
   _min: z.object({
     id: z.string().nullable(),
-    Title: z.string().nullable(),
+    title: z.string().nullable(),
     url: z.string().nullable(),
     userId: z.string().nullable(),
     createdAt: z.date().nullable(),
@@ -20,7 +20,7 @@ export const ResumeAggregateResultSchema = z.object({  _count: z.object({
   }).nullable().optional(),
   _max: z.object({
     id: z.string().nullable(),
-    Title: z.string().nullable(),
+    title: z.string().nullable(),
     url: z.string().nullable(),
     userId: z.string().nullable(),
     createdAt: z.date().nullable(),

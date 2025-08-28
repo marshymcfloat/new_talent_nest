@@ -28,7 +28,16 @@ import {
 import { createApplicationSchema } from "@/lib/zod schemas/applicationSchema";
 import { submitApplication } from "@/lib/actions/applicationActions";
 import { EmployerQuestion } from "@prisma/client";
-import { toast } from "sonner"; // <-- IMPORT FROM SONNER
+import { toast } from "sonner";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 const ApplyButton = ({
   title,
@@ -44,7 +53,8 @@ const ApplyButton = ({
   const { status } = useSession();
   const [isSheetOpen, setIsSheetOpen] = React.useState(false);
 
-  // No more useToast hook here
+  const inputStyles =
+    "bg-white border-purple-400 focus-visible:ring-purple-500 text-slate-800";
 
   const applicationSchema = createApplicationSchema(questions);
   type ApplicationFormValues = z.infer<typeof applicationSchema>;
@@ -66,25 +76,22 @@ const ApplyButton = ({
     formData.append("resume", data.resume);
     formData.append("answers", JSON.stringify(data.answers));
 
-    // Sonner's loading toast returns an ID
     const toastId = toast.loading("Submitting your application...");
 
     const response = await submitApplication(formData);
 
     if (response?.error) {
-      // Update the toast with an error message
       toast.error("Submission Failed", {
         id: toastId,
         description: response.error,
       });
     } else {
-      // Update the toast with a success message
       toast.success("Application submitted successfully!", {
         id: toastId,
         description: "The employer will be in touch if you're a good fit.",
       });
       form.reset();
-      setIsSheetOpen(false); // Close the sheet on success
+      setIsSheetOpen(false);
     }
   }
 
@@ -106,10 +113,14 @@ const ApplyButton = ({
           </SheetTrigger>
         )}
 
-        <SheetContent className="p-4 bg-purple-300 overflow-y-auto w-[400px] sm:w-[540px]">
+        <SheetContent className="p-4 bg-purple-200 text-purple-950 overflow-y-auto w-[400px] sm:w-[540px]">
           <SheetHeader>
-            <SheetTitle>Apply for {title}</SheetTitle>
-            <SheetDescription>{summary}</SheetDescription>
+            <SheetTitle className="text-purple-950">
+              Apply for {title}
+            </SheetTitle>
+            <SheetDescription className="text-purple-800">
+              {summary}
+            </SheetDescription>
           </SheetHeader>
 
           <Form {...form}>
@@ -122,9 +133,17 @@ const ApplyButton = ({
                 name="resume"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Resume (PDF or DOCX)</FormLabel>
+                    <FormLabel>
+                      Resume (PDF or DOCX){" "}
+                      <span className="text-red-500">*</span>
+                    </FormLabel>
                     {resumeFile ? (
-                      <div className="flex items-center justify-between p-2 border rounded-md border-gray-500 bg-white text-black">
+                      <div
+                        className={cn(
+                          "flex items-center justify-between p-2 border rounded-md",
+                          inputStyles
+                        )}
+                      >
                         <span className="truncate max-w-[200px]">
                           {resumeFile.name}
                         </span>
@@ -145,7 +164,7 @@ const ApplyButton = ({
                       <FormControl>
                         <Input
                           type="file"
-                          className="border-black"
+                          className={cn("file:text-purple-800", inputStyles)}
                           accept=".pdf,.doc,.docx"
                           onChange={(e) =>
                             field.onChange(
@@ -167,9 +186,94 @@ const ApplyButton = ({
                   name={`answers.${question.id}`}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{question.text}</FormLabel>
+                      <FormLabel>
+                        {question.text}
+                        {question.isRequired && (
+                          <span className="text-red-500 ml-1">*</span>
+                        )}
+                      </FormLabel>
                       <FormControl>
-                        <Textarea className="border-black" {...field} />
+                        {(() => {
+                          switch (question.type) {
+                            case "TEXT":
+                              return (
+                                <Textarea
+                                  className={inputStyles}
+                                  {...field}
+                                  value={field.value || ""}
+                                />
+                              );
+                            case "NUMBER":
+                              return (
+                                <Input
+                                  type="number"
+                                  className={inputStyles}
+                                  {...field}
+                                  value={field.value || ""}
+                                />
+                              );
+                            case "YES_NO":
+                              return (
+                                <RadioGroup
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                  className="flex items-center space-x-4 pt-2"
+                                >
+                                  <FormItem className="flex items-center space-x-2 space-y-0">
+                                    <FormControl>
+                                      <RadioGroupItem
+                                        value="Yes"
+                                        className="border-purple-400 text-purple-700"
+                                      />
+                                    </FormControl>
+                                    <FormLabel className="font-normal cursor-pointer">
+                                      Yes
+                                    </FormLabel>
+                                  </FormItem>
+                                  <FormItem className="flex items-center space-x-2 space-y-0">
+                                    <FormControl>
+                                      <RadioGroupItem
+                                        value="No"
+                                        className="border-purple-400 text-purple-700"
+                                      />
+                                    </FormControl>
+                                    <FormLabel className="font-normal cursor-pointer">
+                                      No
+                                    </FormLabel>
+                                  </FormItem>
+                                </RadioGroup>
+                              );
+                            case "MULTIPLE_CHOICE":
+                              return (
+                                <Select
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                >
+                                  <FormControl>
+                                    <SelectTrigger className={inputStyles}>
+                                      <SelectValue placeholder="Select an answer" />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent>
+                                    {question.options.map((option) => (
+                                      <SelectItem key={option} value={option}>
+                                        {option}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              );
+                            default:
+                              return (
+                                <Input
+                                  type="text"
+                                  className={inputStyles}
+                                  {...field}
+                                  value={field.value || ""}
+                                />
+                              );
+                          }
+                        })()}
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -179,7 +283,7 @@ const ApplyButton = ({
 
               <Button
                 type="submit"
-                className="w-full mt-4"
+                className="w-full mt-4 bg-purple-700 text-white hover:bg-purple-800 disabled:bg-purple-400"
                 disabled={
                   !form.formState.isValid || form.formState.isSubmitting
                 }

@@ -29,15 +29,6 @@ const ProfileListButtonGroup = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-center uppercase">Profile</DialogTitle>
-
-          <Form>
-            <form>
-              <FormControl>
-                <Label>Name</Label>
-                <Input placeholder="" name="" />
-              </FormControl>
-            </form>
-          </Form>
         </DialogHeader>
       </DialogContent>
 

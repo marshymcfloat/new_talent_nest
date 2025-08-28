@@ -4,7 +4,7 @@ import { JobApplicationCreateNestedManyWithoutResumeInputObjectSchema } from './
 
 const makeSchema = (): z.ZodObject<any> => z.object({
   id: z.string().optional(),
-  Title: z.string(),
+  title: z.string(),
   url: z.string(),
   isPrimary: z.boolean(),
   createdAt: z.date().optional(),
