@@ -11,6 +11,7 @@ import { formatDistanceToNow } from "date-fns";
 import { Banknote, Bookmark, Building, Clock, MapPin } from "lucide-react";
 import { Button } from "./ui/button";
 import ApplyButton from "./ApplyButton";
+import { JobWithQuestions } from "@/lib/types/jobTypes";
 
 const JobDescription = ({
   benefits,
@@ -28,7 +29,7 @@ const JobDescription = ({
   title,
   type,
   updatedAt,
-}: Job) => {
+}: JobWithQuestions) => {
   return (
     <Card className="lg:fixed mr-8 bg-gradient-to-tl from-bg-zinc-900 text-white/80 to-purple-900 border-none">
       <CardHeader>
@@ -52,6 +53,7 @@ const JobDescription = ({
         </CardDescription>
         <CardAction className="flex gap-4">
           <ApplyButton
+            jobId={id}
             title={title}
             summary={summary}
             questions={employerQuestions}

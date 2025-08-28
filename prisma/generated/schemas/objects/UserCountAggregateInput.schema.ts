@@ -10,7 +10,6 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.literal(true).optional(),
   username: z.literal(true).optional(),
   password: z.literal(true).optional(),
-  resumes: z.literal(true).optional(),
   _all: z.literal(true).optional()
 }).strict();
 export const UserCountAggregateInputObjectSchema: z.ZodType<Prisma.UserCountAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.UserCountAggregateInputType>;

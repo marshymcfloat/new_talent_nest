@@ -8,7 +8,8 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   NOT: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
   id: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   userId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
-  jobId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional()
+  jobId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
+  resumeId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional()
 }).strict();
 export const JobApplicationScalarWhereInputObjectSchema: z.ZodType<Prisma.JobApplicationScalarWhereInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationScalarWhereInput>;
 export const JobApplicationScalarWhereInputObjectZodSchema = makeSchema();

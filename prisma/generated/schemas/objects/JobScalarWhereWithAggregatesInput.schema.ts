@@ -24,7 +24,6 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   qualifications: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   responsibilities: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   benefits: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
-  employerQuestions: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
   tags: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
   createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional()

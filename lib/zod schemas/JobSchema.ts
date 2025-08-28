@@ -1,5 +1,12 @@
 import { z } from "zod";
-import { JobClass, JobType } from "@prisma/client";
+import { JobClass, JobType, QuestionType } from "@prisma/client";
+
+const employerQuestionSchema = z.object({
+  text: z.string().min(10, "Question must be at least 10 characters long."),
+  type: z.nativeEnum(QuestionType),
+  isRequired: z.boolean().default(true),
+  options: z.array(z.string()).optional(),
+});
 
 export const createJobSchema = z.object({
   company: z.string().min(2, "Company name is required"),
@@ -15,6 +22,7 @@ export const createJobSchema = z.object({
   responsibilities: z.string().default("no responsibilities provided"),
   benefits: z.string().optional(),
 
-  employerQuestions: z.array(z.string()).default([]),
+  employerQuestions: z.array(employerQuestionSchema).optional().default([]),
+
   tags: z.array(z.string()).default([]),
 });

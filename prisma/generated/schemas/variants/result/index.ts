@@ -6,6 +6,9 @@
 export { JobResultSchema } from './Job.result';
 export { JobApplicationResultSchema } from './JobApplication.result';
 export { UserResultSchema } from './User.result';
+export { ResumeResultSchema } from './Resume.result';
+export { EmployerQuestionResultSchema } from './EmployerQuestion.result';
+export { AnswerResultSchema } from './Answer.result';
 export { AccountResultSchema } from './Account.result';
 export { SessionResultSchema } from './Session.result';
 export { VerificationTokenResultSchema } from './VerificationToken.result';

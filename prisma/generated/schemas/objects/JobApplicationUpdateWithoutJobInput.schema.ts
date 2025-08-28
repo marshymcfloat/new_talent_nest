@@ -1,11 +1,15 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
-import { UserUpdateOneRequiredWithoutJobApplicationNestedInputObjectSchema } from './UserUpdateOneRequiredWithoutJobApplicationNestedInput.schema'
+import { ResumeUpdateOneRequiredWithoutJobApplicationsNestedInputObjectSchema } from './ResumeUpdateOneRequiredWithoutJobApplicationsNestedInput.schema';
+import { UserUpdateOneRequiredWithoutJobApplicationNestedInputObjectSchema } from './UserUpdateOneRequiredWithoutJobApplicationNestedInput.schema';
+import { AnswerUpdateManyWithoutJobApplicationNestedInputObjectSchema } from './AnswerUpdateManyWithoutJobApplicationNestedInput.schema'
 
 const makeSchema = (): z.ZodObject<any> => z.object({
   id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
-  User: z.lazy(() => UserUpdateOneRequiredWithoutJobApplicationNestedInputObjectSchema).optional()
+  resume: z.lazy(() => ResumeUpdateOneRequiredWithoutJobApplicationsNestedInputObjectSchema).optional(),
+  User: z.lazy(() => UserUpdateOneRequiredWithoutJobApplicationNestedInputObjectSchema).optional(),
+  answers: z.lazy(() => AnswerUpdateManyWithoutJobApplicationNestedInputObjectSchema).optional()
 }).strict();
 export const JobApplicationUpdateWithoutJobInputObjectSchema: z.ZodType<Prisma.JobApplicationUpdateWithoutJobInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationUpdateWithoutJobInput>;
 export const JobApplicationUpdateWithoutJobInputObjectZodSchema = makeSchema();

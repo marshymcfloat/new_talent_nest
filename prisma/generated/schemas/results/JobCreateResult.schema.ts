@@ -11,7 +11,7 @@ export const JobCreateResultSchema = z.object({
   qualifications: z.string(),
   responsibilities: z.string(),
   benefits: z.string().optional(),
-  employerQuestions: z.array(z.string()),
+  employerQuestions: z.array(z.unknown()),
   tags: z.array(z.string()),
   createdAt: z.date(),
   updatedAt: z.date(),

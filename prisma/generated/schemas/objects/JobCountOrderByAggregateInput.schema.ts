@@ -14,7 +14,6 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   qualifications: SortOrderSchema.optional(),
   responsibilities: SortOrderSchema.optional(),
   benefits: SortOrderSchema.optional(),
-  employerQuestions: SortOrderSchema.optional(),
   tags: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),
   updatedAt: SortOrderSchema.optional()

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
+import { EmployerQuestionFindManySchema } from '../findManyEmployerQuestion.schema';
 import { JobApplicationFindManySchema } from '../findManyJobApplication.schema';
 import { JobCountOutputTypeArgsObjectSchema } from './JobCountOutputTypeArgs.schema'
 
@@ -15,7 +16,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   qualifications: z.boolean().optional(),
   responsibilities: z.boolean().optional(),
   benefits: z.boolean().optional(),
-  employerQuestions: z.boolean().optional(),
+  employerQuestions: z.union([z.boolean(), z.lazy(() => EmployerQuestionFindManySchema)]).optional(),
   tags: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),

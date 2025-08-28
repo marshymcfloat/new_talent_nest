@@ -19,8 +19,7 @@ export const UserAggregateResultSchema = z.object({  _count: z.object({
     emailVerified: z.date().nullable(),
     image: z.string().nullable(),
     username: z.string().nullable(),
-    password: z.string().nullable(),
-    resumes: z.array(z.string()).nullable()
+    password: z.string().nullable()
   }).nullable().optional(),
   _max: z.object({
     id: z.string().nullable(),
@@ -29,6 +28,5 @@ export const UserAggregateResultSchema = z.object({  _count: z.object({
     emailVerified: z.date().nullable(),
     image: z.string().nullable(),
     username: z.string().nullable(),
-    password: z.string().nullable(),
-    resumes: z.array(z.string()).nullable()
+    password: z.string().nullable()
   }).nullable().optional()});

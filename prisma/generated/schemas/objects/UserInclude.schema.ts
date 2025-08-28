@@ -1,11 +1,13 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
+import { ResumeFindManySchema } from '../findManyResume.schema';
 import { JobApplicationFindManySchema } from '../findManyJobApplication.schema';
 import { AccountFindManySchema } from '../findManyAccount.schema';
 import { SessionFindManySchema } from '../findManySession.schema';
 import { UserCountOutputTypeArgsObjectSchema } from './UserCountOutputTypeArgs.schema'
 
 const makeSchema = (): z.ZodObject<any> => z.object({
+  resumes: z.union([z.boolean(), z.lazy(() => ResumeFindManySchema)]).optional(),
   JobApplication: z.union([z.boolean(), z.lazy(() => JobApplicationFindManySchema)]).optional(),
   accounts: z.union([z.boolean(), z.lazy(() => AccountFindManySchema)]).optional(),
   sessions: z.union([z.boolean(), z.lazy(() => SessionFindManySchema)]).optional(),

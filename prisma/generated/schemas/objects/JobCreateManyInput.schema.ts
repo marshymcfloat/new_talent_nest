@@ -2,7 +2,6 @@ import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { JobTypeSchema } from '../enums/JobType.schema';
 import { JobClassSchema } from '../enums/JobClass.schema';
-import { JobCreateemployerQuestionsInputObjectSchema } from './JobCreateemployerQuestionsInput.schema';
 import { JobCreatetagsInputObjectSchema } from './JobCreatetagsInput.schema'
 
 const makeSchema = (): z.ZodObject<any> => z.object({
@@ -17,7 +16,6 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   qualifications: z.string().optional(),
   responsibilities: z.string().optional(),
   benefits: z.string().nullish(),
-  employerQuestions: z.union([z.lazy(() => JobCreateemployerQuestionsInputObjectSchema), z.string().array()]).optional(),
   tags: z.union([z.lazy(() => JobCreatetagsInputObjectSchema), z.string().array()]).optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional()

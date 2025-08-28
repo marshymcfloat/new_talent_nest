@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
-import { UserCreateresumesInputObjectSchema } from './UserCreateresumesInput.schema';
+import { ResumeUncheckedCreateNestedManyWithoutUserInputObjectSchema } from './ResumeUncheckedCreateNestedManyWithoutUserInput.schema';
 import { AccountUncheckedCreateNestedManyWithoutUserInputObjectSchema } from './AccountUncheckedCreateNestedManyWithoutUserInput.schema';
 import { SessionUncheckedCreateNestedManyWithoutUserInputObjectSchema } from './SessionUncheckedCreateNestedManyWithoutUserInput.schema'
 
@@ -12,7 +12,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.string().nullish(),
   username: z.string().nullish(),
   password: z.string().nullish(),
-  resumes: z.union([z.lazy(() => UserCreateresumesInputObjectSchema), z.string().array()]).optional(),
+  resumes: z.lazy(() => ResumeUncheckedCreateNestedManyWithoutUserInputObjectSchema).optional(),
   accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputObjectSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputObjectSchema).optional()
 }).strict();

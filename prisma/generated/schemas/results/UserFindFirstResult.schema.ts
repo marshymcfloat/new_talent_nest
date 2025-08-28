@@ -7,7 +7,7 @@ export const UserFindFirstResultSchema = z.nullable(z.object({
   image: z.string().optional(),
   username: z.string().optional(),
   password: z.string().optional(),
-  resumes: z.array(z.string()),
+  resumes: z.array(z.unknown()),
   JobApplication: z.array(z.unknown()),
   accounts: z.array(z.unknown()),
   sessions: z.array(z.unknown())

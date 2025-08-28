@@ -9,7 +9,6 @@ export const JobGroupByResultSchema = z.array(z.object({
   qualifications: z.string(),
   responsibilities: z.string(),
   benefits: z.string(),
-  employerQuestions: z.array(z.string()),
   tags: z.array(z.string()),
   createdAt: z.date(),
   updatedAt: z.date(),
@@ -41,7 +40,6 @@ export const JobGroupByResultSchema = z.array(z.object({
     qualifications: z.string().nullable(),
     responsibilities: z.string().nullable(),
     benefits: z.string().nullable(),
-    employerQuestions: z.array(z.string()).nullable(),
     tags: z.array(z.string()).nullable(),
     createdAt: z.date().nullable(),
     updatedAt: z.date().nullable()
@@ -56,7 +54,6 @@ export const JobGroupByResultSchema = z.array(z.object({
     qualifications: z.string().nullable(),
     responsibilities: z.string().nullable(),
     benefits: z.string().nullable(),
-    employerQuestions: z.array(z.string()).nullable(),
     tags: z.array(z.string()).nullable(),
     createdAt: z.date().nullable(),
     updatedAt: z.date().nullable()

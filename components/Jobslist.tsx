@@ -3,6 +3,7 @@ import { Job } from "@prisma/client";
 import JobCard from "./JobCard";
 import Spinner from "./Spinner";
 import { Skeleton } from "./ui/skeleton";
+import { JobWithQuestions } from "@/lib/types/jobTypes";
 
 const Jobslist = ({
   selected,
@@ -10,10 +11,10 @@ const Jobslist = ({
   isLoading,
   onSelect,
 }: {
-  data: { data: Job[] };
+  data: { data: JobWithQuestions[] };
   selected: string | undefined;
   isLoading: boolean;
-  onSelect: (job: Job) => void;
+  onSelect: (job: JobWithQuestions) => void;
 }) => {
   if (isLoading)
     return (

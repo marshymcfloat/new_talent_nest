@@ -14,7 +14,6 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   qualifications: z.literal(true).optional(),
   responsibilities: z.literal(true).optional(),
   benefits: z.literal(true).optional(),
-  employerQuestions: z.literal(true).optional(),
   tags: z.literal(true).optional(),
   createdAt: z.literal(true).optional(),
   updatedAt: z.literal(true).optional(),

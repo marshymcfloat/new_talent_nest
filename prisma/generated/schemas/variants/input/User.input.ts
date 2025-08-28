@@ -9,7 +9,7 @@ export const UserInputSchema = z.object({
     image: z.string().optional().nullable(),
     username: z.string().optional().nullable(),
     password: z.string().optional().nullable(),
-    resumes: z.array(z.string()),
+    resumes: z.array(z.unknown()),
     JobApplication: z.array(z.unknown()),
     accounts: z.array(z.unknown()),
     sessions: z.array(z.unknown())

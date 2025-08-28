@@ -26,7 +26,7 @@ model Job {
   responsibilities String  @default("no responsibilities provided")
   benefits        String?  
   
-  employerQuestions String[] @default([]) 
+  employerQuestions EmployerQuestion[] 
   tags              String[] @default([]) 
 
   createdAt      DateTime         @default(now())
@@ -38,8 +38,14 @@ model JobApplication {
   id     String @id @default(cuid())
   userId String 
   jobId  String
+
+  resumeId String
+  resume Resume @relation(fields: [resumeId], references: [id])
+
   Job    Job    @relation(fields: [jobId], references: [id])
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade) // Recommended: Add onDelete: Cascade
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade) 
+
+  answers Answer[]
 }
 
 
@@ -53,7 +59,7 @@ model User {
   username      String?   @unique 
   password      String?   
 
-  resumes String[]
+  resumes Resume[]
   JobApplication JobApplication[]
 
   accounts      Account[]
@@ -61,6 +67,48 @@ model User {
 
 }
 
+model Resume {
+  id String @id @default(uuid())
+  Title String @unique
+  url String
+  isPrimary Boolean
+
+  userId String
+  User User @relation(fields: [userId], references: [id])
+
+  JobApplications JobApplication[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+model EmployerQuestion {
+  id        String   @id @default(cuid())
+  text      String  
+  type      QuestionType 
+  isRequired Boolean  @default(true)
+  options   String[] // For multiple-choice questions
+
+  jobId String
+  Job   Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  answers Answer[]
+}
+
+
+model Answer {
+  id   String @id @default(cuid())
+  text String 
+
+  jobApplicationId String
+  JobApplication   JobApplication @relation(fields: [jobApplicationId], references: [id], onDelete: Cascade)
+
+  questionId String
+  Question   EmployerQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([jobApplicationId, questionId])
+}
 
 model Account {
   id                String  @id @default(cuid())
@@ -112,4 +160,11 @@ enum JobType {
   PART_TIME
   CONTRACT
   INTERNSHIP
+}
+
+enum QuestionType {
+  TEXT
+  YES_NO
+  MULTIPLE_CHOICE
+  NUMBER
 }

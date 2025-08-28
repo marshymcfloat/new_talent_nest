@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 import { NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
-import { UserUpdateresumesInputObjectSchema } from './UserUpdateresumesInput.schema';
+import { ResumeUpdateManyWithoutUserNestedInputObjectSchema } from './ResumeUpdateManyWithoutUserNestedInput.schema';
 import { JobApplicationUpdateManyWithoutUserNestedInputObjectSchema } from './JobApplicationUpdateManyWithoutUserNestedInput.schema';
 import { AccountUpdateManyWithoutUserNestedInputObjectSchema } from './AccountUpdateManyWithoutUserNestedInput.schema'
 
@@ -15,7 +15,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
   username: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
   password: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
-  resumes: z.union([z.lazy(() => UserUpdateresumesInputObjectSchema), z.string().array()]).optional(),
+  resumes: z.lazy(() => ResumeUpdateManyWithoutUserNestedInputObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationUpdateManyWithoutUserNestedInputObjectSchema).optional(),
   accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputObjectSchema).optional()
 }).strict();

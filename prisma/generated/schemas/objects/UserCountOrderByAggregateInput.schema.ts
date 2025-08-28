@@ -9,8 +9,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   emailVerified: SortOrderSchema.optional(),
   image: SortOrderSchema.optional(),
   username: SortOrderSchema.optional(),
-  password: SortOrderSchema.optional(),
-  resumes: SortOrderSchema.optional()
+  password: SortOrderSchema.optional()
 }).strict();
 export const UserCountOrderByAggregateInputObjectSchema: z.ZodType<Prisma.UserCountOrderByAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.UserCountOrderByAggregateInput>;
 export const UserCountOrderByAggregateInputObjectZodSchema = makeSchema();

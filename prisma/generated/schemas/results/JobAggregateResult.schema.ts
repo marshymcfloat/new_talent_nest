@@ -27,7 +27,6 @@ export const JobAggregateResultSchema = z.object({  _count: z.object({
     qualifications: z.string().nullable(),
     responsibilities: z.string().nullable(),
     benefits: z.string().nullable(),
-    employerQuestions: z.array(z.string()).nullable(),
     tags: z.array(z.string()).nullable(),
     createdAt: z.date().nullable(),
     updatedAt: z.date().nullable()
@@ -42,7 +41,6 @@ export const JobAggregateResultSchema = z.object({  _count: z.object({
     qualifications: z.string().nullable(),
     responsibilities: z.string().nullable(),
     benefits: z.string().nullable(),
-    employerQuestions: z.array(z.string()).nullable(),
     tags: z.array(z.string()).nullable(),
     createdAt: z.date().nullable(),
     updatedAt: z.date().nullable()

@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { StringFilterObjectSchema } from './StringFilter.schema';
 import { StringNullableFilterObjectSchema } from './StringNullableFilter.schema';
 import { DateTimeNullableFilterObjectSchema } from './DateTimeNullableFilter.schema';
-import { StringNullableListFilterObjectSchema } from './StringNullableListFilter.schema';
+import { ResumeListRelationFilterObjectSchema } from './ResumeListRelationFilter.schema';
 import { JobApplicationListRelationFilterObjectSchema } from './JobApplicationListRelationFilter.schema';
 import { AccountListRelationFilterObjectSchema } from './AccountListRelationFilter.schema';
 import { SessionListRelationFilterObjectSchema } from './SessionListRelationFilter.schema'
@@ -19,7 +19,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
   username: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
   password: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
-  resumes: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
+  resumes: z.lazy(() => ResumeListRelationFilterObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationListRelationFilterObjectSchema).optional(),
   accounts: z.lazy(() => AccountListRelationFilterObjectSchema).optional(),
   sessions: z.lazy(() => SessionListRelationFilterObjectSchema).optional()
