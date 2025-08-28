@@ -1,4 +1,3 @@
-import { createJobSchema } from "@/lib/zod schemas/JobSchema";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 

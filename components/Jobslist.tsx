@@ -1,7 +1,5 @@
 import React from "react";
-import { Job } from "@prisma/client";
 import JobCard from "./JobCard";
-import Spinner from "./Spinner";
 import { Skeleton } from "./ui/skeleton";
 import { JobWithQuestions } from "@/lib/types/jobTypes";
 

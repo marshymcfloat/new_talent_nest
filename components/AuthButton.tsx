@@ -3,7 +3,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { Skeleton } from "./ui/skeleton";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { LogOut } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 

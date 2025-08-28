@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Job } from "@prisma/client";
 import { Bookmark, X } from "lucide-react";
 import { JobWithQuestions } from "@/lib/types/jobTypes";
 const JobCard = ({
