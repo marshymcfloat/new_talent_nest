@@ -19,7 +19,9 @@ const JobView = () => {
   const { data, isLoading } = useQuery<{ data: JobWithQuestions[] }>({
     queryKey: ["jobs"],
     queryFn: async () => {
-      const response = await fetch(`${process.env.NEXTURL}/api/jobs`);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/jobs`
+      );
       if (!response.ok) throw new Error("Failed to fetch jobs");
       return await response.json();
     },
