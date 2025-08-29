@@ -13,7 +13,7 @@ export const JobCreateResultSchema = z.object({
   benefits: z.string().optional(),
   employerQuestions: z.array(z.unknown()),
   tags: z.array(z.string()),
+  JobApplication: z.array(z.unknown()),
   createdAt: z.date(),
-  updatedAt: z.date(),
-  JobApplication: z.array(z.unknown())
+  updatedAt: z.date()
 });

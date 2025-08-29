@@ -5,6 +5,7 @@ import { createApplicationSchema } from "../zod schemas/applicationSchema";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 import { put } from "@vercel/blob";
+
 export const submitApplication = async (formData: FormData) => {
   try {
     const session = await getServerSession(authOptions);
@@ -15,16 +16,22 @@ export const submitApplication = async (formData: FormData) => {
 
     const userId = session.user.id;
     const jobId = formData.get("jobId") as string;
-    const resumeFile = formData.get("resume") as File;
     const answersString = formData.get("answers") as string;
 
-    if (!jobId || !resumeFile || !answersString) {
-      return { error: "Missing form data" };
+    const resumeFile = formData.get("resume") as File | null;
+    const resumeId = formData.get("resumeId") as string | null;
+
+    if (!jobId || !answersString) {
+      return { error: "Missing required form data." };
+    }
+
+    if (!resumeFile && !resumeId) {
+      return { error: "A resume must be provided." };
     }
 
     const job = await prisma.job.findUnique({
       where: { id: jobId },
-      select: { employerQuestions: true, title: true },
+      select: { employerQuestions: true },
     });
 
     if (!job) {
@@ -34,7 +41,7 @@ export const submitApplication = async (formData: FormData) => {
     const validationResult = createApplicationSchema(
       job.employerQuestions
     ).safeParse({
-      resume: resumeFile,
+      resume: resumeFile || resumeId,
       answers: JSON.parse(answersString),
     });
 
@@ -46,28 +53,51 @@ export const submitApplication = async (formData: FormData) => {
       return { error: "Invalid data provided. Please check your answers." };
     }
 
-    const { answers: validatedAnswers, resume } = validationResult.data;
-    const uniqueFilename = `resumes/${userId}-${Date.now()}-${resume.name.replace(/\s+/g, "_")}`;
-
-    console.log(resume);
-    const blob = await put(uniqueFilename, resume, {
-      access: "public",
-    });
+    const { answers: validatedAnswers, resume: validatedResume } =
+      validationResult.data;
+    let finalResumeId: string;
 
     await prisma.$transaction(async (tx) => {
-      const newResume = await tx.resume.create({
-        data: {
-          title: resume.name,
-          url: blob.url,
-          isPrimary: false,
-          userId: userId,
-        },
-      });
+      if (validatedResume instanceof File) {
+        const uniqueFilename = `resumes/${userId}-${Date.now()}-${validatedResume.name.replace(/\s+/g, "_")}`;
+
+        const blob = await put(uniqueFilename, validatedResume, {
+          access: "public",
+        });
+
+        const newResume = await tx.resume.create({
+          data: {
+            title: validatedResume.name,
+            url: blob.url,
+            isPrimary: false,
+            userId: userId,
+          },
+        });
+        finalResumeId = newResume.id;
+      } else {
+        const existingResumeId = validatedResume;
+
+        const resumeOwner = await tx.resume.findFirst({
+          where: {
+            id: existingResumeId,
+            userId: userId,
+          },
+          select: { id: true },
+        });
+
+        if (!resumeOwner) {
+          throw new Error(
+            "Authorization error: User does not own the selected resume."
+          );
+        }
+
+        finalResumeId = resumeOwner.id;
+      }
 
       const newApplication = await tx.jobApplication.create({
         data: {
           jobId,
-          resumeId: newResume.id,
+          resumeId: finalResumeId,
           userId: userId,
         },
       });

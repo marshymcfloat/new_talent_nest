@@ -7,5 +7,7 @@ export const JobApplicationUpsertResultSchema = z.object({
   resume: z.unknown(),
   Job: z.unknown(),
   User: z.unknown(),
-  answers: z.array(z.unknown())
+  answers: z.array(z.unknown()),
+  createdAt: z.date(),
+  updatedAt: z.date()
 });

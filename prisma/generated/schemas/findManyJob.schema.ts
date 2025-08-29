@@ -24,9 +24,9 @@ export const JobFindManySelectSchema: z.ZodType<Prisma.JobSelect> = z.object({
     benefits: z.boolean().optional(),
     employerQuestions: z.boolean().optional(),
     tags: z.boolean().optional(),
+    JobApplication: z.boolean().optional(),
     createdAt: z.boolean().optional(),
     updatedAt: z.boolean().optional(),
-    JobApplication: z.boolean().optional(),
     _count: z.boolean().optional()
   }).strict() as unknown as z.ZodType<Prisma.JobSelect>;
 
@@ -44,9 +44,9 @@ export const JobFindManySelectZodSchema = z.object({
     benefits: z.boolean().optional(),
     employerQuestions: z.boolean().optional(),
     tags: z.boolean().optional(),
+    JobApplication: z.boolean().optional(),
     createdAt: z.boolean().optional(),
     updatedAt: z.boolean().optional(),
-    JobApplication: z.boolean().optional(),
     _count: z.boolean().optional()
   }).strict();
 

@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "generatorVersion": "0.1.0",
-  "generatedAt": "2025-08-28T18:54:53.844Z",
+  "generatedAt": "2025-08-29T17:04:49.240Z",
   "outputPath": "C:\\Programming\\talent-nest\\prisma\\generated",
   "files": [
     "schemas\\enums\\TransactionIsolationLevel.schema.ts",

@@ -1,3 +1,3 @@
 import { z } from 'zod';
 
-export const JobApplicationScalarFieldEnumSchema = z.enum(['id', 'userId', 'jobId', 'resumeId'])
+export const JobApplicationScalarFieldEnumSchema = z.enum(['id', 'userId', 'jobId', 'resumeId', 'createdAt', 'updatedAt'])

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { StringFilterObjectSchema } from './StringFilter.schema';
+import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
 import { ResumeScalarRelationFilterObjectSchema } from './ResumeScalarRelationFilter.schema';
 import { ResumeWhereInputObjectSchema } from './ResumeWhereInput.schema';
 import { JobScalarRelationFilterObjectSchema } from './JobScalarRelationFilter.schema';
@@ -17,6 +18,8 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   jobId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   resumeId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
+  createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional(),
+  updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional(),
   resume: z.union([z.lazy(() => ResumeScalarRelationFilterObjectSchema), z.lazy(() => ResumeWhereInputObjectSchema)]).optional(),
   Job: z.union([z.lazy(() => JobScalarRelationFilterObjectSchema), z.lazy(() => JobWhereInputObjectSchema)]).optional(),
   User: z.union([z.lazy(() => UserScalarRelationFilterObjectSchema), z.lazy(() => UserWhereInputObjectSchema)]).optional(),

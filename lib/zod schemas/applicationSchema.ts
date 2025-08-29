@@ -1,5 +1,3 @@
-// lib/zod schemas/applicationSchema.ts
-
 import { EmployerQuestion } from "@prisma/client";
 import { z } from "zod";
 
@@ -11,24 +9,20 @@ const ACCEPTED_RESUME_TYPES = [
 ];
 
 export const createApplicationSchema = (questions: EmployerQuestion[]) => {
+  const fileSchema = z
+    .instanceof(File, { message: "Please upload a resume file." })
+    .refine((file) => file.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine(
+      (file) => ACCEPTED_RESUME_TYPES.includes(file.type),
+      ".pdf, .doc, and .docx files are accepted."
+    );
+
+  const idSchema = z.string().min(1, "Please select a saved resume.");
+
   const schema = z.object({
-    resume: z
-      .any()
-      .refine(
-        (file): file is File => file instanceof File,
-        "Resume is required."
-      )
-      .refine(
-        (file) => (file instanceof File ? file.size <= MAX_FILE_SIZE : true),
-        `Max file size is 5MB.`
-      )
-      .refine(
-        (file) =>
-          file instanceof File
-            ? ACCEPTED_RESUME_TYPES.includes(file.type)
-            : true,
-        ".pdf, .doc, and .docx files are accepted."
-      ),
+    resume: z.union([fileSchema, idSchema], {
+      message: "A resume is required. Please select one or upload a new file.",
+    }),
 
     answers: z.record(z.string(), z.string()),
   });

@@ -13,9 +13,9 @@ export const JobAggregateResultSchema = z.object({  _count: z.object({
     benefits: z.number(),
     employerQuestions: z.number(),
     tags: z.number(),
+    JobApplication: z.number(),
     createdAt: z.number(),
-    updatedAt: z.number(),
-    JobApplication: z.number()
+    updatedAt: z.number()
   }).optional(),
   _min: z.object({
     id: z.string().nullable(),

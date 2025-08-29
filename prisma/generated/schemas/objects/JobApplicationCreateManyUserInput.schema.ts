@@ -5,7 +5,9 @@ import type { Prisma } from '@prisma/client';
 const makeSchema = (): z.ZodObject<any> => z.object({
   id: z.string().optional(),
   jobId: z.string(),
-  resumeId: z.string()
+  resumeId: z.string(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional()
 }).strict();
 export const JobApplicationCreateManyUserInputObjectSchema: z.ZodType<Prisma.JobApplicationCreateManyUserInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationCreateManyUserInput>;
 export const JobApplicationCreateManyUserInputObjectZodSchema = makeSchema();

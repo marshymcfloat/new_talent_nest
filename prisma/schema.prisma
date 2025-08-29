@@ -28,10 +28,10 @@ model Job {
   
   employerQuestions EmployerQuestion[] 
   tags              String[] @default([]) 
+  JobApplication JobApplication[]
 
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
-  JobApplication JobApplication[]
 }
 
 model JobApplication {
@@ -46,6 +46,10 @@ model JobApplication {
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade) 
 
   answers Answer[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
 }
 
 

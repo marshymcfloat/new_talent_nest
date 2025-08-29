@@ -19,6 +19,8 @@ export const JobApplicationFindFirstOrThrowSelectSchema: z.ZodType<Prisma.JobApp
     Job: z.boolean().optional(),
     User: z.boolean().optional(),
     answers: z.boolean().optional(),
+    createdAt: z.boolean().optional(),
+    updatedAt: z.boolean().optional(),
     _count: z.boolean().optional()
   }).strict() as unknown as z.ZodType<Prisma.JobApplicationSelect>;
 
@@ -31,6 +33,8 @@ export const JobApplicationFindFirstOrThrowSelectZodSchema = z.object({
     Job: z.boolean().optional(),
     User: z.boolean().optional(),
     answers: z.boolean().optional(),
+    createdAt: z.boolean().optional(),
+    updatedAt: z.boolean().optional(),
     _count: z.boolean().optional()
   }).strict();
 

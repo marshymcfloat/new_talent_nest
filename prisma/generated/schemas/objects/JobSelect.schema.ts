@@ -18,9 +18,9 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   benefits: z.boolean().optional(),
   employerQuestions: z.union([z.boolean(), z.lazy(() => EmployerQuestionFindManySchema)]).optional(),
   tags: z.boolean().optional(),
+  JobApplication: z.union([z.boolean(), z.lazy(() => JobApplicationFindManySchema)]).optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
-  JobApplication: z.union([z.boolean(), z.lazy(() => JobApplicationFindManySchema)]).optional(),
   _count: z.union([z.boolean(), z.lazy(() => JobCountOutputTypeArgsObjectSchema)]).optional()
 }).strict();
 export const JobSelectObjectSchema: z.ZodType<Prisma.JobSelect> = makeSchema() as unknown as z.ZodType<Prisma.JobSelect>;

@@ -8,7 +8,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { signIn, useSession } from "next-auth/react";
@@ -37,7 +37,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { User, Resume } from "@prisma/client";
 import { cn } from "@/lib/utils";
+
+type UserWithResume = User & {
+  resumes: Resume[];
+  lastUsedResume: string | null;
+};
 
 const ApplyButton = ({
   title,
@@ -51,8 +57,8 @@ const ApplyButton = ({
   questions: EmployerQuestion[];
 }) => {
   const { status } = useSession();
-  const [isSheetOpen, setIsSheetOpen] = React.useState(false);
-
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [profileData, setProfileData] = useState<UserWithResume | null>(null);
   const inputStyles =
     "bg-white border-purple-400 focus-visible:ring-purple-500 text-slate-800";
 
@@ -68,12 +74,46 @@ const ApplyButton = ({
     mode: "onChange",
   });
 
-  const resumeFile = form.watch("resume");
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/profile`
+      );
+
+      if (!response.ok) {
+        console.error("Error fetching profile info");
+        return;
+      }
+
+      const data = await response.json();
+      setProfileData(data.data);
+    };
+
+    if (isSheetOpen) {
+      fetchUserData();
+    }
+  }, [isSheetOpen]);
+
+  useEffect(() => {
+    if (profileData?.lastUsedResume) {
+      form.setValue("resume", profileData.lastUsedResume, {
+        shouldValidate: true,
+      });
+    }
+  }, [profileData, form]);
+
+  const resumeValue = form.watch("resume");
 
   async function onSubmit(data: ApplicationFormValues) {
     const formData = new FormData();
     formData.append("jobId", jobId);
-    formData.append("resume", data.resume);
+
+    if (typeof data.resume === "string") {
+      formData.append("resumeId", data.resume);
+    } else if (data.resume instanceof File) {
+      formData.append("resume", data.resume);
+    }
+
     formData.append("answers", JSON.stringify(data.answers));
 
     const toastId = toast.loading("Submitting your application...");
@@ -134,10 +174,46 @@ const ApplyButton = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Resume (PDF or DOCX){" "}
-                      <span className="text-red-500">*</span>
+                      Resume <span className="text-red-500">*</span>
                     </FormLabel>
-                    {resumeFile ? (
+
+                    {profileData && profileData.resumes.length > 0 && (
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium text-purple-900/80">
+                          Select a saved resume:
+                        </p>
+                        {profileData.resumes.map((resume) => (
+                          <button
+                            type="button"
+                            key={resume.id}
+                            onClick={() => field.onChange(resume.id)}
+                            className={cn(
+                              "w-full text-start p-2 hover:bg-purple-300 duration-150 transition-all cursor-pointer rounded-md border-2",
+                              resumeValue === resume.id
+                                ? "border-purple-600 bg-purple-300/50"
+                                : "border-purple-400/40"
+                            )}
+                          >
+                            {resume.title}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                    {profileData && profileData.resumes.length > 0 && (
+                      <div className="relative my-4">
+                        <div className="absolute inset-0 flex items-center">
+                          <span className="w-full border-t border-purple-400/60" />
+                        </div>
+                        <div className="relative flex justify-center text-xs uppercase">
+                          <span className="bg-purple-200 px-2 text-purple-800">
+                            Or
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    {resumeValue instanceof File ? (
                       <div
                         className={cn(
                           "flex items-center justify-between p-2 border rounded-md",
@@ -145,17 +221,13 @@ const ApplyButton = ({
                         )}
                       >
                         <span className="truncate max-w-[200px]">
-                          {resumeFile.name}
+                          {resumeValue.name}
                         </span>
                         <Button
                           type="button"
                           variant="ghost"
                           size="sm"
-                          onClick={() =>
-                            form.setValue("resume", undefined, {
-                              shouldValidate: true,
-                            })
-                          }
+                          onClick={() => field.onChange(undefined)}
                         >
                           <XIcon className="w-4 h-4" />
                         </Button>

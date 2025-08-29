@@ -10,6 +10,8 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: SortOrderSchema.optional(),
   jobId: SortOrderSchema.optional(),
   resumeId: SortOrderSchema.optional(),
+  createdAt: SortOrderSchema.optional(),
+  updatedAt: SortOrderSchema.optional(),
   _count: z.lazy(() => JobApplicationCountOrderByAggregateInputObjectSchema).optional(),
   _max: z.lazy(() => JobApplicationMaxOrderByAggregateInputObjectSchema).optional(),
   _min: z.lazy(() => JobApplicationMinOrderByAggregateInputObjectSchema).optional()

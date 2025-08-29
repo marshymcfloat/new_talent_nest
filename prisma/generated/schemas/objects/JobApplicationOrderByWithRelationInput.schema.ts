@@ -11,6 +11,8 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: SortOrderSchema.optional(),
   jobId: SortOrderSchema.optional(),
   resumeId: SortOrderSchema.optional(),
+  createdAt: SortOrderSchema.optional(),
+  updatedAt: SortOrderSchema.optional(),
   resume: z.lazy(() => ResumeOrderByWithRelationInputObjectSchema).optional(),
   Job: z.lazy(() => JobOrderByWithRelationInputObjectSchema).optional(),
   User: z.lazy(() => UserOrderByWithRelationInputObjectSchema).optional(),
