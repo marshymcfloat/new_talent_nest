@@ -1,4 +1,3 @@
-import { Job } from "@prisma/client";
 import {
   Card,
   CardAction,
@@ -8,74 +7,92 @@ import {
   CardTitle,
 } from "./ui/card";
 import { formatDistanceToNow } from "date-fns";
-import { Banknote, Bookmark, Building, Clock, MapPin } from "lucide-react";
+import { Banknote, Bookmark, Clock, MapPin } from "lucide-react";
 import { Button } from "./ui/button";
 import ApplyButton from "./ApplyButton";
-import { JobWithQuestions } from "@/lib/types/jobTypes";
+import { Prisma } from "@prisma/client";
+
+type JobWithQuestions = Prisma.JobGetPayload<{
+  include: {
+    employerQuestions: true;
+  };
+}>;
 
 const JobDescription = ({
-  benefits,
   company,
   createdAt,
   employerQuestions,
   id,
-  jobClass,
   location,
   qualifications,
   responsibilities,
   salary,
   summary,
-  tags,
   title,
   type,
-  updatedAt,
 }: JobWithQuestions) => {
   return (
-    <Card className="lg:fixed  bg-gradient-to-tl from-bg-zinc-900 text-white/80 to-purple-900 border-none lg:min-w-[1200px]">
-      <CardHeader>
-        <CardTitle className="capitalize lg:text-3xl">{title}</CardTitle>
-        <CardDescription className="flex  text-white/80 flex-col gap-2 ">
-          <h3 className="font-medium">{company}</h3>
-          <div className="flex flex-col ">
-            <p className="flex gap-4 items-center">
-              <MapPin size={16} /> {location}
-            </p>
-            <p className="flex gap-4 items-center">
-              <Clock size={16} /> {type}
-            </p>
-            <p className="flex gap-4 items-center">
-              <Banknote size={16} /> {salary}
-            </p>
+    <Card className="bg-[#2a0d48] text-white/90 border-none h-full flex flex-col p-4 rounded-2xl">
+      <CardHeader className="p-2">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+          <div className="flex flex-col gap-1">
+            <CardTitle className="text-2xl font-bold">{title}</CardTitle>
+            <CardDescription className="text-white/70">
+              {company}
+            </CardDescription>
           </div>
-          <p className="flex gap-4 items-center">
-            posted <span>{formatDistanceToNow(createdAt)} ago</span>
-          </p>
-        </CardDescription>
-        <CardAction className="flex gap-4">
-          <ApplyButton
-            jobId={id}
-            title={title}
-            summary={summary}
-            questions={employerQuestions}
-          />
 
-          <Button className="flex items-center bg-blue-400 hover:bg-blue-400/80 cursor-pointer gap-2 min-w-[120px]">
-            <Bookmark /> Save
-          </Button>
-        </CardAction>
+          <CardAction className="w-full sm:w-[240px] flex flex-col sm:grid sm:grid-cols-2 gap-2 flex-shrink-0">
+            <ApplyButton
+              jobId={id}
+              title={title}
+              summary={summary}
+              questions={employerQuestions}
+            />
+            <Button
+              variant="outline"
+              className="flex items-center gap-2 bg-white/10 hover:bg-white/20 border-white/20 text-white hover:text-white"
+            >
+              <Bookmark size={16} /> Save
+            </Button>
+          </CardAction>
+        </div>
       </CardHeader>
-      <CardContent className="flex flex-col gap-6">
-        <div className="">
-          <h1 className="font-medium">Summary:</h1>
-          <p className="">{summary}</p>
+
+      <CardContent className="p-2 pt-4 flex-grow overflow-y-auto flex flex-col gap-6">
+        <div className="flex flex-col gap-3 text-white/80">
+          <div className="flex items-center gap-3">
+            <MapPin size={18} className="text-white/50" />
+            <span>{location}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <Clock size={18} className="text-white/50" />
+            <span>{type.replace("_", " ")}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <Banknote size={18} className="text-white/50" />
+            <span>{salary}</span>
+          </div>
+          <p className="text-sm text-white/60 mt-2">
+            Posted {formatDistanceToNow(createdAt, { addSuffix: true })}
+          </p>
         </div>
-        <div className="">
-          <h1 className="font-medium">Responsibilities</h1>
-          <p>{responsibilities}</p>
-        </div>
-        <div className="">
-          <h1 className="font-medium">Qualifications:</h1>
-          <p>{qualifications}</p>
+
+        <hr className="border-white/10 my-2" />
+
+        <div className="flex flex-col gap-6">
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Summary</h3>
+            <p className="text-white/70 leading-relaxed">{summary}</p>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Responsibilities</h3>
+            <p className="text-white/70 leading-relaxed">{responsibilities}</p>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Qualifications</h3>
+            <p className="text-white/70 leading-relaxed">{qualifications}</p>
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -3,7 +3,7 @@ import React from "react";
 
 const JobsPage = () => {
   return (
-    <main className="max-w-[100dvw] flex  p-8">
+    <main className="w-full flex p-4 md:p-8 flex-grow overflow-y-auto">
       <JobView />
     </main>
   );

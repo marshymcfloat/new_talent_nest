@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import "./globals.css";
 import TanstackProvider from "@/components/Providers/TanstackProvider";
 import { Toaster } from "sonner";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased  bg-zinc-900/95`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-900/95 flex flex-col h-screen`}
       >
         <TanstackProvider>
           <AuthProvder>
