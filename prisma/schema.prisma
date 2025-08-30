@@ -66,10 +66,89 @@ model User {
   resumes Resume[]
   JobApplication JobApplication[]
 
+  summary String?
+  previousCareers CareerHistory[]
+  education Education[]
+  skills Skill[]
+  languages Language[]
+  availability UserAvailabilityType?
+  preferredWorkType JobType?
+  preferredLocation String[]
+  rightToWork String[]
+  expectedSalary String?
+  jobClassification JobClass[]
+
+
   accounts      Account[]
   sessions      Session[]
 
 }
+
+model CareerHistory {
+
+  id String @id @default(cuid())
+
+  title String
+  company String
+  dateStarted DateTime
+  dateEnded DateTime
+  description String?
+
+  userId String 
+  user User @relation(fields: [userId], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+model Education {
+  id String @id @default(cuid())
+
+  userId String
+  user User @relation(fields: [userId], references: [id])
+
+  course String
+  institution String
+  dateStarted DateTime
+  dateEnded DateTime
+  highlight String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LicenceAndCertificate {
+
+  id String @id @default(cuid())
+
+  name String
+  organization  String?
+  dateIssed DateTime? 
+  expiryDate DateTime?
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Skill {
+  id Int @id @default(autoincrement())
+
+  name String
+
+  users User[]
+
+
+}
+
+model Language{
+  id Int @id @default(autoincrement())
+  name String
+
+  users User[]
+}
+
 
 model Resume {
   id String @id @default(uuid())
@@ -171,4 +250,12 @@ enum QuestionType {
   YES_NO
   MULTIPLE_CHOICE
   NUMBER
+}
+
+enum UserAvailabilityType {
+  NOW
+  TWOWEEKS
+  FOURWEEKS
+  EIGHTWEEKS
+  TWELVEPLUSWEEKS
 }

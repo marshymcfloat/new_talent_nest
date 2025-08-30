@@ -3,8 +3,18 @@ import type { Prisma } from '@prisma/client';
 import { StringFilterObjectSchema } from './StringFilter.schema';
 import { StringNullableFilterObjectSchema } from './StringNullableFilter.schema';
 import { DateTimeNullableFilterObjectSchema } from './DateTimeNullableFilter.schema';
+import { EnumUserAvailabilityTypeNullableFilterObjectSchema } from './EnumUserAvailabilityTypeNullableFilter.schema';
+import { UserAvailabilityTypeSchema } from '../enums/UserAvailabilityType.schema';
+import { EnumJobTypeNullableFilterObjectSchema } from './EnumJobTypeNullableFilter.schema';
+import { JobTypeSchema } from '../enums/JobType.schema';
+import { StringNullableListFilterObjectSchema } from './StringNullableListFilter.schema';
+import { EnumJobClassNullableListFilterObjectSchema } from './EnumJobClassNullableListFilter.schema';
 import { ResumeListRelationFilterObjectSchema } from './ResumeListRelationFilter.schema';
 import { JobApplicationListRelationFilterObjectSchema } from './JobApplicationListRelationFilter.schema';
+import { CareerHistoryListRelationFilterObjectSchema } from './CareerHistoryListRelationFilter.schema';
+import { EducationListRelationFilterObjectSchema } from './EducationListRelationFilter.schema';
+import { SkillListRelationFilterObjectSchema } from './SkillListRelationFilter.schema';
+import { LanguageListRelationFilterObjectSchema } from './LanguageListRelationFilter.schema';
 import { AccountListRelationFilterObjectSchema } from './AccountListRelationFilter.schema';
 import { SessionListRelationFilterObjectSchema } from './SessionListRelationFilter.schema'
 
@@ -19,8 +29,19 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
   username: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
   password: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
+  summary: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
+  availability: z.union([z.lazy(() => EnumUserAvailabilityTypeNullableFilterObjectSchema), UserAvailabilityTypeSchema]).nullish(),
+  preferredWorkType: z.union([z.lazy(() => EnumJobTypeNullableFilterObjectSchema), JobTypeSchema]).nullish(),
+  preferredLocation: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
+  rightToWork: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
+  expectedSalary: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
+  jobClassification: z.lazy(() => EnumJobClassNullableListFilterObjectSchema).optional(),
   resumes: z.lazy(() => ResumeListRelationFilterObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationListRelationFilterObjectSchema).optional(),
+  previousCareers: z.lazy(() => CareerHistoryListRelationFilterObjectSchema).optional(),
+  education: z.lazy(() => EducationListRelationFilterObjectSchema).optional(),
+  skills: z.lazy(() => SkillListRelationFilterObjectSchema).optional(),
+  languages: z.lazy(() => LanguageListRelationFilterObjectSchema).optional(),
   accounts: z.lazy(() => AccountListRelationFilterObjectSchema).optional(),
   sessions: z.lazy(() => SessionListRelationFilterObjectSchema).optional()
 }).strict();

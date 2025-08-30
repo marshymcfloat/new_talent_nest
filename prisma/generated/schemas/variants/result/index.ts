@@ -6,6 +6,11 @@
 export { JobResultSchema } from './Job.result';
 export { JobApplicationResultSchema } from './JobApplication.result';
 export { UserResultSchema } from './User.result';
+export { CareerHistoryResultSchema } from './CareerHistory.result';
+export { EducationResultSchema } from './Education.result';
+export { LicenceAndCertificateResultSchema } from './LicenceAndCertificate.result';
+export { SkillResultSchema } from './Skill.result';
+export { LanguageResultSchema } from './Language.result';
 export { ResumeResultSchema } from './Resume.result';
 export { EmployerQuestionResultSchema } from './EmployerQuestion.result';
 export { AnswerResultSchema } from './Answer.result';

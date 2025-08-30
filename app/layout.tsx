@@ -23,7 +23,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
+  modal: React.ReactNode;
   children: React.ReactNode;
 }>) {
   return (
@@ -34,6 +36,7 @@ export default function RootLayout({
         <TanstackProvider>
           <AuthProvder>
             <Navbar />
+            {modal}
             {children}
             <Toaster />
           </AuthProvder>

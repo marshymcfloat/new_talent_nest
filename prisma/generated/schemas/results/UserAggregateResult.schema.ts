@@ -9,6 +9,17 @@ export const UserAggregateResultSchema = z.object({  _count: z.object({
     password: z.number(),
     resumes: z.number(),
     JobApplication: z.number(),
+    summary: z.number(),
+    previousCareers: z.number(),
+    education: z.number(),
+    skills: z.number(),
+    languages: z.number(),
+    availability: z.number(),
+    preferredWorkType: z.number(),
+    preferredLocation: z.number(),
+    rightToWork: z.number(),
+    expectedSalary: z.number(),
+    jobClassification: z.number(),
     accounts: z.number(),
     sessions: z.number()
   }).optional(),
@@ -19,7 +30,11 @@ export const UserAggregateResultSchema = z.object({  _count: z.object({
     emailVerified: z.date().nullable(),
     image: z.string().nullable(),
     username: z.string().nullable(),
-    password: z.string().nullable()
+    password: z.string().nullable(),
+    summary: z.string().nullable(),
+    preferredLocation: z.array(z.string()).nullable(),
+    rightToWork: z.array(z.string()).nullable(),
+    expectedSalary: z.string().nullable()
   }).nullable().optional(),
   _max: z.object({
     id: z.string().nullable(),
@@ -28,5 +43,9 @@ export const UserAggregateResultSchema = z.object({  _count: z.object({
     emailVerified: z.date().nullable(),
     image: z.string().nullable(),
     username: z.string().nullable(),
-    password: z.string().nullable()
+    password: z.string().nullable(),
+    summary: z.string().nullable(),
+    preferredLocation: z.array(z.string()).nullable(),
+    rightToWork: z.array(z.string()).nullable(),
+    expectedSalary: z.string().nullable()
   }).nullable().optional()});

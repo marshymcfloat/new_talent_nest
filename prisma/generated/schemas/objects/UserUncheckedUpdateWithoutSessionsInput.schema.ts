@@ -3,8 +3,20 @@ import type { Prisma } from '@prisma/client';
 import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 import { NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
+import { UserAvailabilityTypeSchema } from '../enums/UserAvailabilityType.schema';
+import { NullableEnumUserAvailabilityTypeFieldUpdateOperationsInputObjectSchema } from './NullableEnumUserAvailabilityTypeFieldUpdateOperationsInput.schema';
+import { JobTypeSchema } from '../enums/JobType.schema';
+import { NullableEnumJobTypeFieldUpdateOperationsInputObjectSchema } from './NullableEnumJobTypeFieldUpdateOperationsInput.schema';
+import { UserUpdatepreferredLocationInputObjectSchema } from './UserUpdatepreferredLocationInput.schema';
+import { UserUpdaterightToWorkInputObjectSchema } from './UserUpdaterightToWorkInput.schema';
+import { UserUpdatejobClassificationInputObjectSchema } from './UserUpdatejobClassificationInput.schema';
+import { JobClassSchema } from '../enums/JobClass.schema';
 import { ResumeUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './ResumeUncheckedUpdateManyWithoutUserNestedInput.schema';
 import { JobApplicationUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './JobApplicationUncheckedUpdateManyWithoutUserNestedInput.schema';
+import { CareerHistoryUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './CareerHistoryUncheckedUpdateManyWithoutUserNestedInput.schema';
+import { EducationUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './EducationUncheckedUpdateManyWithoutUserNestedInput.schema';
+import { SkillUncheckedUpdateManyWithoutUsersNestedInputObjectSchema } from './SkillUncheckedUpdateManyWithoutUsersNestedInput.schema';
+import { LanguageUncheckedUpdateManyWithoutUsersNestedInputObjectSchema } from './LanguageUncheckedUpdateManyWithoutUsersNestedInput.schema';
 import { AccountUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './AccountUncheckedUpdateManyWithoutUserNestedInput.schema'
 
 const makeSchema = (): z.ZodObject<any> => z.object({
@@ -15,8 +27,19 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
   username: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
   password: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
+  summary: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
+  availability: z.union([UserAvailabilityTypeSchema, z.lazy(() => NullableEnumUserAvailabilityTypeFieldUpdateOperationsInputObjectSchema)]).nullish(),
+  preferredWorkType: z.union([JobTypeSchema, z.lazy(() => NullableEnumJobTypeFieldUpdateOperationsInputObjectSchema)]).nullish(),
+  preferredLocation: z.union([z.lazy(() => UserUpdatepreferredLocationInputObjectSchema), z.string().array()]).optional(),
+  rightToWork: z.union([z.lazy(() => UserUpdaterightToWorkInputObjectSchema), z.string().array()]).optional(),
+  expectedSalary: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
+  jobClassification: z.union([z.lazy(() => UserUpdatejobClassificationInputObjectSchema), JobClassSchema.array()]).optional(),
   resumes: z.lazy(() => ResumeUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional(),
+  previousCareers: z.lazy(() => CareerHistoryUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional(),
+  education: z.lazy(() => EducationUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional(),
+  skills: z.lazy(() => SkillUncheckedUpdateManyWithoutUsersNestedInputObjectSchema).optional(),
+  languages: z.lazy(() => LanguageUncheckedUpdateManyWithoutUsersNestedInputObjectSchema).optional(),
   accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional()
 }).strict();
 export const UserUncheckedUpdateWithoutSessionsInputObjectSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutSessionsInput> = makeSchema() as unknown as z.ZodType<Prisma.UserUncheckedUpdateWithoutSessionsInput>;

@@ -9,6 +9,17 @@ export const UserUpdateResultSchema = z.nullable(z.object({
   password: z.string().optional(),
   resumes: z.array(z.unknown()),
   JobApplication: z.array(z.unknown()),
+  summary: z.string().optional(),
+  previousCareers: z.array(z.unknown()),
+  education: z.array(z.unknown()),
+  skills: z.array(z.unknown()),
+  languages: z.array(z.unknown()),
+  availability: z.unknown().optional(),
+  preferredWorkType: z.unknown().optional(),
+  preferredLocation: z.array(z.string()),
+  rightToWork: z.array(z.string()),
+  expectedSalary: z.string().optional(),
+  jobClassification: z.array(z.unknown()),
   accounts: z.array(z.unknown()),
   sessions: z.array(z.unknown())
 }));
