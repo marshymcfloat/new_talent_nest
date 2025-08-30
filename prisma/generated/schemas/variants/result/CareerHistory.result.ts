@@ -6,7 +6,7 @@ export const CareerHistoryResultSchema = z.object({
     title: z.string(),
     company: z.string(),
     dateStarted: z.date(),
-    dateEnded: z.date(),
+    dateEnded: z.date().nullable(),
     description: z.string().nullable(),
     userId: z.string(),
     user: z.unknown(),

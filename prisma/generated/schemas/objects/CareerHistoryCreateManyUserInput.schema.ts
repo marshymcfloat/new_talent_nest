@@ -7,7 +7,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   title: z.string(),
   company: z.string(),
   dateStarted: z.date(),
-  dateEnded: z.date(),
+  dateEnded: z.date().nullish(),
   description: z.string().nullish(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional()

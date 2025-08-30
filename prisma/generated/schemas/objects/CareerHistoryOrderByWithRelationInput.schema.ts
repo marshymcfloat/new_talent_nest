@@ -9,7 +9,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   title: SortOrderSchema.optional(),
   company: SortOrderSchema.optional(),
   dateStarted: SortOrderSchema.optional(),
-  dateEnded: SortOrderSchema.optional(),
+  dateEnded: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   description: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   userId: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),

@@ -4,7 +4,7 @@ export const CareerHistoryFindUniqueResultSchema = z.nullable(z.object({
   title: z.string(),
   company: z.string(),
   dateStarted: z.date(),
-  dateEnded: z.date(),
+  dateEnded: z.date().optional(),
   description: z.string().optional(),
   userId: z.string(),
   user: z.unknown(),

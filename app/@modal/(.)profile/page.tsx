@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { User } from "@prisma/client";
+import { CareerHistory, User } from "@prisma/client";
 import { Textarea } from "@/components/ui/textarea";
 import CareerCard from "@/components/CareerCard";
 import {
@@ -41,19 +41,17 @@ import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { addCareerSchema } from "@/lib/zod schemas/profileSchema";
+import { AddUserCareerHistory } from "@/lib/actions/profileActions";
+import Spinner from "@/components/Spinner";
 
 type SheetContentType = "addRole" | "editRole" | "addEducation" | null;
+type CareerFormValue = z.infer<typeof addCareerSchema>;
 
-const AddRoleForm = ({
-  onSave,
-  onCancel,
-}: {
-  onSave: (data: z.infer<typeof addCareerSchema>) => void;
-  onCancel: () => void;
-}) => {
-  type CareerFormValue = z.infer<typeof addCareerSchema>;
+const AddRoleForm = ({ onCancel }: { onCancel: () => void }) => {
+  const queryClient = useQueryClient();
 
   const form = useForm<CareerFormValue>({
     resolver: zodResolver(addCareerSchema),
@@ -66,8 +64,60 @@ const AddRoleForm = ({
     },
   });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: AddUserCareerHistory,
+    onMutate: async (newCareerFormData: FormData) => {
+      const newCareerObject = {
+        title: newCareerFormData.get("title") as string,
+        company: newCareerFormData.get("company") as string,
+        dateStarted: new Date(newCareerFormData.get("dateStarted") as string),
+        dateEnded: newCareerFormData.get("dateEnded")
+          ? new Date(newCareerFormData.get("dateEnded") as string)
+          : undefined,
+        description: newCareerFormData.get("description") as string | undefined,
+      };
+
+      await queryClient.cancelQueries({ queryKey: ["profile"] });
+
+      const previousProfile = queryClient.getQueryData(["profile"]);
+
+      queryClient.setQueryData(["profile"], (old: any) => ({
+        ...old,
+        previousCareers: [
+          ...(old.previousCareers || []),
+          { ...newCareerObject, id: `temp-${Date.now()}` },
+        ],
+      }));
+
+      return { previousProfile };
+    },
+    onError: (err, newRole, context) => {
+      if (context?.previousProfile) {
+        queryClient.setQueryData(["profile"], context.previousProfile);
+      }
+      toast.error("Failed to save role", { description: err.message });
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      onCancel();
+    },
+  });
+
   function onSubmit(values: CareerFormValue) {
-    onSave(values);
+    const formData = new FormData();
+
+    formData.append("title", values.title);
+    formData.append("company", values.company);
+    formData.append("dateStarted", values.dateStarted.toISOString());
+    if (values.dateEnded) {
+      formData.append("dateEnded", values.dateEnded.toISOString());
+    }
+    if (values.description) {
+      formData.append("description", values.description);
+    }
+
+    mutate(formData);
   }
 
   return (
@@ -215,32 +265,31 @@ const AddRoleForm = ({
   );
 };
 
-// --- Main Page Component ---
 const InterceptedProfilePage = () => {
   const router = useRouter();
-  const [profileData, setProfileData] = useState<
-    (User & { summary?: string }) | null
-  >(null);
+
   const [editingSummary, setEditingSummary] = useState(false);
   const [sheetContent, setSheetContent] = useState<SheetContentType>(null);
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/profile`
-        );
-        if (!response.ok) {
-          throw new Error("There is an error while fetching profile data");
-        }
-        const data = await response.json();
-        setProfileData(data.data);
-      } catch (error) {
-        console.error(error);
+  const { data: profileData, isLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/profile`
+      );
+
+      if (!response.ok) {
+        throw new Error("failed to fetch profile data");
       }
-    };
-    fetchProfileData();
-  }, []);
+
+      const data = await response.json();
+
+      return data.data as User & {
+        summary?: string;
+        previousCareers?: CareerHistory[];
+      };
+    },
+  });
 
   const renderSheetTitle = () => {
     switch (sheetContent) {
@@ -258,19 +307,13 @@ const InterceptedProfilePage = () => {
   const renderSheetContent = () => {
     switch (sheetContent) {
       case "addRole":
-        return (
-          <AddRoleForm
-            onSave={(data) => {
-              console.log("Data from form:", data);
-              setSheetContent(null);
-            }}
-            onCancel={() => setSheetContent(null)}
-          />
-        );
+        return <AddRoleForm onCancel={() => setSheetContent(null)} />;
       default:
         return null;
     }
   };
+
+  console.log(profileData);
 
   return (
     <>
@@ -314,12 +357,22 @@ const InterceptedProfilePage = () => {
 
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">Career History</h2>
-              <CareerCard
-                title="Information Tech Intern"
-                company="Palawan Pawnshop"
-                dateStarted={new Date("2024-02-01")}
-                dateEnded={new Date("2024-05-24")}
-              />
+              {profileData?.previousCareers &&
+              profileData?.previousCareers?.length > 0 ? (
+                profileData?.previousCareers?.map((career: CareerHistory) => (
+                  <CareerCard
+                    company={career.company}
+                    dateEnded={career.dateEnded}
+                    dateStarted={career.dateStarted}
+                    title={career.title}
+                    key={career.id}
+                  />
+                ))
+              ) : isLoading ? (
+                <Spinner className="m-4" />
+              ) : (
+                <p>no career history</p>
+              )}
               <Button
                 variant={"outline"}
                 onClick={() => setSheetContent("addRole")}

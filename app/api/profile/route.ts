@@ -20,6 +20,7 @@ export const GET = async (req: Request) => {
       },
       include: {
         resumes: true,
+        previousCareers: true,
       },
     });
 
@@ -37,8 +38,6 @@ export const GET = async (req: Request) => {
       orderBy: { createdAt: "desc" },
       include: { resume: true },
     });
-
-    console.log(user);
 
     return NextResponse.json(
       { data: { ...user, lastUsedResume: lastApplication?.resumeId || null } },

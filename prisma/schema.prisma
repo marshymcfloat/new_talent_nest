@@ -91,7 +91,7 @@ model CareerHistory {
   title String
   company String
   dateStarted DateTime
-  dateEnded DateTime
+  dateEnded DateTime?
   description String?
 
   userId String 
