@@ -23,7 +23,7 @@ const Navbar = () => {
         className={cn(
           "flex w-full items-center justify-between px-4 sm:px-8 py-4",
           "sticky top-0 z-50",
-          "bg-zinc-950/70 backdrop-blur-lg",
+          "bg-zinc-950/70 ",
           "border-b border-white/10"
         )}
       >
@@ -58,7 +58,7 @@ const Navbar = () => {
       </header>
 
       {isMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-zinc-950/95 backdrop-blur-xl md:hidden">
+        <div className="fixed inset-0 z-50 bg-zinc-950/95  md:hidden">
           <div className="flex items-center justify-between px-4 sm:px-8 py-4 border-b border-white/10">
             <Link
               href="/"

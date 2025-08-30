@@ -40,7 +40,7 @@ const AuthButton = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.15, ease: "easeInOut" }}
                 exit={{ opacity: 0, scale: 0 }}
-                className="bg-gradient-to-tl from-purple-950/80 text-white to-purple-400/60 z-50 gap-4 backdrop-blur-2xl rounded-tr-none  shadow-2xl   origin-top-right flex flex-col p-4 rounded-4xl lg:min-w-[200px] absolute bottom-[-230px] right-10"
+                className="bg-gradient-to-tl from-purple-950/80 text-white to-purple-400/60 z-50 gap-4 backdrop-blur-[2px] rounded-tr-none  shadow-2xl   origin-top-right flex flex-col p-4 rounded-4xl lg:min-w-[200px] absolute bottom-[-230px] right-10"
               >
                 <h1 className="text-md text-white">
                   Hi, <span className="font-medium">{session.user.name}</span>
