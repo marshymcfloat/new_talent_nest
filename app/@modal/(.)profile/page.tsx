@@ -28,18 +28,19 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addSumarrySchema } from "@/lib/zod schemas/profileSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { addUserSummary } from "@/lib/actions/profileActions";
 import AddEducationForm from "@/components/AddEducationForm";
 import EducationCard from "@/components/EducationCard";
 import { Card, CardTitle } from "@/components/ui/card";
+import { Loader2 } from "lucide-react";
 type SheetContentType = "addRole" | "editRole" | "addEducation" | null;
+
+type ProfileData = User & {
+  summary?: string;
+  previousCareers: CareerHistory[];
+  education: Education[];
+};
 
 type AddingSummaryValue = z.infer<typeof addSumarrySchema>;
 
@@ -59,7 +60,7 @@ const InterceptedProfilePage = () => {
 
   const { data: profileData, isLoading } = useQuery({
     queryKey: ["profile"],
-    queryFn: async () => {
+    queryFn: async (): Promise<ProfileData> => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/profile`
       );
@@ -70,11 +71,7 @@ const InterceptedProfilePage = () => {
 
       const data = await response.json();
 
-      return data.data as User & {
-        summary?: string;
-        previousCareers: CareerHistory[];
-        education: Education[];
-      };
+      return data.data;
     },
   });
 
@@ -104,23 +101,22 @@ const InterceptedProfilePage = () => {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["profile"],
-    mutationFn: async (summaryFormData: FormData) => {
-      return await addUserSummary(summaryFormData);
-    },
+    mutationFn: addUserSummary,
     onMutate: async (summaryFormData: FormData) => {
       await queryClient.cancelQueries({ queryKey: ["profile"] });
 
-      const previousProfile = queryClient.getQueryData<User>(["profile"]);
+      const previousProfile = queryClient.getQueryData<ProfileData>([
+        "profile",
+      ]);
 
       const newSummary = summaryFormData.get("summary") as string;
-      queryClient.setQueryData(["profile"], (old: any) => {
-        if (!old) return old;
+      queryClient.setQueryData<ProfileData | undefined>(["profile"], (old) => {
+        if (!old) return undefined;
         return {
           ...old,
           summary: newSummary,
         };
       });
-
       return { previousProfile };
     },
     onError: (err, _, context) => {
@@ -136,8 +132,8 @@ const InterceptedProfilePage = () => {
   const onSubmit = async (value: AddingSummaryValue) => {
     const formData = new FormData();
     formData.append("summary", value.summary);
-
     mutate(formData);
+    setEditingSummary(false);
   };
 
   return (
@@ -190,14 +186,27 @@ const InterceptedProfilePage = () => {
                           ></FormField>
                         </>
                       )}
-                      <Button
-                        variant="outline"
-                        className="cursor-pointer"
-                        type="submit"
-                        onClick={() => setEditingSummary((prev) => !prev)}
-                      >
-                        {editingSummary ? "Save" : "Add Summary"}
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          type="submit"
+                          disabled={isPending}
+                        >
+                          {isPending && (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          )}
+                          Save
+                        </Button>
+                        {editingSummary && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            onClick={() => setEditingSummary(false)}
+                          >
+                            Cancel
+                          </Button>
+                        )}
+                      </div>
                     </>
                   )}
                 </form>
@@ -231,7 +240,7 @@ const InterceptedProfilePage = () => {
               </Button>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-4">
               <h2 className="text-xl font-semibold">Education History</h2>
 
               <div className="space-y-4 flex flex-col">
@@ -249,7 +258,11 @@ const InterceptedProfilePage = () => {
                   )
                 ) : (
                   <Card className="flex justify-center items-center">
-                    <h1 className="font-bold">No Educational history</h1>
+                    {isLoading ? (
+                      <Spinner className="animate-spin " />
+                    ) : (
+                      <h1 className="font-bold">No Educational history</h1>
+                    )}
                   </Card>
                 )}
               </div>

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -28,18 +30,52 @@ import {
 import { Textarea } from "./ui/textarea";
 import { addUserEducation } from "@/lib/actions/profileActions";
 import { toast } from "sonner";
+import { User, Education, CareerHistory } from "@prisma/client";
 
+// --- Type Definitions ---
+
+// The structure of a single university from the HipoLabs API
 type University = {
   name: string;
   country: string;
 };
 
-const currentYear = new Date().getFullYear();
+// The shape of the data stored in the "profile" query cache.
+// This is crucial for providing type safety to React Query.
+type ProfileData = User & {
+  education: Education[];
+  previousCareers: CareerHistory[];
+  summary?: string;
+};
 
+// Type for the form values, inferred from your Zod schema
+type AddEducationValue = z.infer<typeof addEducationSchema>;
+
+// --- Constants & Helpers ---
+
+const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
 const months = Array.from({ length: 12 }, (_, i) =>
   new Date(0, i).toLocaleString("default", { month: "short" })
 );
+
+// Helper map to convert month names (e.g., "Sep") to numbers (e.g., 9)
+const monthNameToNumber: { [key: string]: number } = {
+  Jan: 1,
+  Feb: 2,
+  Mar: 3,
+  Apr: 4,
+  May: 5,
+  Jun: 6,
+  Jul: 7,
+  Aug: 8,
+  Sep: 9,
+  Oct: 10,
+  Nov: 11,
+  Dec: 12,
+};
+
+// API fetching function for the universities autocomplete
 const fetchUniversities = async (query: string): Promise<University[]> => {
   if (!query) return [];
   const response = await fetch(
@@ -51,9 +87,9 @@ const fetchUniversities = async (query: string): Promise<University[]> => {
   return response.json();
 };
 
-const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
-  type AddEducationValue = z.infer<typeof addEducationSchema>;
+// --- The Component ---
 
+const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
   const queryClient = useQueryClient();
   const form = useForm<AddEducationValue>({
     resolver: zodResolver(addEducationSchema),
@@ -101,30 +137,46 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
   const { mutate, isPending } = useMutation({
     mutationKey: ["profile"],
     mutationFn: addUserEducation,
-
     onMutate: async (newEducationData: AddEducationValue) => {
       await queryClient.cancelQueries({ queryKey: ["profile"] });
 
-      const previousProfile = queryClient.getQueryData(["profile"]);
+      const previousProfile = queryClient.getQueryData<ProfileData>([
+        "profile",
+      ]);
 
-      queryClient.setQueryData(["profile"], (old: any) => {
-        const existingEducations = old?.educationHistory || [];
+      queryClient.setQueryData<ProfileData | undefined>(["profile"], (old) => {
+        if (!old) {
+          return undefined;
+        }
+
+        const tempEducation: Education = {
+          id: `temp-${Date.now()}`,
+          userId: old.id,
+          course: newEducationData.course,
+          institution: newEducationData.institution,
+          isComplete: newEducationData.isComplete,
+          highlight: newEducationData.highlights || null,
+          finishedYear: newEducationData.finishedYear
+            ? parseInt(newEducationData.finishedYear, 10)
+            : null,
+          expectedFinishMonth: newEducationData.expectedFinishMonth
+            ? monthNameToNumber[newEducationData.expectedFinishMonth]
+            : null,
+          expectedFinishYear: newEducationData.expectedFinishYear
+            ? parseInt(newEducationData.expectedFinishYear, 10)
+            : null,
+        };
+
+        const existingEducations = old.education || [];
 
         return {
           ...old,
-          educationHistory: [
-            ...existingEducations,
-            {
-              ...newEducationData,
-              id: `temp-${Date.now()}`,
-            },
-          ],
+          education: [...existingEducations, tempEducation],
         };
       });
 
       return { previousProfile };
     },
-
     onError: (err, newEducation, context) => {
       if (context?.previousProfile) {
         queryClient.setQueryData(["profile"], context.previousProfile);
@@ -133,12 +185,12 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
         description: err.message,
       });
     },
-
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       onCancel();
     },
   });
+
   const onSubmit = (values: AddEducationValue) => {
     mutate(values);
   };
@@ -186,7 +238,6 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
                     onFocus={() => setIsDropdownOpen(true)}
                   />
                 </FormControl>
-
                 {isDropdownOpen && debouncedSearchQuery && (
                   <Card className="absolute top-full mt-2 w-full z-10 max-h-60 overflow-y-auto">
                     <CardContent className="p-1">
@@ -207,25 +258,24 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
                             No institutions found.
                           </p>
                         )}
-                      {universities &&
-                        universities.map((uni, index) => (
-                          <div
-                            key={`${uni.name}-${index}`}
-                            className="p-2 hover:bg-accent rounded-md cursor-pointer text-sm"
-                            onClick={() => {
-                              form.setValue("institution", uni.name, {
-                                shouldValidate: true,
-                              });
-                              setSearchQuery(uni.name);
-                              setIsDropdownOpen(false);
-                            }}
-                          >
-                            <p className="font-medium">{uni.name}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {uni.country}
-                            </p>
-                          </div>
-                        ))}
+                      {universities?.map((uni, index) => (
+                        <div
+                          key={`${uni.name}-${index}`}
+                          className="p-2 hover:bg-accent rounded-md cursor-pointer text-sm"
+                          onClick={() => {
+                            form.setValue("institution", uni.name, {
+                              shouldValidate: true,
+                            });
+                            setSearchQuery(uni.name);
+                            setIsDropdownOpen(false);
+                          }}
+                        >
+                          <p className="font-medium">{uni.name}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {uni.country}
+                          </p>
+                        </div>
+                      ))}
                     </CardContent>
                   </Card>
                 )}
@@ -239,21 +289,19 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
           name="isComplete"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex">
+            <FormItem className="flex flex-row items-start space-x-2">
               <FormControl>
                 <Checkbox
                   checked={field.value}
-                  onCheckedChange={(checked) =>
-                    field.onChange(checked === true)
-                  }
+                  onCheckedChange={field.onChange}
                 />
               </FormControl>
-              <FormLabel className="text-sm font-normal">
-                Qualification complete
-              </FormLabel>
+              <div className="space-y-1 leading-none">
+                <FormLabel>Qualification complete</FormLabel>
+              </div>
             </FormItem>
           )}
-        ></FormField>
+        />
 
         {form.watch("isComplete") ? (
           <FormField
@@ -292,8 +340,7 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
               Expected finish{" "}
               <span className="font-light text-sm">(optional)</span>
             </FormLabel>
-
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
               <FormField
                 name="expectedFinishMonth"
                 control={form.control}
@@ -365,20 +412,18 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
                   placeholder="Add activities, projects, awards or achievements during your study."
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
-        ></FormField>
+        />
+
         <p className="text-xs font-light">
           Stay safe. Don’t include sensitive personal information such as
           identity documents, health, race, religion or financial data.
         </p>
+
         <div className="flex justify-end gap-2 pt-4">
-          <Button
-            type="button"
-            onClick={onCancel}
-            variant={"ghost"}
-            className="/* your cancel button styles */"
-          >
+          <Button type="button" onClick={onCancel} variant={"ghost"}>
             Cancel
           </Button>
           <Button type="submit" disabled={isPending}>

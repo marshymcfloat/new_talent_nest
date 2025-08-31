@@ -1,6 +1,7 @@
-import { AddUserCareerHistory } from "@/lib/actions/profileActions";
-import { addCareerSchema } from "@/lib/zod schemas/profileSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
+// src/components/AddRoleForm.tsx
+
+"use client";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { Form } from "./ui/form";
@@ -22,8 +23,18 @@ import { Calendar } from "./ui/calendar";
 import { Textarea } from "./ui/textarea";
 import { format } from "date-fns";
 import { z } from "zod";
+import { User, CareerHistory, Education } from "@prisma/client";
+import { addCareerSchema } from "@/lib/zod schemas/profileSchema";
+import { AddUserCareerHistory } from "@/lib/actions/profileActions";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type CareerFormValue = z.infer<typeof addCareerSchema>;
+
+type ProfileData = User & {
+  previousCareers: CareerHistory[];
+  education: Education[];
+  summary?: string;
+};
 
 const AddRoleForm = ({ onCancel }: { onCancel: () => void }) => {
   const queryClient = useQueryClient();
@@ -42,27 +53,39 @@ const AddRoleForm = ({ onCancel }: { onCancel: () => void }) => {
   const { mutate, isPending } = useMutation({
     mutationFn: AddUserCareerHistory,
     onMutate: async (newCareerFormData: FormData) => {
-      const newCareerObject = {
-        title: newCareerFormData.get("title") as string,
-        company: newCareerFormData.get("company") as string,
-        dateStarted: new Date(newCareerFormData.get("dateStarted") as string),
-        dateEnded: newCareerFormData.get("dateEnded")
-          ? new Date(newCareerFormData.get("dateEnded") as string)
-          : undefined,
-        description: newCareerFormData.get("description") as string | undefined,
-      };
-
       await queryClient.cancelQueries({ queryKey: ["profile"] });
 
-      const previousProfile = queryClient.getQueryData(["profile"]);
+      const previousProfile = queryClient.getQueryData<ProfileData>([
+        "profile",
+      ]);
 
-      queryClient.setQueryData(["profile"], (old: any) => ({
-        ...old,
-        previousCareers: [
-          ...(old.previousCareers || []),
-          { ...newCareerObject, id: `temp-${Date.now()}` },
-        ],
-      }));
+      queryClient.setQueryData<ProfileData | undefined>(["profile"], (old) => {
+        if (!old) {
+          return undefined;
+        }
+
+        const tempCareer: CareerHistory = {
+          id: `temp-${Date.now()}`,
+          userId: old.id,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+
+          title: newCareerFormData.get("title") as string,
+          company: newCareerFormData.get("company") as string,
+          dateStarted: new Date(newCareerFormData.get("dateStarted") as string),
+          dateEnded: newCareerFormData.get("dateEnded")
+            ? new Date(newCareerFormData.get("dateEnded") as string)
+            : null,
+          description: (newCareerFormData.get("description") as string) || null,
+        };
+
+        const existingCareers = old.previousCareers || [];
+
+        return {
+          ...old,
+          previousCareers: [...existingCareers, tempCareer],
+        };
+      });
 
       return { previousProfile };
     },
@@ -72,7 +95,6 @@ const AddRoleForm = ({ onCancel }: { onCancel: () => void }) => {
       }
       toast.error("Failed to save role", { description: err.message });
     },
-
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       onCancel();
@@ -81,7 +103,6 @@ const AddRoleForm = ({ onCancel }: { onCancel: () => void }) => {
 
   function onSubmit(values: CareerFormValue) {
     const formData = new FormData();
-
     formData.append("title", values.title);
     formData.append("company", values.company);
     formData.append("dateStarted", values.dateStarted.toISOString());
@@ -91,7 +112,6 @@ const AddRoleForm = ({ onCancel }: { onCancel: () => void }) => {
     if (values.description) {
       formData.append("description", values.description);
     }
-
     mutate(formData);
   }
 
