@@ -16,22 +16,37 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CareerHistory, User } from "@prisma/client";
 import { Textarea } from "@/components/ui/textarea";
 import CareerCard from "@/components/CareerCard";
-
+import { z } from "zod";
 import Spinner from "@/components/Spinner";
 import AddRoleForm from "@/components/AddRoleForm";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { addSumarrySchema } from "@/lib/zod schemas/profileSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { addUserSummary } from "@/lib/actions/profileActions";
 type SheetContentType = "addRole" | "editRole" | "addEducation" | null;
+
+type AddingSummaryValue = z.infer<typeof addSumarrySchema>;
 
 const InterceptedProfilePage = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const [editingSummary, setEditingSummary] = useState(false);
   const [sheetContent, setSheetContent] = useState<SheetContentType>(null);
+
+  const form = useForm<AddingSummaryValue>({
+    resolver: zodResolver(addSumarrySchema),
+    defaultValues: {
+      summary: "",
+    },
+  });
 
   const { data: profileData, isLoading } = useQuery({
     queryKey: ["profile"],
@@ -76,6 +91,43 @@ const InterceptedProfilePage = () => {
   };
 
   console.log(profileData);
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["profile"],
+    mutationFn: async (summaryFormData: FormData) => {
+      return await addUserSummary(summaryFormData);
+    },
+    onMutate: async (summaryFormData: FormData) => {
+      await queryClient.cancelQueries({ queryKey: ["profile"] });
+
+      const previousProfile = queryClient.getQueryData<User>(["profile"]);
+
+      const newSummary = summaryFormData.get("summary") as string;
+      queryClient.setQueryData(["profile"], (old: any) => {
+        if (!old) return old;
+        return {
+          ...old,
+          summary: newSummary,
+        };
+      });
+
+      return { previousProfile };
+    },
+    onError: (err, _, context) => {
+      if (context?.previousProfile) {
+        queryClient.setQueryData(["profile"], context.previousProfile);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+    },
+  });
+
+  const onSubmit = async (value: AddingSummaryValue) => {
+    const formData = new FormData();
+    formData.append("summary", value.summary);
+
+    mutate(formData);
+  };
 
   return (
     <>
@@ -96,28 +148,50 @@ const InterceptedProfilePage = () => {
 
           <div className="flex-grow overflow-y-auto pr-4 -mr-4 space-y-8 py-4">
             <div className="space-y-2">
-              <h2 className="text-xl font-semibold">Personal Summary</h2>
-              {profileData?.summary ? (
-                <p>{profileData.summary}</p>
-              ) : (
-                <>
-                  <p className="text-sm text-muted-foreground">
-                    {editingSummary
-                      ? "Highlight your unique experiences, ambitions and strengths."
-                      : "You haven't added a summary yet."}
-                  </p>
-                  {editingSummary && <Textarea />}
-                  <Button
-                    variant="outline"
-                    onClick={() => setEditingSummary((prev) => !prev)}
-                  >
-                    {editingSummary ? "Save" : "Add Summary"}
-                  </Button>
-                </>
-              )}
+              <Form {...form}>
+                <form
+                  action=""
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="flex flex-col gap-2"
+                >
+                  <h2 className="text-xl font-semibold">Personal Summary</h2>
+                  {profileData?.summary ? (
+                    <p className="font-light">{profileData.summary}</p>
+                  ) : (
+                    <>
+                      <p className="text-sm text-muted-foreground">
+                        {editingSummary
+                          ? "Highlight your unique experiences, ambitions and strengths."
+                          : "You haven't added a summary yet."}
+                      </p>
+                      {editingSummary && (
+                        <>
+                          <FormField
+                            name="summary"
+                            control={form.control}
+                            render={({ field }) => (
+                              <FormItem>
+                                <Textarea {...field} />
+                              </FormItem>
+                            )}
+                          ></FormField>
+                        </>
+                      )}
+                      <Button
+                        variant="outline"
+                        className="cursor-pointer"
+                        type="submit"
+                        onClick={() => setEditingSummary((prev) => !prev)}
+                      >
+                        {editingSummary ? "Save" : "Add Summary"}
+                      </Button>
+                    </>
+                  )}
+                </form>
+              </Form>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-4 flex flex-col">
               <h2 className="text-xl font-semibold">Career History</h2>
               {profileData?.previousCareers &&
               profileData?.previousCareers?.length > 0 ? (
@@ -131,12 +205,13 @@ const InterceptedProfilePage = () => {
                   />
                 ))
               ) : isLoading ? (
-                <Spinner className="m-4" />
+                <Spinner className="m-4 " />
               ) : (
                 <p>no career history</p>
               )}
               <Button
                 variant={"outline"}
+                className="max-w-[120px] cursor-pointer"
                 onClick={() => setSheetContent("addRole")}
               >
                 Add Role

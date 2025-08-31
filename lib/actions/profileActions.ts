@@ -4,15 +4,47 @@ import { z } from "zod";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 import { prisma } from "../prisma";
-import { addCareerSchema } from "../zod schemas/profileSchema";
+import {
+  addCareerSchema,
+  addSumarrySchema,
+} from "../zod schemas/profileSchema";
 import { revalidatePath } from "next/cache";
+
+export const addUserSummary = async (formData: FormData) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user.id) throw new Error("You must log in first");
+
+    const rawData = {
+      summary: formData.get("summary"),
+    };
+
+    const validationResult = await addSumarrySchema.safeParse(rawData);
+
+    if (!validationResult.success) throw new Error("Invalid input");
+
+    const updatedUser = await prisma.user.update({
+      where: { id: session.user.id },
+      data: { summary: validationResult.data.summary },
+    });
+
+    return updatedUser;
+  } catch (err) {
+    console.error(err);
+    if (err instanceof Error) {
+      return { error: err.message };
+    }
+    return { error: "Unexpected error occured" };
+  }
+};
 
 export const AddUserCareerHistory = async (formData: FormData) => {
   try {
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {
-      throw new Error("You must be logged in.");
+      throw new Error("You must log in.");
     }
 
     const rawData = {

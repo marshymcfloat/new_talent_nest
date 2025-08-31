@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+export const addSumarrySchema = z.object({
+  summary: z
+    .string()
+    .min(6, { message: "Summary should have at least 6 characters." })
+    .max(500, { message: "summary shoud not exceed 500 characters." }),
+});
+
 export const addCareerSchema = z
   .object({
     title: z
