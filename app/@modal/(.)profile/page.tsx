@@ -32,7 +32,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { addUserSummary } from "@/lib/actions/profileActions";
 import AddEducationForm from "@/components/AddEducationForm";
 import EducationCard from "@/components/EducationCard";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 type SheetContentType = "addRole" | "editRole" | "addEducation" | null;
 
@@ -167,9 +167,9 @@ const InterceptedProfilePage = () => {
                   ) : (
                     <>
                       <p className="text-sm text-muted-foreground">
-                        {editingSummary
-                          ? "Highlight your unique experiences, ambitions and strengths."
-                          : "You haven't added a summary yet."}
+                        {!profileData?.summary && !editingSummary
+                          ? "You haven&apos;t added a summary yet."
+                          : "Highlight your unique experiences, ambitions and strengths."}
                       </p>
                       {editingSummary && (
                         <>
