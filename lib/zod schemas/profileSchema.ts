@@ -44,3 +44,51 @@ export const addCareerSchema = z
       });
     }
   });
+
+const currentYear = new Date().getFullYear();
+const years = Array.from({ length: 100 }, (_, i) =>
+  (currentYear - i).toString()
+);
+
+export const addEducationSchema = z
+  .object({
+    course: z
+      .string()
+      .min(1, { message: "Course or qualification is required." })
+      .max(100, { message: "This field should not exceed 100 characters." }),
+
+    institution: z.string().min(1, { message: "Institution is required." }),
+
+    isComplete: z.boolean(),
+
+    expectedFinishMonth: z.string().optional(),
+    expectedFinishYear: z.string().optional(),
+
+    finishedYear: z.enum(["", ...years]).optional(),
+
+    highlights: z
+      .string()
+      .max(2000, { message: "Highlights should not exceed 2000 characters." })
+      .optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.isComplete) {
+      if (data.expectedFinishMonth || data.expectedFinishYear) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            "Cannot provide an expected finish date for a completed qualification.",
+          path: ["expectedFinishYear"],
+        });
+      }
+    } else {
+      if (data.finishedYear) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            "Cannot provide a finish date for an incomplete qualification.",
+          path: ["finishedYear"],
+        });
+      }
+    }
+  });

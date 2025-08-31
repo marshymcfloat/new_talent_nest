@@ -4,43 +4,51 @@ export const EducationGroupByResultSchema = z.array(z.object({
   userId: z.string(),
   course: z.string(),
   institution: z.string(),
-  dateStarted: z.date(),
-  dateEnded: z.date(),
   highlight: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  isComplete: z.boolean(),
+  finishedYear: z.number().int(),
+  expectedFinishMonth: z.number().int(),
+  expectedFinishYear: z.number().int(),
   _count: z.object({
     id: z.number(),
     userId: z.number(),
     user: z.number(),
     course: z.number(),
     institution: z.number(),
-    dateStarted: z.number(),
-    dateEnded: z.number(),
     highlight: z.number(),
-    createdAt: z.number(),
-    updatedAt: z.number()
+    isComplete: z.number(),
+    finishedYear: z.number(),
+    expectedFinishMonth: z.number(),
+    expectedFinishYear: z.number()
   }).optional(),
+  _sum: z.object({
+    finishedYear: z.number().nullable(),
+    expectedFinishMonth: z.number().nullable(),
+    expectedFinishYear: z.number().nullable()
+  }).nullable().optional(),
+  _avg: z.object({
+    finishedYear: z.number().nullable(),
+    expectedFinishMonth: z.number().nullable(),
+    expectedFinishYear: z.number().nullable()
+  }).nullable().optional(),
   _min: z.object({
     id: z.string().nullable(),
     userId: z.string().nullable(),
     course: z.string().nullable(),
     institution: z.string().nullable(),
-    dateStarted: z.date().nullable(),
-    dateEnded: z.date().nullable(),
     highlight: z.string().nullable(),
-    createdAt: z.date().nullable(),
-    updatedAt: z.date().nullable()
+    finishedYear: z.number().int().nullable(),
+    expectedFinishMonth: z.number().int().nullable(),
+    expectedFinishYear: z.number().int().nullable()
   }).nullable().optional(),
   _max: z.object({
     id: z.string().nullable(),
     userId: z.string().nullable(),
     course: z.string().nullable(),
     institution: z.string().nullable(),
-    dateStarted: z.date().nullable(),
-    dateEnded: z.date().nullable(),
     highlight: z.string().nullable(),
-    createdAt: z.date().nullable(),
-    updatedAt: z.date().nullable()
+    finishedYear: z.number().int().nullable(),
+    expectedFinishMonth: z.number().int().nullable(),
+    expectedFinishYear: z.number().int().nullable()
   }).nullable().optional()
 }));

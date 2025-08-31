@@ -8,11 +8,11 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   user: z.union([z.boolean(), z.lazy(() => UserArgsObjectSchema)]).optional(),
   course: z.boolean().optional(),
   institution: z.boolean().optional(),
-  dateStarted: z.boolean().optional(),
-  dateEnded: z.boolean().optional(),
   highlight: z.boolean().optional(),
-  createdAt: z.boolean().optional(),
-  updatedAt: z.boolean().optional()
+  isComplete: z.boolean().optional(),
+  finishedYear: z.boolean().optional(),
+  expectedFinishMonth: z.boolean().optional(),
+  expectedFinishYear: z.boolean().optional()
 }).strict();
 export const EducationSelectObjectSchema: z.ZodType<Prisma.EducationSelect> = makeSchema() as unknown as z.ZodType<Prisma.EducationSelect>;
 export const EducationSelectObjectZodSchema = makeSchema();

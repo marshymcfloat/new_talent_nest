@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { CareerHistory, User } from "@prisma/client";
+import { CareerHistory, Education, User } from "@prisma/client";
 import { Textarea } from "@/components/ui/textarea";
 import CareerCard from "@/components/CareerCard";
 import { z } from "zod";
@@ -28,8 +28,17 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addSumarrySchema } from "@/lib/zod schemas/profileSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { addUserSummary } from "@/lib/actions/profileActions";
+import AddEducationForm from "@/components/AddEducationForm";
+import EducationCard from "@/components/EducationCard";
+import { Card, CardTitle } from "@/components/ui/card";
 type SheetContentType = "addRole" | "editRole" | "addEducation" | null;
 
 type AddingSummaryValue = z.infer<typeof addSumarrySchema>;
@@ -63,7 +72,8 @@ const InterceptedProfilePage = () => {
 
       return data.data as User & {
         summary?: string;
-        previousCareers?: CareerHistory[];
+        previousCareers: CareerHistory[];
+        education: Education[];
       };
     },
   });
@@ -85,12 +95,13 @@ const InterceptedProfilePage = () => {
     switch (sheetContent) {
       case "addRole":
         return <AddRoleForm onCancel={() => setSheetContent(null)} />;
+      case "addEducation":
+        return <AddEducationForm onCancel={() => setSheetContent(null)} />;
       default:
         return null;
     }
   };
 
-  console.log(profileData);
   const { mutate, isPending } = useMutation({
     mutationKey: ["profile"],
     mutationFn: async (summaryFormData: FormData) => {
@@ -171,7 +182,9 @@ const InterceptedProfilePage = () => {
                             control={form.control}
                             render={({ field }) => (
                               <FormItem>
-                                <Textarea {...field} />
+                                <FormControl>
+                                  <Textarea {...field} />
+                                </FormControl>
                               </FormItem>
                             )}
                           ></FormField>
@@ -219,7 +232,34 @@ const InterceptedProfilePage = () => {
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-xl font-semibold">Education</h2>
+              <h2 className="text-xl font-semibold">Education History</h2>
+
+              <div className="space-y-4 flex flex-col">
+                {profileData && profileData.education?.length > 0 ? (
+                  profileData.education.map(
+                    ({ course, institution, isComplete, id, finishedYear }) => (
+                      <EducationCard
+                        key={id}
+                        course={course}
+                        institution={institution}
+                        isComplete={isComplete}
+                        finishedYear={finishedYear}
+                      />
+                    )
+                  )
+                ) : (
+                  <Card className="flex justify-center items-center">
+                    <h1 className="font-bold">No Educational history</h1>
+                  </Card>
+                )}
+              </div>
+              <Button
+                className="max-w-[120px] cursor-pointer"
+                variant={"outline"}
+                onClick={() => setSheetContent("addEducation")}
+              >
+                Add Education
+              </Button>
             </div>
             <div className="space-y-2">
               <h2 className="text-xl font-semibold">Languages</h2>

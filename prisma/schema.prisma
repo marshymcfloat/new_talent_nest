@@ -103,19 +103,18 @@ model CareerHistory {
 }
 
 model Education {
-  id String @id @default(cuid())
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
 
-  userId String
-  user User @relation(fields: [userId], references: [id])
-
-  course String
+  course      String
   institution String
-  dateStarted DateTime
-  dateEnded DateTime
-  highlight String?
+  highlight   String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isComplete        Boolean  
+  finishedYear      Int?     
+  expectedFinishMonth Int?   
+  expectedFinishYear  Int?   
 }
 
 model LicenceAndCertificate {

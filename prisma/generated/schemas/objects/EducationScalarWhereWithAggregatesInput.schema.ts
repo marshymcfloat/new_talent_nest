@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
-import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
-import { StringNullableWithAggregatesFilterObjectSchema } from './StringNullableWithAggregatesFilter.schema'
+import { StringNullableWithAggregatesFilterObjectSchema } from './StringNullableWithAggregatesFilter.schema';
+import { BoolWithAggregatesFilterObjectSchema } from './BoolWithAggregatesFilter.schema';
+import { IntNullableWithAggregatesFilterObjectSchema } from './IntNullableWithAggregatesFilter.schema'
 
 const makeSchema = (): z.ZodObject<any> => z.object({
   AND: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
@@ -12,11 +13,11 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   course: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   institution: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
-  dateStarted: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional(),
-  dateEnded: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional(),
   highlight: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
-  createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional(),
-  updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional()
+  isComplete: z.union([z.lazy(() => BoolWithAggregatesFilterObjectSchema), z.boolean()]).optional(),
+  finishedYear: z.union([z.lazy(() => IntNullableWithAggregatesFilterObjectSchema), z.number().int()]).nullish(),
+  expectedFinishMonth: z.union([z.lazy(() => IntNullableWithAggregatesFilterObjectSchema), z.number().int()]).nullish(),
+  expectedFinishYear: z.union([z.lazy(() => IntNullableWithAggregatesFilterObjectSchema), z.number().int()]).nullish()
 }).strict();
 export const EducationScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.EducationScalarWhereWithAggregatesInput> = makeSchema() as unknown as z.ZodType<Prisma.EducationScalarWhereWithAggregatesInput>;
 export const EducationScalarWhereWithAggregatesInputObjectZodSchema = makeSchema();

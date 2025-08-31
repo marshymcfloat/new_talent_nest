@@ -16,7 +16,7 @@ import { Input } from "./ui/input";
 import { Popover, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { PopoverContent } from "@radix-ui/react-popover";
 import { Calendar } from "./ui/calendar";
 import { Textarea } from "./ui/textarea";
@@ -233,7 +233,10 @@ const AddRoleForm = ({ onCancel }: { onCancel: () => void }) => {
           <Button type="button" variant="ghost" onClick={onCancel}>
             Cancel
           </Button>
-          <Button type="submit">Save Role</Button>
+          <Button type="submit" disabled={isPending}>
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Save
+          </Button>
         </div>
       </form>
     </Form>

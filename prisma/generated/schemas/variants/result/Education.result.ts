@@ -7,11 +7,11 @@ export const EducationResultSchema = z.object({
     user: z.unknown(),
     course: z.string(),
     institution: z.string(),
-    dateStarted: z.date(),
-    dateEnded: z.date(),
     highlight: z.string().nullable(),
-    createdAt: z.date(),
-    updatedAt: z.date()
+    isComplete: z.boolean(),
+    finishedYear: z.number().int().nullable(),
+    expectedFinishMonth: z.number().int().nullable(),
+    expectedFinishYear: z.number().int().nullable()
 }).strict();
 
 export type EducationResultType = z.infer<typeof EducationResultSchema>;

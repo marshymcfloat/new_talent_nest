@@ -7,11 +7,11 @@ export const EducationInputSchema = z.object({
     user: z.unknown(),
     course: z.string(),
     institution: z.string(),
-    dateStarted: z.date(),
-    dateEnded: z.date(),
     highlight: z.string().optional().nullable(),
-    createdAt: z.date(),
-    updatedAt: z.date()
+    isComplete: z.boolean(),
+    finishedYear: z.number().int().optional().nullable(),
+    expectedFinishMonth: z.number().int().optional().nullable(),
+    expectedFinishYear: z.number().int().optional().nullable()
 }).strict();
 
 export type EducationInputType = z.infer<typeof EducationInputSchema>;

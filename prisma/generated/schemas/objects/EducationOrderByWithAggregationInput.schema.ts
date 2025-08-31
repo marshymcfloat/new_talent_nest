@@ -3,22 +3,26 @@ import type { Prisma } from '@prisma/client';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
 import { SortOrderInputObjectSchema } from './SortOrderInput.schema';
 import { EducationCountOrderByAggregateInputObjectSchema } from './EducationCountOrderByAggregateInput.schema';
+import { EducationAvgOrderByAggregateInputObjectSchema } from './EducationAvgOrderByAggregateInput.schema';
 import { EducationMaxOrderByAggregateInputObjectSchema } from './EducationMaxOrderByAggregateInput.schema';
-import { EducationMinOrderByAggregateInputObjectSchema } from './EducationMinOrderByAggregateInput.schema'
+import { EducationMinOrderByAggregateInputObjectSchema } from './EducationMinOrderByAggregateInput.schema';
+import { EducationSumOrderByAggregateInputObjectSchema } from './EducationSumOrderByAggregateInput.schema'
 
 const makeSchema = (): z.ZodObject<any> => z.object({
   id: SortOrderSchema.optional(),
   userId: SortOrderSchema.optional(),
   course: SortOrderSchema.optional(),
   institution: SortOrderSchema.optional(),
-  dateStarted: SortOrderSchema.optional(),
-  dateEnded: SortOrderSchema.optional(),
   highlight: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
-  createdAt: SortOrderSchema.optional(),
-  updatedAt: SortOrderSchema.optional(),
+  isComplete: SortOrderSchema.optional(),
+  finishedYear: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  expectedFinishMonth: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  expectedFinishYear: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   _count: z.lazy(() => EducationCountOrderByAggregateInputObjectSchema).optional(),
+  _avg: z.lazy(() => EducationAvgOrderByAggregateInputObjectSchema).optional(),
   _max: z.lazy(() => EducationMaxOrderByAggregateInputObjectSchema).optional(),
-  _min: z.lazy(() => EducationMinOrderByAggregateInputObjectSchema).optional()
+  _min: z.lazy(() => EducationMinOrderByAggregateInputObjectSchema).optional(),
+  _sum: z.lazy(() => EducationSumOrderByAggregateInputObjectSchema).optional()
 }).strict();
 export const EducationOrderByWithAggregationInputObjectSchema: z.ZodType<Prisma.EducationOrderByWithAggregationInput> = makeSchema() as unknown as z.ZodType<Prisma.EducationOrderByWithAggregationInput>;
 export const EducationOrderByWithAggregationInputObjectZodSchema = makeSchema();

@@ -7,11 +7,11 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.string(),
   course: z.string(),
   institution: z.string(),
-  dateStarted: z.date(),
-  dateEnded: z.date(),
   highlight: z.string().nullish(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional()
+  isComplete: z.boolean(),
+  finishedYear: z.number().int().nullish(),
+  expectedFinishMonth: z.number().int().nullish(),
+  expectedFinishYear: z.number().int().nullish()
 }).strict();
 export const EducationUncheckedCreateInputObjectSchema: z.ZodType<Prisma.EducationUncheckedCreateInput> = makeSchema() as unknown as z.ZodType<Prisma.EducationUncheckedCreateInput>;
 export const EducationUncheckedCreateInputObjectZodSchema = makeSchema();

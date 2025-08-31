@@ -21,6 +21,7 @@ export const GET = async (req: Request) => {
       include: {
         resumes: true,
         previousCareers: true,
+        education: true,
       },
     });
 

@@ -9,11 +9,11 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: SortOrderSchema.optional(),
   course: SortOrderSchema.optional(),
   institution: SortOrderSchema.optional(),
-  dateStarted: SortOrderSchema.optional(),
-  dateEnded: SortOrderSchema.optional(),
   highlight: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
-  createdAt: SortOrderSchema.optional(),
-  updatedAt: SortOrderSchema.optional(),
+  isComplete: SortOrderSchema.optional(),
+  finishedYear: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  expectedFinishMonth: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  expectedFinishYear: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputObjectSchema).optional()
 }).strict();
 export const EducationOrderByWithRelationInputObjectSchema: z.ZodType<Prisma.EducationOrderByWithRelationInput> = makeSchema() as unknown as z.ZodType<Prisma.EducationOrderByWithRelationInput>;

@@ -7,11 +7,11 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: SortOrderSchema.optional(),
   course: SortOrderSchema.optional(),
   institution: SortOrderSchema.optional(),
-  dateStarted: SortOrderSchema.optional(),
-  dateEnded: SortOrderSchema.optional(),
   highlight: SortOrderSchema.optional(),
-  createdAt: SortOrderSchema.optional(),
-  updatedAt: SortOrderSchema.optional()
+  isComplete: SortOrderSchema.optional(),
+  finishedYear: SortOrderSchema.optional(),
+  expectedFinishMonth: SortOrderSchema.optional(),
+  expectedFinishYear: SortOrderSchema.optional()
 }).strict();
 export const EducationCountOrderByAggregateInputObjectSchema: z.ZodType<Prisma.EducationCountOrderByAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.EducationCountOrderByAggregateInput>;
 export const EducationCountOrderByAggregateInputObjectZodSchema = makeSchema();

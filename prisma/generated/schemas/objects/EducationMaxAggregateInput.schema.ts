@@ -7,11 +7,11 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.literal(true).optional(),
   course: z.literal(true).optional(),
   institution: z.literal(true).optional(),
-  dateStarted: z.literal(true).optional(),
-  dateEnded: z.literal(true).optional(),
   highlight: z.literal(true).optional(),
-  createdAt: z.literal(true).optional(),
-  updatedAt: z.literal(true).optional()
+  isComplete: z.literal(true).optional(),
+  finishedYear: z.literal(true).optional(),
+  expectedFinishMonth: z.literal(true).optional(),
+  expectedFinishYear: z.literal(true).optional()
 }).strict();
 export const EducationMaxAggregateInputObjectSchema: z.ZodType<Prisma.EducationMaxAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.EducationMaxAggregateInputType>;
 export const EducationMaxAggregateInputObjectZodSchema = makeSchema();
