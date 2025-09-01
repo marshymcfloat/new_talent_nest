@@ -8,7 +8,7 @@ import {
 import { Edit } from "lucide-react";
 import { format } from "date-fns"; // Import the format function
 
-type CareerCardProps = {
+export type CareerCardProps = {
   company: string;
   title: string;
   dateStarted: Date;

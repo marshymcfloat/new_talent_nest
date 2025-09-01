@@ -7,9 +7,10 @@ import { prisma } from "../prisma";
 import {
   addCareerSchema,
   addEducationSchema,
-  addSumarrySchema,
+  summarySchema,
 } from "../zod schemas/profileSchema";
 import { revalidatePath } from "next/cache";
+import { Language } from "@prisma/client";
 
 const monthNameToNumber: { [key: string]: number } = {
   Jan: 1,
@@ -38,15 +39,21 @@ export const addUserSummary = async (formData: FormData) => {
       summary: formData.get("summary"),
     };
 
-    const validationResult = await addSumarrySchema.safeParse(rawData);
+    const validationResult = await summarySchema.safeParse(rawData);
 
-    if (!validationResult.success) throw new Error("Invalid input");
+    if (!validationResult.success) {
+      throw new Error(
+        validationResult.error.flatten().fieldErrors.summary?.[0] ||
+          "Invalid input"
+      );
+    }
 
     const updatedUser = await prisma.user.update({
       where: { id: session.user.id },
       data: { summary: validationResult.data.summary },
     });
 
+    revalidatePath("/profile");
     return updatedUser;
   } catch (err) {
     console.error(err);
@@ -171,6 +178,43 @@ export const addUserEducation = async (values: AddEducationValue) => {
     return { success: true, data: newEducation };
   } catch (err) {
     if (err instanceof Error) {
+      return { error: err.message };
+    }
+    return { error: "An unexpected error occurred." };
+  }
+};
+
+export const updateUserLanguages = async (languages: Language[]) => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      throw new Error("You must be logged in to update languages.");
+    }
+    const userId = session.user.id;
+
+    if (!Array.isArray(languages)) {
+      throw new Error("Invalid input: Expected an array of languages.");
+    }
+
+    const languagesToConnect = languages.map((lang) => ({ id: lang.id }));
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        languages: {
+          set: languagesToConnect,
+        },
+      },
+      include: {
+        languages: true,
+      },
+    });
+
+    revalidatePath("/profile");
+    return { success: true, data: updatedUser.languages };
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("Error in updateUserLanguages action:", err);
       return { error: err.message };
     }
     return { error: "An unexpected error occurred." };
