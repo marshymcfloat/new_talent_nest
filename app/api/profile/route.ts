@@ -16,7 +16,6 @@ export const GET = async (req: Request) => {
       );
     }
 
-    // This query correctly fetches the user and THEIR associated languages
     const user = await prisma.user.findUnique({
       where: {
         id: session.user.id,
@@ -25,7 +24,7 @@ export const GET = async (req: Request) => {
         resumes: true,
         previousCareers: true,
         education: true,
-        languages: true, // This is the user's selected languages
+        languages: true,
       },
     });
 
@@ -44,19 +43,17 @@ export const GET = async (req: Request) => {
       include: { resume: true },
     });
 
-    // This query correctly gets the master list of ALL languages for suggestions
     const allLanguages = await prisma.language.findMany({});
 
-    // Destructure the user's languages and the rest of the user object
     const { languages: userLanguages, ...restOfUser } = user;
 
     return NextResponse.json(
       {
         data: {
-          ...restOfUser, // Spread the rest of the user's data
+          ...restOfUser,
           lastUsedResume: lastApplication?.resumeId || null,
-          userLanguages: userLanguages, // Add the user's selected languages under a new key
-          allLanguages: allLanguages, // Add the master list of languages under its own key
+          userLanguages: userLanguages,
+          allLanguages: allLanguages,
         },
       },
       { status: 200 }

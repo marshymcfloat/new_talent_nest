@@ -81,15 +81,30 @@ export const AddUserCareerHistory = async (formData: FormData) => {
     };
 
     const serverSchema = z.object({
-      ...addCareerSchema.shape,
-      dateStarted: z.preprocess(
-        (val) => (val ? new Date(val as string) : undefined),
-        z.date()
-      ),
+      title: addCareerSchema.shape.title,
+      company: addCareerSchema.shape.company,
+
+      dateStarted: z
+        .preprocess(
+          (val) => (val ? new Date(val as string) : undefined),
+          z.date().optional()
+        )
+        .transform((val, ctx): Date => {
+          if (!val) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: "Start date is required.",
+            });
+            return z.NEVER;
+          }
+          return val;
+        }),
+
       dateEnded: z.preprocess(
         (val) => (val ? new Date(val as string) : undefined),
-        z.date().optional()
+        z.date().optional().nullable()
       ),
+      description: z.string().optional().nullable(),
     });
 
     const validationResult = serverSchema.safeParse(rawData);
@@ -110,22 +125,20 @@ export const AddUserCareerHistory = async (formData: FormData) => {
         company,
         dateStarted,
         title,
-        dateEnded,
-        description: description || null,
+        dateEnded: dateEnded,
+        description: description,
         userId: session.user.id,
       },
     });
-
-    console.log(newCareer);
 
     revalidatePath("/profile");
     return { success: true, data: newCareer };
   } catch (err) {
     console.error("Error in AddUserCareerHistory action:", err);
     if (err instanceof Error) {
-      return { error: err.message };
+      return { success: false, error: err.message };
     }
-    return { error: "An unexpected error occurred." };
+    return { success: false, error: "An unexpected error occurred." };
   }
 };
 
