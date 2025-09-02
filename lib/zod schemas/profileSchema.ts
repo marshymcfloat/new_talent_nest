@@ -7,6 +7,10 @@ const ACCEPTED_RESUME_TYPES = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
 
+const currentYear = new Date().getFullYear();
+const years = Array.from({ length: 100 }, (_, i) =>
+  (currentYear - i).toString()
+);
 export const summarySchema = z.object({
   summary: z
     .string()
@@ -56,11 +60,6 @@ export const addCareerSchema = z
     }
   });
 
-const currentYear = new Date().getFullYear();
-const years = Array.from({ length: 100 }, (_, i) =>
-  (currentYear - i).toString()
-);
-
 export const addEducationSchema = z
   .object({
     course: z
@@ -106,12 +105,10 @@ export const addEducationSchema = z
 
 export const addResumeSchema = z.object({
   name: z.string().min(3, { message: "Title must be at least 3 characters." }),
-  // FIX: Mark as optional(), then refine to ensure it's not undefined on submission
   resume: z
     .custom<File>() // <-- No validation logic here yet
     .optional() // <-- THIS IS THE KEY CHANGE. It allows `undefined`.
     .refine((file) => file, {
-      // <-- This check runs on submit. If `file` is undefined, this fails.
       message: "A resume file is required.",
     })
     .refine((file) => file && file.size <= MAX_FILE_SIZE, {

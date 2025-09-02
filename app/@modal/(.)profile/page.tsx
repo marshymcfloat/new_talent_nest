@@ -32,6 +32,7 @@ import AddRoleForm from "@/components/AddRoleForm";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CareerCardProps } from "@/components/CareerCard";
 import {
   Form,
   FormControl,
@@ -138,6 +139,8 @@ const InterceptedProfilePage = () => {
   const [isAddingResume, setIsAddingResume] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [resumePreview, setResumePreview] = useState<string | null>(null);
+  const [careerHistoryUpdateData, setCareerHistoryUpdateData] =
+    useState<CareerCardProps | null>(null);
 
   const summaryForm = useForm<SummaryFormValue>({
     resolver: zodResolver(summarySchema),
@@ -188,6 +191,14 @@ const InterceptedProfilePage = () => {
         return <AddRoleForm onCancel={() => setSheetContent(null)} />;
       case "addEducation":
         return <AddEducationForm onCancel={() => setSheetContent(null)} />;
+      case "editRole":
+        console.log("meow");
+        return (
+          <AddRoleForm
+            onCancel={() => setSheetContent(null)}
+            data={careerHistoryUpdateData}
+          />
+        );
       default:
         return null;
     }
@@ -427,6 +438,11 @@ const InterceptedProfilePage = () => {
     mutateDeleteCareer(id);
   };
 
+  const onCareerUpdate = async (careerHistoryData: CareerCardProps) => {
+    setSheetContent("editRole");
+    setCareerHistoryUpdateData(careerHistoryData);
+  };
+
   return (
     <>
       <Dialog
@@ -606,6 +622,7 @@ const InterceptedProfilePage = () => {
                           <CareerCard
                             {...career}
                             onDelete={handleCareerDeletion}
+                            onUpdate={onCareerUpdate}
                             description={career.description ?? undefined}
                           />
                         </motion.div>

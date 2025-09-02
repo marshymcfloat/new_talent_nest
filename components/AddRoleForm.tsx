@@ -1,5 +1,3 @@
-// src/components/AddRoleForm.tsx
-
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -23,20 +21,35 @@ import { Calendar } from "./ui/calendar";
 import { Textarea } from "./ui/textarea";
 import { format } from "date-fns";
 import { z } from "zod";
-import { User, CareerHistory, Education } from "@prisma/client";
-import { addCareerSchema } from "@/lib/zod schemas/profileSchema";
-import { AddUserCareerHistory } from "@/lib/actions/profileActions";
+import { CareerHistory } from "@prisma/client";
+import { addCareerSchema } from "@/lib/zod schemas/profileSchema"; // Assuming you've refactored to a unified schema
+import {
+  AddUserCareerHistory,
+  updateUserCareerHistory,
+} from "@/lib/actions/profileActions";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CareerCardProps } from "./CareerCard";
+import { useEffect } from "react";
 
 type CareerFormValue = z.infer<typeof addCareerSchema>;
 
-type ProfileData = User & {
+type ProfileData = {
+  id: string; // The user's ID
   previousCareers: CareerHistory[];
-  education: Education[];
-  summary?: string;
 };
 
-const AddRoleForm = ({ onCancel }: { onCancel: () => void }) => {
+type UpdateCareerVariables = {
+  formData: FormData;
+  id: string;
+};
+
+const AddRoleForm = ({
+  onCancel,
+  data,
+}: {
+  onCancel: () => void;
+  data?: CareerCardProps | null;
+}) => {
   const queryClient = useQueryClient();
 
   const form = useForm<CareerFormValue>({
@@ -50,9 +63,25 @@ const AddRoleForm = ({ onCancel }: { onCancel: () => void }) => {
     },
   });
 
-  const { mutate, isPending } = useMutation({
+  useEffect(() => {
+    if (data) {
+      form.reset({
+        title: data.title,
+        company: data.company,
+        description: data.description || "",
+        dateStarted: new Date(data.dateStarted),
+        dateEnded: data.dateEnded ? new Date(data.dateEnded) : undefined,
+      });
+    }
+  }, [data, form.reset]);
+
+  // Mutation for ADDING a new career history
+  const { mutate: mutateAdd, isPending: pendingAdd } = useMutation({
     mutationFn: AddUserCareerHistory,
     onMutate: async (newCareerFormData: FormData) => {
+      // Immediately close the sheet for an optimistic UX
+      onCancel();
+
       await queryClient.cancelQueries({ queryKey: ["profile"] });
 
       const previousProfile = queryClient.getQueryData<ProfileData>([
@@ -60,16 +89,12 @@ const AddRoleForm = ({ onCancel }: { onCancel: () => void }) => {
       ]);
 
       queryClient.setQueryData<ProfileData | undefined>(["profile"], (old) => {
-        if (!old) {
-          return undefined;
-        }
-
+        if (!old) return undefined;
         const tempCareer: CareerHistory = {
           id: `temp-${Date.now()}`,
           userId: old.id,
           createdAt: new Date(),
           updatedAt: new Date(),
-
           title: newCareerFormData.get("title") as string,
           company: newCareerFormData.get("company") as string,
           dateStarted: new Date(newCareerFormData.get("dateStarted") as string),
@@ -78,42 +103,105 @@ const AddRoleForm = ({ onCancel }: { onCancel: () => void }) => {
             : null,
           description: (newCareerFormData.get("description") as string) || null,
         };
-
-        const existingCareers = old.previousCareers || [];
-
         return {
           ...old,
-          previousCareers: [...existingCareers, tempCareer],
+          previousCareers: [...old.previousCareers, tempCareer],
         };
       });
 
+      toast.success("New role added!");
       return { previousProfile };
     },
     onError: (err, newRole, context) => {
       if (context?.previousProfile) {
         queryClient.setQueryData(["profile"], context.previousProfile);
       }
-      toast.error("Failed to save role", { description: err.message });
+      toast.error("Oops! Failed to save new role.", {
+        description: err.message,
+      });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["profile"] });
-      onCancel();
     },
   });
 
+  // Mutation for UPDATING an existing career history
+  const { mutate: mutateUpdate, isPending: pendingUpdate } = useMutation({
+    mutationFn: (variables: UpdateCareerVariables) =>
+      updateUserCareerHistory(variables),
+    onMutate: async ({ formData, id }: UpdateCareerVariables) => {
+      // Immediately close the sheet for an optimistic UX
+      onCancel();
+
+      await queryClient.cancelQueries({ queryKey: ["profile"] });
+
+      const previousProfile = queryClient.getQueryData<ProfileData>([
+        "profile",
+      ]);
+
+      queryClient.setQueryData<ProfileData | undefined>(["profile"], (old) => {
+        if (!old) return undefined;
+        const updatedCareers = old.previousCareers.map((career) => {
+          if (career.id === id) {
+            return {
+              ...career,
+              title: formData.get("title") as string,
+              company: formData.get("company") as string,
+              dateStarted: new Date(formData.get("dateStarted") as string),
+              dateEnded: formData.get("dateEnded")
+                ? new Date(formData.get("dateEnded") as string)
+                : null,
+              description: (formData.get("description") as string) || null,
+              updatedAt: new Date(),
+            };
+          }
+          return career;
+        });
+        return {
+          ...old,
+          previousCareers: updatedCareers,
+        };
+      });
+
+      toast.success("Role updated!");
+      return { previousProfile };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousProfile) {
+        queryClient.setQueryData(["profile"], context.previousProfile);
+      }
+      toast.error("Oops! Failed to update role.", {
+        description: err.message,
+      });
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+    },
+  });
+
+  // Handles form submission and decides whether to add or update
   function onSubmit(values: CareerFormValue) {
     const formData = new FormData();
     formData.append("title", values.title);
     formData.append("company", values.company);
-    formData.append("dateStarted", values.dateStarted.toISOString());
+    if (values.dateStarted) {
+      formData.append("dateStarted", values.dateStarted.toISOString());
+    }
     if (values.dateEnded) {
       formData.append("dateEnded", values.dateEnded.toISOString());
     }
     if (values.description) {
       formData.append("description", values.description);
     }
-    mutate(formData);
+
+    if (data?.id) {
+      mutateUpdate({ formData: formData, id: data.id });
+    } else {
+      mutateAdd(formData);
+    }
   }
+
+  const isPending = pendingAdd || pendingUpdate;
 
   return (
     <Form {...form}>

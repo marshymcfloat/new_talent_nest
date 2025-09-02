@@ -30,6 +30,7 @@ const monthNameToNumber: { [key: string]: number } = {
 };
 
 type AddEducationValue = z.infer<typeof addEducationSchema>;
+type UpdateCareerSchema = z.infer<typeof addCareerSchema>;
 
 export const addUserSummary = async (formData: FormData) => {
   try {
@@ -306,5 +307,83 @@ export const deleteUserCareer = async (id: string) => {
       return { error: err.message };
     }
     return { error: "An unexpected error occured" };
+  }
+};
+
+export const updateUserCareerHistory = async ({
+  formData,
+  id,
+}: {
+  formData: FormData;
+  id: string;
+}) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      throw new Error("You must log in first");
+    }
+
+    const rawData = {
+      title: formData.get("title"),
+      company: formData.get("company"),
+      dateStarted: formData.get("dateStarted"),
+      dateEnded: formData.get("dateEnded"),
+      description: formData.get("description"),
+    };
+
+    const serverSchema = z.object({
+      title: addCareerSchema.shape.title,
+      company: addCareerSchema.shape.company,
+
+      dateStarted: z
+        .preprocess(
+          (val) => (val ? new Date(val as string) : undefined),
+          z.date().optional()
+        )
+        .transform((val, ctx): Date => {
+          if (!val) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: "Start date is required.",
+            });
+            return z.NEVER;
+          }
+          return val;
+        }),
+
+      dateEnded: z.preprocess(
+        (val) => (val ? new Date(val as string) : undefined),
+        z.date().optional().nullable()
+      ),
+      description: z.string().optional().nullable(),
+    });
+
+    const validationResult = serverSchema.safeParse(rawData);
+
+    if (!validationResult.success) {
+      throw new Error("Invalid inputs");
+    }
+    const { company, dateStarted, title, dateEnded, description } =
+      validationResult.data;
+
+    const updatedCareer = await prisma.careerHistory.update({
+      data: {
+        title,
+        company,
+        dateEnded,
+        dateStarted,
+        description,
+      },
+      where: { id, userId: session.user.id },
+    });
+
+    revalidatePath("/profile");
+    return { success: true, data: updatedCareer };
+  } catch (err) {
+    if (err instanceof Error) {
+      return { error: err.message };
+    }
+    return { error: "an unexpected error occured" };
   }
 };

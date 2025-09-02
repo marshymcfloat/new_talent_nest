@@ -21,7 +21,11 @@ const CareerCard = ({
   dateEnded,
   description,
   onDelete,
-}: CareerCardProps & { onDelete: (id: string) => void }) => {
+  onUpdate,
+}: CareerCardProps & {
+  onDelete: (id: string) => void;
+  onUpdate: (careerHistoryData: CareerCardProps) => void;
+}) => {
   const startDateFormatted = format(new Date(dateStarted), "MMM yyyy");
   const endDateFormatted = dateEnded
     ? format(new Date(dateEnded), "MMM yyyy")
@@ -42,6 +46,16 @@ const CareerCard = ({
               size="icon"
               className="h-8 w-8"
               aria-label="Edit career history"
+              onClick={() =>
+                onUpdate({
+                  id,
+                  company,
+                  title,
+                  dateStarted,
+                  dateEnded,
+                  description,
+                })
+              }
             >
               <Edit size={16} className="text-gray-500 dark:text-gray-400" />
             </Button>
