@@ -7,10 +7,12 @@ import { prisma } from "../prisma";
 import {
   addCareerSchema,
   addEducationSchema,
+  addResumeSchema,
   summarySchema,
 } from "../zod schemas/profileSchema";
 import { revalidatePath } from "next/cache";
 import { Language } from "@prisma/client";
+import { put } from "@vercel/blob";
 
 const monthNameToNumber: { [key: string]: number } = {
   Jan: 1,
@@ -231,5 +233,78 @@ export const updateUserLanguages = async (languages: Language[]) => {
       return { error: err.message };
     }
     return { error: "An unexpected error occurred." };
+  }
+};
+
+export const addUserResume = async (value: FormData) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      throw new Error("You must log in first");
+    }
+
+    const rawData = {
+      name: value.get("name"),
+      resume: value.get("resume"),
+    };
+
+    const validationResult = addResumeSchema.safeParse(rawData);
+
+    console.log(validationResult);
+    if (!validationResult.success) {
+      throw new Error("Invalid inputs");
+    }
+
+    const { name, resume } = validationResult.data;
+
+    if (resume instanceof File) {
+      const uniqueFilename = `resumes/${session.user.id}-${Date.now()}-${resume?.name.replace(/\s+/g, "_")}`;
+
+      const blob = await put(uniqueFilename, resume, {
+        access: "public",
+      });
+
+      const newResume = await prisma.resume.create({
+        data: {
+          title: name ?? resume?.name,
+          url: blob.url,
+          isPrimary: false,
+          userId: session.user.id,
+        },
+      });
+
+      revalidatePath("/profile");
+      return { success: true, data: newResume };
+    }
+  } catch (err) {
+    if (err instanceof Error) {
+      return { error: err.message };
+    }
+    return { error: "There is an unexpected error occured" };
+  }
+};
+
+export const deleteUserCareer = async (id: string) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      throw new Error("You must log in first");
+    }
+
+    const deletedCareer = await prisma.careerHistory.delete({ where: { id } });
+
+    if (!deletedCareer) {
+      throw new Error("Deleting career unsuccessful.");
+    }
+
+    revalidatePath("/profile");
+    return { success: true, data: deletedCareer };
+  } catch (err) {
+    if (err instanceof Error) {
+      return { error: err.message };
+    }
+    return { error: "An unexpected error occured" };
   }
 };

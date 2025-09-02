@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const ACCEPTED_RESUME_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
+
 export const summarySchema = z.object({
   summary: z
     .string()
@@ -96,3 +103,21 @@ export const addEducationSchema = z
       }
     }
   });
+
+export const addResumeSchema = z.object({
+  name: z.string().min(3, { message: "Title must be at least 3 characters." }),
+  // FIX: Mark as optional(), then refine to ensure it's not undefined on submission
+  resume: z
+    .custom<File>() // <-- No validation logic here yet
+    .optional() // <-- THIS IS THE KEY CHANGE. It allows `undefined`.
+    .refine((file) => file, {
+      // <-- This check runs on submit. If `file` is undefined, this fails.
+      message: "A resume file is required.",
+    })
+    .refine((file) => file && file.size <= MAX_FILE_SIZE, {
+      message: `Max file size is 5MB.`,
+    })
+    .refine((file) => file && ACCEPTED_RESUME_TYPES.includes(file.type), {
+      message: "Only .pdf files are accepted.",
+    }),
+});

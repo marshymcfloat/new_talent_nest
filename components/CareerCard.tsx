@@ -1,8 +1,11 @@
-import { Button } from "./ui/button"; // Assuming this path
-import { Edit, Building2, CalendarDays } from "lucide-react";
+import { Button } from "./ui/button";
+import { Edit, Building2, CalendarDays, Trash2 } from "lucide-react";
 import { format } from "date-fns";
+import DeleteButton from "./DeleteButton";
+import { deleteUserCareer } from "@/lib/actions/profileActions";
 
 export type CareerCardProps = {
+  id: string;
   company: string;
   title: string;
   dateStarted: Date;
@@ -11,12 +14,14 @@ export type CareerCardProps = {
 };
 
 const CareerCard = ({
+  id,
   company,
   title,
   dateStarted,
   dateEnded,
   description,
-}: CareerCardProps) => {
+  onDelete,
+}: CareerCardProps & { onDelete: (id: string) => void }) => {
   const startDateFormatted = format(new Date(dateStarted), "MMM yyyy");
   const endDateFormatted = dateEnded
     ? format(new Date(dateEnded), "MMM yyyy")
@@ -31,14 +36,17 @@ const CareerCard = ({
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             {title}
           </h3>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            aria-label="Edit career history"
-          >
-            <Edit size={16} className="text-gray-500 dark:text-gray-400" />
-          </Button>
+          <div className="flex  gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              aria-label="Edit career history"
+            >
+              <Edit size={16} className="text-gray-500 dark:text-gray-400" />
+            </Button>
+            <DeleteButton title={title} onDelete={() => onDelete(id)} />
+          </div>
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-center gap-x-5 gap-y-1 text-sm text-gray-600 dark:text-gray-400">
@@ -54,7 +62,6 @@ const CareerCard = ({
           </div>
         </div>
 
-        {/* Description */}
         {description && (
           <p className="prose prose-sm max-w-none text-gray-700 dark:text-gray-300 pt-2">
             {description}
