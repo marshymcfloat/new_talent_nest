@@ -1,7 +1,7 @@
 import { EmployerQuestion } from "@prisma/client";
 import { z } from "zod";
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ACCEPTED_RESUME_TYPES = [
   "application/pdf",
   "application/msword",

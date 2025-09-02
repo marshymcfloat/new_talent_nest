@@ -69,7 +69,6 @@ import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { addResumeSchema } from "@/lib/zod schemas/profileSchema";
 
-// Animation variants for reusability
 const sectionFade = {
   initial: { opacity: 0, y: 10 },
   animate: { opacity: 1, y: 0 },
@@ -451,7 +450,7 @@ const InterceptedProfilePage = () => {
           if (!isOpen) router.back();
         }}
       >
-        <DialogContent className="w-[95vw] max-w-[95vw] sm:max-w-3xl h-[90vh] flex flex-col">
+        <DialogContent className="w-[95vw] max-w-[95vw] sm:max-w-3xl h-[90vh] flex flex-col  ">
           <DialogHeader>
             <DialogTitle>Your Profile</DialogTitle>
             <DialogDescription>

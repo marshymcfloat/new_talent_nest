@@ -123,7 +123,7 @@
 
 ::-webkit-scrollbar {
   width: 8px;
-  height: 8px; /* Height of the scrollbar for horizontal scrolling */
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -133,11 +133,11 @@
 
 ::-webkit-scrollbar-thumb {
   background-color: #444444;
-  border-radius: 10px; /* Roundness of the scrollbar thumb */
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #555555; /* Slightly lighter gray on hover for interaction */
+  background-color: #555555;
 }
 
 * {

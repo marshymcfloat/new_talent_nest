@@ -22,7 +22,7 @@ import { Textarea } from "./ui/textarea";
 import { format } from "date-fns";
 import { z } from "zod";
 import { CareerHistory } from "@prisma/client";
-import { addCareerSchema } from "@/lib/zod schemas/profileSchema"; // Assuming you've refactored to a unified schema
+import { addCareerSchema } from "@/lib/zod schemas/profileSchema";
 import {
   AddUserCareerHistory,
   updateUserCareerHistory,
@@ -34,7 +34,7 @@ import { useEffect } from "react";
 type CareerFormValue = z.infer<typeof addCareerSchema>;
 
 type ProfileData = {
-  id: string; // The user's ID
+  id: string;
   previousCareers: CareerHistory[];
 };
 
@@ -75,11 +75,9 @@ const AddRoleForm = ({
     }
   }, [data, form.reset]);
 
-  // Mutation for ADDING a new career history
   const { mutate: mutateAdd, isPending: pendingAdd } = useMutation({
     mutationFn: AddUserCareerHistory,
     onMutate: async (newCareerFormData: FormData) => {
-      // Immediately close the sheet for an optimistic UX
       onCancel();
 
       await queryClient.cancelQueries({ queryKey: ["profile"] });
@@ -125,12 +123,10 @@ const AddRoleForm = ({
     },
   });
 
-  // Mutation for UPDATING an existing career history
   const { mutate: mutateUpdate, isPending: pendingUpdate } = useMutation({
     mutationFn: (variables: UpdateCareerVariables) =>
       updateUserCareerHistory(variables),
     onMutate: async ({ formData, id }: UpdateCareerVariables) => {
-      // Immediately close the sheet for an optimistic UX
       onCancel();
 
       await queryClient.cancelQueries({ queryKey: ["profile"] });
@@ -179,7 +175,6 @@ const AddRoleForm = ({
     },
   });
 
-  // Handles form submission and decides whether to add or update
   function onSubmit(values: CareerFormValue) {
     const formData = new FormData();
     formData.append("title", values.title);

@@ -106,8 +106,8 @@ export const addEducationSchema = z
 export const addResumeSchema = z.object({
   name: z.string().min(3, { message: "Title must be at least 3 characters." }),
   resume: z
-    .custom<File>() // <-- No validation logic here yet
-    .optional() // <-- THIS IS THE KEY CHANGE. It allows `undefined`.
+    .custom<File>()
+    .optional()
     .refine((file) => file, {
       message: "A resume file is required.",
     })

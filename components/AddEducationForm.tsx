@@ -32,26 +32,18 @@ import { addUserEducation } from "@/lib/actions/profileActions";
 import { toast } from "sonner";
 import { User, Education, CareerHistory } from "@prisma/client";
 
-// --- Type Definitions ---
-
-// The structure of a single university from the HipoLabs API
 type University = {
   name: string;
   country: string;
 };
 
-// The shape of the data stored in the "profile" query cache.
-// This is crucial for providing type safety to React Query.
 type ProfileData = User & {
   education: Education[];
   previousCareers: CareerHistory[];
   summary?: string;
 };
 
-// Type for the form values, inferred from your Zod schema
 type AddEducationValue = z.infer<typeof addEducationSchema>;
-
-// --- Constants & Helpers ---
 
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
@@ -59,7 +51,6 @@ const months = Array.from({ length: 12 }, (_, i) =>
   new Date(0, i).toLocaleString("default", { month: "short" })
 );
 
-// Helper map to convert month names (e.g., "Sep") to numbers (e.g., 9)
 const monthNameToNumber: { [key: string]: number } = {
   Jan: 1,
   Feb: 2,
@@ -75,7 +66,6 @@ const monthNameToNumber: { [key: string]: number } = {
   Dec: 12,
 };
 
-// API fetching function for the universities autocomplete
 const fetchUniversities = async (query: string): Promise<University[]> => {
   if (!query) return [];
   const response = await fetch(
@@ -86,8 +76,6 @@ const fetchUniversities = async (query: string): Promise<University[]> => {
   }
   return response.json();
 };
-
-// --- The Component ---
 
 const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
   const queryClient = useQueryClient();

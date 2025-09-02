@@ -50,11 +50,13 @@ const ApplyButton = ({
   questions,
   summary,
   jobId,
+  className,
 }: {
   jobId: string;
   title: string;
   summary: string;
   questions: EmployerQuestion[];
+  className: string;
 }) => {
   const { status } = useSession();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -136,14 +138,22 @@ const ApplyButton = ({
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         {status === "unauthenticated" ? (
           <Button
-            className="w-full bg-purple-700 hover:bg-purple-700/80"
+            className={cn(
+              "w-full bg-purple-700 hover:bg-purple-700/80",
+              "w-full bg-purple-700 hover:bg-purple-700/80"
+            )}
             onClick={() => signIn()}
           >
             Apply
           </Button>
         ) : (
           <SheetTrigger asChild>
-            <Button className="w-full bg-purple-700 hover:bg-purple-700/80">
+            <Button
+              className={cn(
+                "w-full bg-purple-700 hover:bg-purple-700/80",
+                className
+              )}
+            >
               Apply
             </Button>
           </SheetTrigger>
