@@ -11,7 +11,7 @@ import {
   summarySchema,
 } from "../zod schemas/profileSchema";
 import { revalidatePath } from "next/cache";
-import { Language } from "@prisma/client";
+import { Language, Prisma } from "@prisma/client";
 import { put } from "@vercel/blob";
 
 const monthNameToNumber: { [key: string]: number } = {
@@ -30,7 +30,6 @@ const monthNameToNumber: { [key: string]: number } = {
 };
 
 type AddEducationValue = z.infer<typeof addEducationSchema>;
-type UpdateCareerSchema = z.infer<typeof addCareerSchema>;
 
 export const addUserSummary = async (formData: FormData) => {
   try {
@@ -159,15 +158,11 @@ export const addUserEducation = async (values: AddEducationValue) => {
       throw new Error("Invalid input data.");
     }
 
-    let {
-      course,
-      institution,
-      isComplete,
-      expectedFinishMonth,
-      expectedFinishYear,
-      finishedYear,
-      highlights,
-    } = validationResult.data;
+    const { course, institution, isComplete, highlights } =
+      validationResult.data;
+
+    let { expectedFinishMonth, expectedFinishYear, finishedYear } =
+      validationResult.data;
 
     if (isComplete) {
       expectedFinishMonth = undefined;
@@ -204,6 +199,7 @@ export const addUserEducation = async (values: AddEducationValue) => {
     return { error: "An unexpected error occurred." };
   }
 };
+
 export const updateUserLanguages = async (languages: Language[]) => {
   try {
     const session = await getServerSession(authOptions);
@@ -299,24 +295,22 @@ export const deleteUserCareer = async (id: string) => {
     const userId = session.user.id;
 
     const softDeletedCareer = await prisma.careerHistory.update({
-      where: {
-        id,
-        userId,
-      },
-      data: {
-        deletedAt: new Date(),
-      },
+      where: { id, userId },
+      data: { deletedAt: new Date() },
     });
 
     revalidatePath("/profile");
     return { success: true, data: softDeletedCareer };
   } catch (err) {
+    if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code === "P2025"
+    ) {
+      return {
+        error: "Career record not found or you don't have permission.",
+      };
+    }
     if (err instanceof Error) {
-      if ((err as any).code === "P2025") {
-        return {
-          error: "Career record not found or you don't have permission.",
-        };
-      }
       return { error: err.message };
     }
     return { error: "An unexpected error occurred." };
@@ -421,15 +415,11 @@ export const updateUserEducation = async ({
       throw new Error("Invalid input data.");
     }
 
-    let {
-      course,
-      institution,
-      isComplete,
-      expectedFinishMonth,
-      expectedFinishYear,
-      finishedYear,
-      highlights,
-    } = validationResult.data;
+    const { course, institution, isComplete, highlights } =
+      validationResult.data;
+
+    let { expectedFinishMonth, expectedFinishYear, finishedYear } =
+      validationResult.data;
 
     if (isComplete) {
       expectedFinishMonth = undefined;
@@ -453,22 +443,22 @@ export const updateUserEducation = async ({
     };
 
     const updatedEducation = await prisma.education.update({
-      where: {
-        id: id,
-        userId: userId,
-      },
+      where: { id, userId },
       data: dataForPrisma,
     });
 
     revalidatePath("/profile");
     return { success: true, data: updatedEducation };
   } catch (err) {
+    if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code === "P2025"
+    ) {
+      return {
+        error: "Record to update not found or you don't have permission.",
+      };
+    }
     if (err instanceof Error) {
-      if ((err as any).code === "P2025") {
-        return {
-          error: "Record to update not found or you don't have permission.",
-        };
-      }
       return { error: err.message };
     }
     return { error: "An unexpected error occurred." };
@@ -484,24 +474,22 @@ export const deleteUserEducation = async (id: string) => {
     const userId = session.user.id;
 
     const softDeletedEducation = await prisma.education.update({
-      where: {
-        id,
-        userId,
-      },
-      data: {
-        deletedAt: new Date(),
-      },
+      where: { id, userId },
+      data: { deletedAt: new Date() },
     });
 
     revalidatePath("/profile");
     return { success: true, data: softDeletedEducation };
   } catch (err) {
+    if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code === "P2025"
+    ) {
+      return {
+        error: "Education record not found or you don't have permission.",
+      };
+    }
     if (err instanceof Error) {
-      if ((err as any).code === "P2025") {
-        return {
-          error: "Education record not found or you don't have permission.",
-        };
-      }
       return { error: err.message };
     }
     return { error: "An unexpected error occurred." };
@@ -527,24 +515,22 @@ export const deleteUserResume = async (id: string) => {
     }
 
     const softDeletedResume = await prisma.resume.update({
-      where: {
-        id,
-        userId,
-      },
-      data: {
-        deletedAt: new Date(),
-      },
+      where: { id, userId },
+      data: { deletedAt: new Date() },
     });
 
     revalidatePath("/profile");
     return { success: true, data: softDeletedResume };
   } catch (err) {
+    if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code === "P2025"
+    ) {
+      return {
+        error: "Resume not found or you don't have permission to delete it.",
+      };
+    }
     if (err instanceof Error) {
-      if ((err as any).code === "P2025") {
-        return {
-          error: "Resume not found or you don't have permission to delete it.",
-        };
-      }
       return { error: err.message };
     }
     return { error: "An unexpected error occurred." };
