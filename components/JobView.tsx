@@ -81,7 +81,10 @@ const JobView = () => {
             }
           }}
         >
-          <SheetContent className="p-0 border-none w-[90vw] sm:max-w-lg bg-transparent overflow-y-auto">
+          <SheetContent
+            side="bottom"
+            className="p-0 h-[90%] md rounded-t-2xl border-none w-full md:max-w-lg  overflow-y-auto"
+          >
             {selectedJob && (
               <>
                 <SheetHeader>

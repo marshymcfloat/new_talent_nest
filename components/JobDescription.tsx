@@ -32,7 +32,7 @@ const JobDescription = ({
   type,
 }: JobWithQuestions) => {
   return (
-    <Card className="bg-card text-card-foreground border-border h-full flex flex-col p-4 rounded-2xl">
+    <Card className="bg-card text-card-foreground  border-none md:border-border   flex flex-col p-4 rounded-t-2xl  md:fixed md:w-[58%] lg:w-[63%] h-fit  md:rounded-2xl">
       <CardHeader className="p-2">
         <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
           <div className="flex flex-col gap-1">
