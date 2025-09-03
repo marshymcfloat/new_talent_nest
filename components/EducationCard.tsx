@@ -2,7 +2,7 @@ import { Button } from "./ui/button";
 import { Edit, GraduationCap, Trash2 } from "lucide-react";
 import { Badge } from "./ui/badge";
 import DeleteButton from "./DeleteButton";
-
+import { Education } from "@prisma/client";
 type EducationCardProps = {
   id: string;
   course: string;
@@ -17,8 +17,16 @@ const EducationCard = ({
   institution,
   isComplete,
   finishedYear,
+  expectedFinishMonth,
+  expectedFinishYear,
+  highlight,
+  userId,
   onDelete,
-}: EducationCardProps & { onDelete: (id: string) => void }) => {
+  onUpdate,
+}: Education & {
+  onDelete: (id: string) => void;
+  onUpdate: (educationData: Education) => void;
+}) => {
   return (
     <div className="flex items-start justify-between gap-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg transition-shadow hover:shadow-sm">
       <div className="flex-shrink-0 pt-1">
@@ -57,6 +65,19 @@ const EducationCard = ({
           size="icon"
           className="h-8 w-8"
           aria-label="Edit education"
+          onClick={() =>
+            onUpdate({
+              id,
+              course,
+              institution,
+              finishedYear,
+              isComplete,
+              expectedFinishMonth,
+              expectedFinishYear,
+              highlight,
+              userId,
+            })
+          }
         >
           <Edit size={16} className="text-gray-500 dark:text-gray-400" />
         </Button>

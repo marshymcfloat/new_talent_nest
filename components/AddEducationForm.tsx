@@ -13,7 +13,7 @@ import {
 import { Card, CardContent } from "./ui/card";
 import { Loader2 } from "lucide-react";
 import { useDebounce } from "@/app/hooks/UseDebounce";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addEducationSchema } from "@/lib/zod schemas/profileSchema";
 import { z } from "zod";
@@ -28,7 +28,10 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Textarea } from "./ui/textarea";
-import { addUserEducation } from "@/lib/actions/profileActions";
+import {
+  addUserEducation,
+  updateUserEducation,
+} from "@/lib/actions/profileActions";
 import { toast } from "sonner";
 import { User, Education, CareerHistory } from "@prisma/client";
 
@@ -45,11 +48,29 @@ type ProfileData = User & {
 
 type AddEducationValue = z.infer<typeof addEducationSchema>;
 
+type UpdateEducationVariables = {
+  values: AddEducationValue;
+  id: string;
+};
+
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
-const months = Array.from({ length: 12 }, (_, i) =>
-  new Date(0, i).toLocaleString("default", { month: "short" })
-);
+
+const monthNumberToName: { [key: number]: string } = {
+  1: "Jan",
+  2: "Feb",
+  3: "Mar",
+  4: "Apr",
+  5: "May",
+  6: "Jun",
+  7: "Jul",
+  8: "Aug",
+  9: "Sep",
+  10: "Oct",
+  11: "Nov",
+  12: "Dec",
+};
+const months = Object.values(monthNumberToName);
 
 const monthNameToNumber: { [key: string]: number } = {
   Jan: 1,
@@ -77,7 +98,13 @@ const fetchUniversities = async (query: string): Promise<University[]> => {
   return response.json();
 };
 
-const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
+const AddEducationForm = ({
+  onCancel,
+  data,
+}: {
+  onCancel: () => void;
+  data?: Education;
+}) => {
   const queryClient = useQueryClient();
   const form = useForm<AddEducationValue>({
     resolver: zodResolver(addEducationSchema),
@@ -91,6 +118,38 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
       highlights: "",
     },
   });
+
+  const isCompleteValue = useWatch({
+    control: form.control,
+    name: "isComplete",
+  });
+
+  useEffect(() => {
+    if (isCompleteValue) {
+      form.setValue("expectedFinishMonth", "");
+      form.setValue("expectedFinishYear", "");
+    } else {
+      form.setValue("finishedYear", "");
+    }
+  }, [isCompleteValue, form.setValue]);
+
+  useEffect(() => {
+    if (data) {
+      form.reset({
+        course: data.course,
+        institution: data.institution,
+        isComplete: data.isComplete,
+        highlights: data.highlight || "",
+        finishedYear: data.finishedYear ? String(data.finishedYear) : "",
+        expectedFinishMonth: data.expectedFinishMonth
+          ? monthNumberToName[data.expectedFinishMonth]
+          : "",
+        expectedFinishYear: data.expectedFinishYear
+          ? String(data.expectedFinishYear)
+          : "",
+      });
+    }
+  }, [data, form.reset]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -107,6 +166,7 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
   });
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -122,21 +182,16 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
     };
   }, [dropdownRef]);
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["profile"],
+  const { mutate: mutateAdd, isPending: pendingAdd } = useMutation({
     mutationFn: addUserEducation,
     onMutate: async (newEducationData: AddEducationValue) => {
+      onCancel();
       await queryClient.cancelQueries({ queryKey: ["profile"] });
-
       const previousProfile = queryClient.getQueryData<ProfileData>([
         "profile",
       ]);
-
       queryClient.setQueryData<ProfileData | undefined>(["profile"], (old) => {
-        if (!old) {
-          return undefined;
-        }
-
+        if (!old) return undefined;
         const tempEducation: Education = {
           id: `temp-${Date.now()}`,
           userId: old.id,
@@ -154,34 +209,86 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
             ? parseInt(newEducationData.expectedFinishYear, 10)
             : null,
         };
-
-        const existingEducations = old.education || [];
-
-        return {
-          ...old,
-          education: [...existingEducations, tempEducation],
-        };
+        return { ...old, education: [...(old.education || []), tempEducation] };
       });
-
       return { previousProfile };
     },
     onError: (err, newEducation, context) => {
       if (context?.previousProfile) {
         queryClient.setQueryData(["profile"], context.previousProfile);
       }
-      toast.error("Failed to save education", {
-        description: err.message,
-      });
+      toast.error("Failed to save education", { description: err.message });
+    },
+    onSuccess: () => {
+      toast.success("Education added successfully!");
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["profile"] });
+    },
+  });
+
+  const { mutate: mutateUpdate, isPending: pendingUpdate } = useMutation({
+    mutationFn: updateUserEducation,
+    onMutate: async ({ values, id }: UpdateEducationVariables) => {
       onCancel();
+      await queryClient.cancelQueries({ queryKey: ["profile"] });
+      const previousProfile = queryClient.getQueryData<ProfileData>([
+        "profile",
+      ]);
+
+      queryClient.setQueryData<ProfileData | undefined>(["profile"], (old) => {
+        if (!old) return undefined;
+
+        const updatedEducationList = old.education.map((edu) => {
+          if (edu.id === id) {
+            return {
+              ...edu,
+              course: values.course,
+              institution: values.institution,
+              isComplete: values.isComplete,
+              highlight: values.highlights || null,
+              finishedYear: values.finishedYear
+                ? parseInt(values.finishedYear, 10)
+                : null,
+              expectedFinishMonth: values.expectedFinishMonth
+                ? monthNameToNumber[values.expectedFinishMonth]
+                : null,
+              expectedFinishYear: values.expectedFinishYear
+                ? parseInt(values.expectedFinishYear, 10)
+                : null,
+            };
+          }
+          return edu;
+        });
+
+        return { ...old, education: updatedEducationList };
+      });
+
+      return { previousProfile };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousProfile) {
+        queryClient.setQueryData(["profile"], context.previousProfile);
+      }
+      toast.error("Failed to update education", { description: err.message });
+    },
+    onSuccess: () => {
+      toast.success("Education updated successfully!");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
     },
   });
 
   const onSubmit = (values: AddEducationValue) => {
-    mutate(values);
+    if (data?.id) {
+      mutateUpdate({ values, id: data.id });
+    } else {
+      mutateAdd(values);
+    }
   };
+
+  const isPending = pendingAdd || pendingUpdate;
 
   return (
     <Form {...form}>
@@ -302,10 +409,7 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
                   <span className="font-light text-sm">(optional)</span>
                 </FormLabel>
                 <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Select year..." />
                     </SelectTrigger>
@@ -337,14 +441,14 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
                     <FormControl>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="month" />
                         </SelectTrigger>
                         <SelectContent>
                           {months.map((month) => (
-                            <SelectItem value={month.toString()} key={month}>
+                            <SelectItem value={month} key={month}>
                               {month}
                             </SelectItem>
                           ))}
@@ -363,7 +467,7 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
                     <FormControl>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="year" />
@@ -416,7 +520,7 @@ const AddEducationForm = ({ onCancel }: { onCancel: () => void }) => {
           </Button>
           <Button type="submit" disabled={isPending}>
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Save
+            {data ? "Update" : "Save"}
           </Button>
         </div>
       </form>

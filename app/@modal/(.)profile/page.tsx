@@ -113,7 +113,12 @@ type SummaryFormValue = z.infer<typeof summarySchema>;
 type LanguageFormValue = z.infer<typeof languageSchema>;
 type ResumeFormValue = z.infer<typeof addResumeSchema>;
 
-type SheetContentType = "addRole" | "editRole" | "addEducation" | null;
+type SheetContentType =
+  | "addRole"
+  | "editRole"
+  | "addEducation"
+  | "editEducation"
+  | null;
 
 type ProfileData = Omit<User, "languages"> & {
   summary?: string;
@@ -139,6 +144,8 @@ const InterceptedProfilePage = () => {
   const [isAddingResume, setIsAddingResume] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [resumePreview, setResumePreview] = useState<string | null>(null);
+  const [educationUpdateData, setEducationUpdateData] =
+    useState<Education | null>(null);
   const [careerHistoryUpdateData, setCareerHistoryUpdateData] =
     useState<CareerCardProps | null>(null);
 
@@ -180,6 +187,8 @@ const InterceptedProfilePage = () => {
         return "Edit Career History";
       case "addEducation":
         return "Add Education";
+      case "editEducation":
+        return "Edit Education";
       default:
         return "";
     }
@@ -192,11 +201,17 @@ const InterceptedProfilePage = () => {
       case "addEducation":
         return <AddEducationForm onCancel={() => setSheetContent(null)} />;
       case "editRole":
-        console.log("meow");
         return (
           <AddRoleForm
             onCancel={() => setSheetContent(null)}
             data={careerHistoryUpdateData}
+          />
+        );
+      case "editEducation":
+        return (
+          <AddEducationForm
+            onCancel={() => setSheetContent(null)}
+            data={educationUpdateData || undefined}
           />
         );
       default:
@@ -486,6 +501,12 @@ const InterceptedProfilePage = () => {
   const handleEducationDeletion = async (id: string) => {
     mutateDeleteEducation(id);
   };
+
+  const onEducationUpdate = async (educationData: Education) => {
+    console.log("meow");
+    setSheetContent("editEducation");
+    setEducationUpdateData(educationData);
+  };
   return (
     <>
       <Dialog
@@ -735,6 +756,7 @@ const InterceptedProfilePage = () => {
                         <motion.div key={edu.id} layout variants={itemStagger}>
                           <EducationCard
                             onDelete={handleEducationDeletion}
+                            onUpdate={onEducationUpdate}
                             {...edu}
                           />
                         </motion.div>

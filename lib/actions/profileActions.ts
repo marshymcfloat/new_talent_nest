@@ -159,7 +159,7 @@ export const addUserEducation = async (values: AddEducationValue) => {
       throw new Error("Invalid input data.");
     }
 
-    const {
+    let {
       course,
       institution,
       isComplete,
@@ -169,18 +169,27 @@ export const addUserEducation = async (values: AddEducationValue) => {
       highlights,
     } = validationResult.data;
 
+    // --- FIX STARTS HERE ---
+    // If the qualification is complete, we must nullify the expected finish dates.
+    if (isComplete) {
+      expectedFinishMonth = undefined; // or "" depending on your zod schema, undefined is safer
+      expectedFinishYear = undefined; // or ""
+    } else {
+      // If it's not complete, we must nullify the finished date.
+      finishedYear = undefined; // or ""
+    }
+    // --- FIX ENDS HERE ---
+
     const dataForPrisma = {
       userId,
       course,
       institution,
       highlight: highlights || null,
       isComplete,
-
       finishedYear: finishedYear ? parseInt(finishedYear, 10) : null,
       expectedFinishYear: expectedFinishYear
         ? parseInt(expectedFinishYear, 10)
         : null,
-
       expectedFinishMonth: expectedFinishMonth
         ? monthNameToNumber[expectedFinishMonth]
         : null,
@@ -199,7 +208,6 @@ export const addUserEducation = async (values: AddEducationValue) => {
     return { error: "An unexpected error occurred." };
   }
 };
-
 export const updateUserLanguages = async (languages: Language[]) => {
   try {
     const session = await getServerSession(authOptions);
@@ -385,6 +393,80 @@ export const updateUserCareerHistory = async ({
       return { error: err.message };
     }
     return { error: "an unexpected error occured" };
+  }
+};
+
+export const updateUserEducation = async ({
+  values,
+  id,
+}: {
+  values: AddEducationValue;
+  id: string;
+}) => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      throw new Error("You must be logged in to update education history.");
+    }
+    const userId = session.user.id;
+
+    const validationResult = addEducationSchema.safeParse(values);
+    if (!validationResult.success) {
+      console.error("Validation Error:", validationResult.error.flatten());
+      throw new Error("Invalid input data.");
+    }
+
+    let {
+      course,
+      institution,
+      isComplete,
+      expectedFinishMonth,
+      expectedFinishYear,
+      finishedYear,
+      highlights,
+    } = validationResult.data;
+
+    if (isComplete) {
+      expectedFinishMonth = undefined;
+      expectedFinishYear = undefined;
+    } else {
+      finishedYear = undefined;
+    }
+
+    const dataForPrisma = {
+      course,
+      institution,
+      isComplete,
+      highlight: highlights || null,
+      finishedYear: finishedYear ? parseInt(finishedYear, 10) : null,
+      expectedFinishYear: expectedFinishYear
+        ? parseInt(expectedFinishYear, 10)
+        : null,
+      expectedFinishMonth: expectedFinishMonth
+        ? monthNameToNumber[expectedFinishMonth]
+        : null,
+    };
+
+    const updatedEducation = await prisma.education.update({
+      where: {
+        id: id,
+        userId: userId,
+      },
+      data: dataForPrisma,
+    });
+
+    revalidatePath("/profile");
+    return { success: true, data: updatedEducation };
+  } catch (err) {
+    if (err instanceof Error) {
+      if ((err as any).code === "P2025") {
+        return {
+          error: "Record to update not found or you don't have permission.",
+        };
+      }
+      return { error: err.message };
+    }
+    return { error: "An unexpected error occurred." };
   }
 };
 
