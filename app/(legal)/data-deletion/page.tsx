@@ -1,5 +1,3 @@
-// app/(legal)/data-deletion/page.tsx
-
 const DataDeletionPage = () => {
   return (
     <div className="bg-gray-50 min-h-screen">

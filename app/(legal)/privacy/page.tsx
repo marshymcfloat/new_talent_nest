@@ -1,5 +1,3 @@
-// app/(legal)/privacy/page.tsx
-
 const PrivacyPolicyPage = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
