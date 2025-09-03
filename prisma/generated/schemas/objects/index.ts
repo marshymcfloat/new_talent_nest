@@ -161,6 +161,7 @@ export * from './EducationCreateManyUserInputEnvelope.schema';
 export * from './EducationCreateNestedManyWithoutUserInput.schema';
 export * from './EducationCreateOrConnectWithoutUserInput.schema';
 export * from './EducationCreateWithoutUserInput.schema';
+export * from './EducationIdUserIdCompoundUniqueInput.schema';
 export * from './EducationInclude.schema';
 export * from './EducationListRelationFilter.schema';
 export * from './EducationMaxAggregateInput.schema';

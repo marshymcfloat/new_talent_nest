@@ -387,3 +387,30 @@ export const updateUserCareerHistory = async ({
     return { error: "an unexpected error occured" };
   }
 };
+
+export const deleteUserEducation = async (id: string) => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      throw new Error("You must log in first");
+    }
+
+    const deletedEducation = await prisma.education.delete({
+      where: { id, userId: session.user.id },
+    });
+
+    if (!deletedEducation) {
+      throw new Error(
+        "There is an error occured while attempting to delete education"
+      );
+    }
+
+    revalidatePath("/profile");
+    return { success: true, data: deletedEducation };
+  } catch (err) {
+    if (err instanceof Error) {
+      return { error: err.message };
+    }
+    return { error: "an unexpected error occured" };
+  }
+};

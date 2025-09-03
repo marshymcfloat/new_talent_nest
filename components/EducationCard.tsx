@@ -1,8 +1,10 @@
 import { Button } from "./ui/button";
-import { Edit, GraduationCap } from "lucide-react";
+import { Edit, GraduationCap, Trash2 } from "lucide-react";
 import { Badge } from "./ui/badge";
+import DeleteButton from "./DeleteButton";
 
 type EducationCardProps = {
+  id: string;
   course: string;
   institution: string;
   isComplete: boolean;
@@ -10,11 +12,13 @@ type EducationCardProps = {
 };
 
 const EducationCard = ({
+  id,
   course,
   institution,
   isComplete,
   finishedYear,
-}: EducationCardProps) => {
+  onDelete,
+}: EducationCardProps & { onDelete: (id: string) => void }) => {
   return (
     <div className="flex items-start justify-between gap-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg transition-shadow hover:shadow-sm">
       <div className="flex-shrink-0 pt-1">
@@ -47,7 +51,7 @@ const EducationCard = ({
         </div>
       </div>
 
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 flex">
         <Button
           variant="ghost"
           size="icon"
@@ -56,6 +60,8 @@ const EducationCard = ({
         >
           <Edit size={16} className="text-gray-500 dark:text-gray-400" />
         </Button>
+
+        <DeleteButton title={course} onDelete={() => onDelete(id)} />
       </div>
     </div>
   );

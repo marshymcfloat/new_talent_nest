@@ -115,6 +115,8 @@ model Education {
   finishedYear      Int?     
   expectedFinishMonth Int?   
   expectedFinishYear  Int?   
+
+    @@unique([id, userId])
 }
 
 model LicenceAndCertificate {

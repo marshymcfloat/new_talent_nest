@@ -44,6 +44,7 @@ import {
   addUserResume,
   addUserSummary,
   deleteUserCareer,
+  deleteUserEducation,
   updateUserLanguages,
 } from "@/lib/actions/profileActions";
 import AddEducationForm from "@/components/AddEducationForm";
@@ -355,6 +356,46 @@ const InterceptedProfilePage = () => {
       queryClient.invalidateQueries({ queryKey: ["profile"] });
     },
   });
+
+  const { mutate: mutateDeleteEducation, isPending: pendingDeleteEducation } =
+    useMutation({
+      mutationFn: deleteUserEducation,
+      onMutate: async (educationIdToDelete: string) => {
+        await queryClient.cancelQueries({ queryKey: ["profile"] });
+
+        const previousProfileData = queryClient.getQueryData<ProfileData>([
+          "profile",
+        ]);
+
+        queryClient.setQueryData<ProfileData | undefined>(
+          ["profile"],
+          (oldData) => {
+            if (!oldData) return undefined;
+            const updatedEducation = oldData.education.filter(
+              (edu) => edu.id !== educationIdToDelete
+            );
+            return { ...oldData, education: updatedEducation };
+          }
+        );
+
+        return { previousProfileData };
+      },
+      onError: (err, variables, context) => {
+        toast.error("Failed to delete education record.", {
+          description: err.message,
+        });
+        if (context?.previousProfileData) {
+          queryClient.setQueryData(["profile"], context.previousProfileData);
+        }
+      },
+      onSuccess: () => {
+        toast.success("Education record deleted successfully!");
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: ["profile"] });
+      },
+    });
+
   const languageInput = languageForm.watch("language");
 
   useEffect(() => {
@@ -442,6 +483,9 @@ const InterceptedProfilePage = () => {
     setCareerHistoryUpdateData(careerHistoryData);
   };
 
+  const handleEducationDeletion = async (id: string) => {
+    mutateDeleteEducation(id);
+  };
   return (
     <>
       <Dialog
@@ -689,7 +733,10 @@ const InterceptedProfilePage = () => {
                     >
                       {profileData.education.map((edu) => (
                         <motion.div key={edu.id} layout variants={itemStagger}>
-                          <EducationCard {...edu} />
+                          <EducationCard
+                            onDelete={handleEducationDeletion}
+                            {...edu}
+                          />
                         </motion.div>
                       ))}
                     </motion.div>
