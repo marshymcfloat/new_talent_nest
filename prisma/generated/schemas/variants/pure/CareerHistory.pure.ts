@@ -11,7 +11,8 @@ export const CareerHistoryModelSchema = z.object({
     userId: z.string(),
     user: z.unknown(),
     createdAt: z.date(),
-    updatedAt: z.date()
+    updatedAt: z.date(),
+    deletedAt: z.date().nullable()
 }).strict();
 
 export type CareerHistoryModelType = z.infer<typeof CareerHistoryModelSchema>;

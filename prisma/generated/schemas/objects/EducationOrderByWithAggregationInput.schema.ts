@@ -18,6 +18,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   finishedYear: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   expectedFinishMonth: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   expectedFinishYear: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  deletedAt: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   _count: z.lazy(() => EducationCountOrderByAggregateInputObjectSchema).optional(),
   _avg: z.lazy(() => EducationAvgOrderByAggregateInputObjectSchema).optional(),
   _max: z.lazy(() => EducationMaxOrderByAggregateInputObjectSchema).optional(),

@@ -12,7 +12,8 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.boolean().optional(),
   user: z.union([z.boolean(), z.lazy(() => UserArgsObjectSchema)]).optional(),
   createdAt: z.boolean().optional(),
-  updatedAt: z.boolean().optional()
+  updatedAt: z.boolean().optional(),
+  deletedAt: z.boolean().optional()
 }).strict();
 export const CareerHistorySelectObjectSchema: z.ZodType<Prisma.CareerHistorySelect> = makeSchema() as unknown as z.ZodType<Prisma.CareerHistorySelect>;
 export const CareerHistorySelectObjectZodSchema = makeSchema();

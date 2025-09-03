@@ -9,7 +9,8 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   isPrimary: z.boolean(),
   userId: z.string(),
   createdAt: z.date().optional(),
-  updatedAt: z.date().optional()
+  updatedAt: z.date().optional(),
+  deletedAt: z.date().nullish()
 }).strict();
 export const ResumeCreateManyInputObjectSchema: z.ZodType<Prisma.ResumeCreateManyInput> = makeSchema() as unknown as z.ZodType<Prisma.ResumeCreateManyInput>;
 export const ResumeCreateManyInputObjectZodSchema = makeSchema();

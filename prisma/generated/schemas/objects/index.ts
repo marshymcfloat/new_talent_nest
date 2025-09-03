@@ -533,6 +533,7 @@ export * from './ResumeUpdateWithoutUserInput.schema';
 export * from './ResumeUpdateWithWhereUniqueWithoutUserInput.schema';
 export * from './ResumeUpsertWithoutJobApplicationsInput.schema';
 export * from './ResumeUpsertWithWhereUniqueWithoutUserInput.schema';
+export * from './ResumeUserIdTitleCompoundUniqueInput.schema';
 export * from './ResumeWhereInput.schema';
 export * from './ResumeWhereUniqueInput.schema';
 export * from './SessionArgs.schema';

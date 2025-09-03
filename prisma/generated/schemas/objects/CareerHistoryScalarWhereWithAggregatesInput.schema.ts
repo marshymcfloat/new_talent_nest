@@ -17,7 +17,8 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   description: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
   userId: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional(),
-  updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional()
+  updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional(),
+  deletedAt: z.union([z.lazy(() => DateTimeNullableWithAggregatesFilterObjectSchema), z.date()]).nullish()
 }).strict();
 export const CareerHistoryScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.CareerHistoryScalarWhereWithAggregatesInput> = makeSchema() as unknown as z.ZodType<Prisma.CareerHistoryScalarWhereWithAggregatesInput>;
 export const CareerHistoryScalarWhereWithAggregatesInputObjectZodSchema = makeSchema();

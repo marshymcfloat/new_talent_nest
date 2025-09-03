@@ -16,6 +16,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),
   updatedAt: SortOrderSchema.optional(),
+  deletedAt: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   _count: z.lazy(() => CareerHistoryCountOrderByAggregateInputObjectSchema).optional(),
   _max: z.lazy(() => CareerHistoryMaxOrderByAggregateInputObjectSchema).optional(),
   _min: z.lazy(() => CareerHistoryMinOrderByAggregateInputObjectSchema).optional()

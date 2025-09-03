@@ -4,6 +4,7 @@ import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdat
 import { NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
 import { BoolFieldUpdateOperationsInputObjectSchema } from './BoolFieldUpdateOperationsInput.schema';
 import { NullableIntFieldUpdateOperationsInputObjectSchema } from './NullableIntFieldUpdateOperationsInput.schema';
+import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
 import { UserUpdateOneRequiredWithoutEducationNestedInputObjectSchema } from './UserUpdateOneRequiredWithoutEducationNestedInput.schema'
 
 const makeSchema = (): z.ZodObject<any> => z.object({
@@ -15,6 +16,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   finishedYear: z.union([z.number().int(), z.lazy(() => NullableIntFieldUpdateOperationsInputObjectSchema)]).nullish(),
   expectedFinishMonth: z.union([z.number().int(), z.lazy(() => NullableIntFieldUpdateOperationsInputObjectSchema)]).nullish(),
   expectedFinishYear: z.union([z.number().int(), z.lazy(() => NullableIntFieldUpdateOperationsInputObjectSchema)]).nullish(),
+  deletedAt: z.union([z.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)]).nullish(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutEducationNestedInputObjectSchema).optional()
 }).strict();
 export const EducationUpdateInputObjectSchema: z.ZodType<Prisma.EducationUpdateInput> = makeSchema() as unknown as z.ZodType<Prisma.EducationUpdateInput>;

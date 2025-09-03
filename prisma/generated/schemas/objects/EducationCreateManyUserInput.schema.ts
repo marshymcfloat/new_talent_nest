@@ -10,7 +10,8 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   isComplete: z.boolean(),
   finishedYear: z.number().int().nullish(),
   expectedFinishMonth: z.number().int().nullish(),
-  expectedFinishYear: z.number().int().nullish()
+  expectedFinishYear: z.number().int().nullish(),
+  deletedAt: z.date().nullish()
 }).strict();
 export const EducationCreateManyUserInputObjectSchema: z.ZodType<Prisma.EducationCreateManyUserInput> = makeSchema() as unknown as z.ZodType<Prisma.EducationCreateManyUserInput>;
 export const EducationCreateManyUserInputObjectZodSchema = makeSchema();

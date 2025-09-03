@@ -12,6 +12,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   finishedYear: z.literal(true).optional(),
   expectedFinishMonth: z.literal(true).optional(),
   expectedFinishYear: z.literal(true).optional(),
+  deletedAt: z.literal(true).optional(),
   _all: z.literal(true).optional()
 }).strict();
 export const EducationCountAggregateInputObjectSchema: z.ZodType<Prisma.EducationCountAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.EducationCountAggregateInputType>;

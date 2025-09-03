@@ -11,7 +11,8 @@ export const EducationInputSchema = z.object({
     isComplete: z.boolean(),
     finishedYear: z.number().int().optional().nullable(),
     expectedFinishMonth: z.number().int().optional().nullable(),
-    expectedFinishYear: z.number().int().optional().nullable()
+    expectedFinishYear: z.number().int().optional().nullable(),
+    deletedAt: z.date().optional().nullable()
 }).strict();
 
 export type EducationInputType = z.infer<typeof EducationInputSchema>;

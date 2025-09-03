@@ -9,7 +9,8 @@ export const ResumeFindManyResultSchema = z.object({
   User: z.unknown(),
   JobApplications: z.array(z.unknown()),
   createdAt: z.date(),
-  updatedAt: z.date()
+  updatedAt: z.date(),
+  deletedAt: z.date().optional()
 })),
   pagination: z.object({
   page: z.number().int().min(1),

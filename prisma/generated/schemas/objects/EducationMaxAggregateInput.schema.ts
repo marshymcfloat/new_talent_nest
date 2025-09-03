@@ -11,7 +11,8 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   isComplete: z.literal(true).optional(),
   finishedYear: z.literal(true).optional(),
   expectedFinishMonth: z.literal(true).optional(),
-  expectedFinishYear: z.literal(true).optional()
+  expectedFinishYear: z.literal(true).optional(),
+  deletedAt: z.literal(true).optional()
 }).strict();
 export const EducationMaxAggregateInputObjectSchema: z.ZodType<Prisma.EducationMaxAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.EducationMaxAggregateInputType>;
 export const EducationMaxAggregateInputObjectZodSchema = makeSchema();

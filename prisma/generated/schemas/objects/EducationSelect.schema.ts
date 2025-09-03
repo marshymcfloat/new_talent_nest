@@ -12,7 +12,8 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   isComplete: z.boolean().optional(),
   finishedYear: z.boolean().optional(),
   expectedFinishMonth: z.boolean().optional(),
-  expectedFinishYear: z.boolean().optional()
+  expectedFinishYear: z.boolean().optional(),
+  deletedAt: z.boolean().optional()
 }).strict();
 export const EducationSelectObjectSchema: z.ZodType<Prisma.EducationSelect> = makeSchema() as unknown as z.ZodType<Prisma.EducationSelect>;
 export const EducationSelectObjectZodSchema = makeSchema();

@@ -19,7 +19,8 @@ export const CareerHistoryFindFirstSelectSchema: z.ZodType<Prisma.CareerHistoryS
     userId: z.boolean().optional(),
     user: z.boolean().optional(),
     createdAt: z.boolean().optional(),
-    updatedAt: z.boolean().optional()
+    updatedAt: z.boolean().optional(),
+    deletedAt: z.boolean().optional()
   }).strict() as unknown as z.ZodType<Prisma.CareerHistorySelect>;
 
 export const CareerHistoryFindFirstSelectZodSchema = z.object({
@@ -32,7 +33,8 @@ export const CareerHistoryFindFirstSelectZodSchema = z.object({
     userId: z.boolean().optional(),
     user: z.boolean().optional(),
     createdAt: z.boolean().optional(),
-    updatedAt: z.boolean().optional()
+    updatedAt: z.boolean().optional(),
+    deletedAt: z.boolean().optional()
   }).strict();
 
 export const CareerHistoryFindFirstSchema: z.ZodType<Prisma.CareerHistoryFindFirstArgs> = z.object({ select: CareerHistoryFindFirstSelectSchema.optional(), include: z.lazy(() => CareerHistoryIncludeObjectSchema.optional()), orderBy: z.union([CareerHistoryOrderByWithRelationInputObjectSchema, CareerHistoryOrderByWithRelationInputObjectSchema.array()]).optional(), where: CareerHistoryWhereInputObjectSchema.optional(), cursor: CareerHistoryWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.CareerHistoryScalarFieldEnum), z.nativeEnum(Prisma.CareerHistoryScalarFieldEnum).array()]).optional() }).strict() as unknown as z.ZodType<Prisma.CareerHistoryFindFirstArgs>;

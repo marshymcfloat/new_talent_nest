@@ -78,7 +78,6 @@ const JobDescription = ({
           </p>
         </div>
 
-        {/* Use the semantic 'border' color for the divider */}
         <hr className="border-border my-2" />
 
         <div className="flex flex-col gap-6">

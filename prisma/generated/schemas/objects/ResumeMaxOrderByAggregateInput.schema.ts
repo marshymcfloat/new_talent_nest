@@ -9,7 +9,8 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   isPrimary: SortOrderSchema.optional(),
   userId: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),
-  updatedAt: SortOrderSchema.optional()
+  updatedAt: SortOrderSchema.optional(),
+  deletedAt: SortOrderSchema.optional()
 }).strict();
 export const ResumeMaxOrderByAggregateInputObjectSchema: z.ZodType<Prisma.ResumeMaxOrderByAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.ResumeMaxOrderByAggregateInput>;
 export const ResumeMaxOrderByAggregateInputObjectZodSchema = makeSchema();

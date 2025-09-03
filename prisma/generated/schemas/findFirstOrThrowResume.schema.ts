@@ -20,6 +20,7 @@ export const ResumeFindFirstOrThrowSelectSchema: z.ZodType<Prisma.ResumeSelect> 
     JobApplications: z.boolean().optional(),
     createdAt: z.boolean().optional(),
     updatedAt: z.boolean().optional(),
+    deletedAt: z.boolean().optional(),
     _count: z.boolean().optional()
   }).strict() as unknown as z.ZodType<Prisma.ResumeSelect>;
 
@@ -33,6 +34,7 @@ export const ResumeFindFirstOrThrowSelectZodSchema = z.object({
     JobApplications: z.boolean().optional(),
     createdAt: z.boolean().optional(),
     updatedAt: z.boolean().optional(),
+    deletedAt: z.boolean().optional(),
     _count: z.boolean().optional()
   }).strict();
 

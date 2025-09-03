@@ -14,6 +14,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),
   updatedAt: SortOrderSchema.optional(),
+  deletedAt: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputObjectSchema).optional()
 }).strict();
 export const CareerHistoryOrderByWithRelationInputObjectSchema: z.ZodType<Prisma.CareerHistoryOrderByWithRelationInput> = makeSchema() as unknown as z.ZodType<Prisma.CareerHistoryOrderByWithRelationInput>;

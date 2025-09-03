@@ -10,7 +10,8 @@ export const CareerHistoryFindManyResultSchema = z.object({
   userId: z.string(),
   user: z.unknown(),
   createdAt: z.date(),
-  updatedAt: z.date()
+  updatedAt: z.date(),
+  deletedAt: z.date().optional()
 })),
   pagination: z.object({
   page: z.number().int().min(1),

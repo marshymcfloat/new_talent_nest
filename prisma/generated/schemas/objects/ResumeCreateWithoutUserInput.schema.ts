@@ -9,6 +9,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   isPrimary: z.boolean(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
+  deletedAt: z.date().nullish(),
   JobApplications: z.lazy(() => JobApplicationCreateNestedManyWithoutResumeInputObjectSchema).optional()
 }).strict();
 export const ResumeCreateWithoutUserInputObjectSchema: z.ZodType<Prisma.ResumeCreateWithoutUserInput> = makeSchema() as unknown as z.ZodType<Prisma.ResumeCreateWithoutUserInput>;

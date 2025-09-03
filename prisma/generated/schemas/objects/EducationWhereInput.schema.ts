@@ -4,6 +4,7 @@ import { StringFilterObjectSchema } from './StringFilter.schema';
 import { StringNullableFilterObjectSchema } from './StringNullableFilter.schema';
 import { BoolFilterObjectSchema } from './BoolFilter.schema';
 import { IntNullableFilterObjectSchema } from './IntNullableFilter.schema';
+import { DateTimeNullableFilterObjectSchema } from './DateTimeNullableFilter.schema';
 import { UserScalarRelationFilterObjectSchema } from './UserScalarRelationFilter.schema';
 import { UserWhereInputObjectSchema } from './UserWhereInput.schema'
 
@@ -20,6 +21,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   finishedYear: z.union([z.lazy(() => IntNullableFilterObjectSchema), z.number().int()]).nullish(),
   expectedFinishMonth: z.union([z.lazy(() => IntNullableFilterObjectSchema), z.number().int()]).nullish(),
   expectedFinishYear: z.union([z.lazy(() => IntNullableFilterObjectSchema), z.number().int()]).nullish(),
+  deletedAt: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.date()]).nullish(),
   user: z.union([z.lazy(() => UserScalarRelationFilterObjectSchema), z.lazy(() => UserWhereInputObjectSchema)]).optional()
 }).strict();
 export const EducationWhereInputObjectSchema: z.ZodType<Prisma.EducationWhereInput> = makeSchema() as unknown as z.ZodType<Prisma.EducationWhereInput>;

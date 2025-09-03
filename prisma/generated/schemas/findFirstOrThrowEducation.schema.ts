@@ -19,7 +19,8 @@ export const EducationFindFirstOrThrowSelectSchema: z.ZodType<Prisma.EducationSe
     isComplete: z.boolean().optional(),
     finishedYear: z.boolean().optional(),
     expectedFinishMonth: z.boolean().optional(),
-    expectedFinishYear: z.boolean().optional()
+    expectedFinishYear: z.boolean().optional(),
+    deletedAt: z.boolean().optional()
   }).strict() as unknown as z.ZodType<Prisma.EducationSelect>;
 
 export const EducationFindFirstOrThrowSelectZodSchema = z.object({
@@ -32,7 +33,8 @@ export const EducationFindFirstOrThrowSelectZodSchema = z.object({
     isComplete: z.boolean().optional(),
     finishedYear: z.boolean().optional(),
     expectedFinishMonth: z.boolean().optional(),
-    expectedFinishYear: z.boolean().optional()
+    expectedFinishYear: z.boolean().optional(),
+    deletedAt: z.boolean().optional()
   }).strict();
 
 export const EducationFindFirstOrThrowSchema: z.ZodType<Prisma.EducationFindFirstOrThrowArgs> = z.object({ select: EducationFindFirstOrThrowSelectSchema.optional(), include: z.lazy(() => EducationIncludeObjectSchema.optional()), orderBy: z.union([EducationOrderByWithRelationInputObjectSchema, EducationOrderByWithRelationInputObjectSchema.array()]).optional(), where: EducationWhereInputObjectSchema.optional(), cursor: EducationWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([z.nativeEnum(Prisma.EducationScalarFieldEnum), z.nativeEnum(Prisma.EducationScalarFieldEnum).array()]).optional() }).strict() as unknown as z.ZodType<Prisma.EducationFindFirstOrThrowArgs>;

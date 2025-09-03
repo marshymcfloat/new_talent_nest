@@ -11,7 +11,8 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   description: z.string().nullish(),
   userId: z.string(),
   createdAt: z.date().optional(),
-  updatedAt: z.date().optional()
+  updatedAt: z.date().optional(),
+  deletedAt: z.date().nullish()
 }).strict();
 export const CareerHistoryCreateManyInputObjectSchema: z.ZodType<Prisma.CareerHistoryCreateManyInput> = makeSchema() as unknown as z.ZodType<Prisma.CareerHistoryCreateManyInput>;
 export const CareerHistoryCreateManyInputObjectZodSchema = makeSchema();

@@ -11,6 +11,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   finishedYear: z.number().int().nullish(),
   expectedFinishMonth: z.number().int().nullish(),
   expectedFinishYear: z.number().int().nullish(),
+  deletedAt: z.date().nullish(),
   user: z.lazy(() => UserCreateNestedOneWithoutEducationInputObjectSchema)
 }).strict();
 export const EducationCreateInputObjectSchema: z.ZodType<Prisma.EducationCreateInput> = makeSchema() as unknown as z.ZodType<Prisma.EducationCreateInput>;

@@ -11,6 +11,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   description: z.string().nullish(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
+  deletedAt: z.date().nullish(),
   user: z.lazy(() => UserCreateNestedOneWithoutPreviousCareersInputObjectSchema)
 }).strict();
 export const CareerHistoryCreateInputObjectSchema: z.ZodType<Prisma.CareerHistoryCreateInput> = makeSchema() as unknown as z.ZodType<Prisma.CareerHistoryCreateInput>;

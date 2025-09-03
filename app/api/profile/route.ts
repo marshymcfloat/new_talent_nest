@@ -1,5 +1,3 @@
-// src/app/api/profile/route.ts
-
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
@@ -9,41 +7,50 @@ export const GET = async (req: Request) => {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session) {
+    if (!session?.user?.id) {
       return NextResponse.json(
-        { message: "Please login first" },
+        { message: "Please log in first" },
         { status: 401 }
       );
     }
+    const userId = session.user.id;
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: session.user.id,
-      },
-      include: {
-        resumes: true,
-        previousCareers: true,
-        education: true,
-        languages: true,
-      },
-    });
+    const [user, allLanguages] = await Promise.all([
+      prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        include: {
+          resumes: {
+            where: { deletedAt: null },
+            orderBy: { createdAt: "desc" },
+          },
+          previousCareers: {
+            where: { deletedAt: null },
+            orderBy: { dateStarted: "desc" },
+          },
+          education: {
+            where: { deletedAt: null },
+            orderBy: { finishedYear: "desc" },
+          },
+          languages: true,
+        },
+      }),
+      prisma.language.findMany({
+        orderBy: { name: "asc" },
+      }),
+    ]);
 
     if (!user) {
-      return NextResponse.json(
-        { message: "unauthorized account" },
-        { status: 405 }
-      );
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
     const lastApplication = await prisma.jobApplication.findFirst({
       where: {
-        userId: user.id,
+        userId: userId,
       },
       orderBy: { createdAt: "desc" },
-      include: { resume: true },
     });
-
-    const allLanguages = await prisma.language.findMany({});
 
     const { languages: userLanguages, ...restOfUser } = user;
 
@@ -51,9 +58,9 @@ export const GET = async (req: Request) => {
       {
         data: {
           ...restOfUser,
-          lastUsedResume: lastApplication?.resumeId || null,
-          userLanguages: userLanguages,
-          allLanguages: allLanguages,
+          lastUsedResumeId: lastApplication?.resumeId || null,
+          userLanguages,
+          allLanguages,
         },
       },
       { status: 200 }

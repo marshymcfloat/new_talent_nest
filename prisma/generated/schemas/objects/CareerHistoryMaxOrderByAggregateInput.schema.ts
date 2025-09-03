@@ -11,7 +11,8 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   description: SortOrderSchema.optional(),
   userId: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),
-  updatedAt: SortOrderSchema.optional()
+  updatedAt: SortOrderSchema.optional(),
+  deletedAt: SortOrderSchema.optional()
 }).strict();
 export const CareerHistoryMaxOrderByAggregateInputObjectSchema: z.ZodType<Prisma.CareerHistoryMaxOrderByAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.CareerHistoryMaxOrderByAggregateInput>;
 export const CareerHistoryMaxOrderByAggregateInputObjectZodSchema = makeSchema();

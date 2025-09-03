@@ -169,16 +169,12 @@ export const addUserEducation = async (values: AddEducationValue) => {
       highlights,
     } = validationResult.data;
 
-    // --- FIX STARTS HERE ---
-    // If the qualification is complete, we must nullify the expected finish dates.
     if (isComplete) {
-      expectedFinishMonth = undefined; // or "" depending on your zod schema, undefined is safer
-      expectedFinishYear = undefined; // or ""
+      expectedFinishMonth = undefined;
+      expectedFinishYear = undefined;
     } else {
-      // If it's not complete, we must nullify the finished date.
-      finishedYear = undefined; // or ""
+      finishedYear = undefined;
     }
-    // --- FIX ENDS HERE ---
 
     const dataForPrisma = {
       userId,
@@ -297,24 +293,33 @@ export const addUserResume = async (value: FormData) => {
 export const deleteUserCareer = async (id: string) => {
   try {
     const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      throw new Error("You must log in first");
+    if (!session?.user?.id) {
+      throw new Error("You must be logged in to perform this action.");
     }
+    const userId = session.user.id;
 
-    const deletedCareer = await prisma.careerHistory.delete({ where: { id } });
-
-    if (!deletedCareer) {
-      throw new Error("Deleting career unsuccessful.");
-    }
+    const softDeletedCareer = await prisma.careerHistory.update({
+      where: {
+        id,
+        userId,
+      },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
 
     revalidatePath("/profile");
-    return { success: true, data: deletedCareer };
+    return { success: true, data: softDeletedCareer };
   } catch (err) {
     if (err instanceof Error) {
+      if ((err as any).code === "P2025") {
+        return {
+          error: "Career record not found or you don't have permission.",
+        };
+      }
       return { error: err.message };
     }
-    return { error: "An unexpected error occured" };
+    return { error: "An unexpected error occurred." };
   }
 };
 
@@ -473,26 +478,75 @@ export const updateUserEducation = async ({
 export const deleteUserEducation = async (id: string) => {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      throw new Error("You must log in first");
+    if (!session?.user?.id) {
+      throw new Error("You must be logged in to perform this action.");
     }
+    const userId = session.user.id;
 
-    const deletedEducation = await prisma.education.delete({
-      where: { id, userId: session.user.id },
+    const softDeletedEducation = await prisma.education.update({
+      where: {
+        id,
+        userId,
+      },
+      data: {
+        deletedAt: new Date(),
+      },
     });
 
-    if (!deletedEducation) {
+    revalidatePath("/profile");
+    return { success: true, data: softDeletedEducation };
+  } catch (err) {
+    if (err instanceof Error) {
+      if ((err as any).code === "P2025") {
+        return {
+          error: "Education record not found or you don't have permission.",
+        };
+      }
+      return { error: err.message };
+    }
+    return { error: "An unexpected error occurred." };
+  }
+};
+
+export const deleteUserResume = async (id: string) => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      throw new Error("You must be logged in to delete a resume.");
+    }
+    const userId = session.user.id;
+
+    const applicationExists = await prisma.jobApplication.findFirst({
+      where: { resumeId: id },
+    });
+
+    if (applicationExists) {
       throw new Error(
-        "There is an error occured while attempting to delete education"
+        "Cannot delete this resume as it is currently linked to one or more job applications."
       );
     }
 
+    const softDeletedResume = await prisma.resume.update({
+      where: {
+        id,
+        userId,
+      },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+
     revalidatePath("/profile");
-    return { success: true, data: deletedEducation };
+    return { success: true, data: softDeletedResume };
   } catch (err) {
     if (err instanceof Error) {
+      if ((err as any).code === "P2025") {
+        return {
+          error: "Resume not found or you don't have permission to delete it.",
+        };
+      }
       return { error: err.message };
     }
-    return { error: "an unexpected error occured" };
+    return { error: "An unexpected error occurred." };
   }
 };

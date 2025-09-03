@@ -45,6 +45,7 @@ import {
   addUserSummary,
   deleteUserCareer,
   deleteUserEducation,
+  deleteUserResume,
   updateUserLanguages,
 } from "@/lib/actions/profileActions";
 import AddEducationForm from "@/components/AddEducationForm";
@@ -69,6 +70,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { addResumeSchema } from "@/lib/zod schemas/profileSchema";
+import DeleteButton from "@/components/DeleteButton";
 
 const sectionFade = {
   initial: { opacity: 0, y: 10 },
@@ -301,6 +303,7 @@ const InterceptedProfilePage = () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         userId: previousProfile?.id || "",
+        deletedAt: null,
       };
 
       queryClient.setQueryData<ProfileData | undefined>(["profile"], (old) => {
@@ -411,6 +414,45 @@ const InterceptedProfilePage = () => {
       },
     });
 
+  const { mutate: mutateDeleteResume, isPending: pendingDeleteResume } =
+    useMutation({
+      mutationFn: deleteUserResume,
+      onMutate: async (resumeIdToDelete: string) => {
+        await queryClient.cancelQueries({ queryKey: ["profile"] });
+
+        const previousProfileData = queryClient.getQueryData<ProfileData>([
+          "profile",
+        ]);
+
+        queryClient.setQueryData<ProfileData | undefined>(
+          ["profile"],
+          (oldData) => {
+            if (!oldData) return undefined;
+            const updatedResumes = oldData.resumes.filter(
+              (resume) => resume.id !== resumeIdToDelete
+            );
+            return { ...oldData, resumes: updatedResumes };
+          }
+        );
+
+        return { previousProfileData };
+      },
+      onError: (err, variables, context) => {
+        toast.error("Failed to delete resume.", {
+          description: (err as Error).message,
+        });
+        if (context?.previousProfileData) {
+          queryClient.setQueryData(["profile"], context.previousProfileData);
+        }
+      },
+      onSuccess: () => {
+        toast.success("Resume deleted successfully!");
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: ["profile"] });
+      },
+    });
+
   const languageInput = languageForm.watch("language");
 
   useEffect(() => {
@@ -489,7 +531,7 @@ const InterceptedProfilePage = () => {
     mutateResume(newFormData);
   };
 
-  const handleCareerDeletion = async (id: string) => {
+  const handleCareerDeletion = (id: string) => {
     mutateDeleteCareer(id);
   };
 
@@ -498,8 +540,12 @@ const InterceptedProfilePage = () => {
     setCareerHistoryUpdateData(careerHistoryData);
   };
 
-  const handleEducationDeletion = async (id: string) => {
+  const handleEducationDeletion = (id: string) => {
     mutateDeleteEducation(id);
+  };
+
+  const handleResumeDeletion = (id: string) => {
+    mutateDeleteResume(id);
   };
 
   const onEducationUpdate = async (educationData: Education) => {
@@ -1048,13 +1094,11 @@ const InterceptedProfilePage = () => {
                       >
                         <Eye className="h-5 w-5 text-gray-500 dark:text-gray-400" />
                       </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        aria-label="Delete resume"
-                      >
-                        <Trash2 className="h-5 w-5 text-red-500 hover:text-red-600" />
-                      </Button>
+
+                      <DeleteButton
+                        title={resume.title}
+                        onDelete={() => handleResumeDeletion(resume.id)}
+                      />
                     </div>
                   </motion.div>
                 ))}

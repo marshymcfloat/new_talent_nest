@@ -208,6 +208,7 @@ const AddEducationForm = ({
           expectedFinishYear: newEducationData.expectedFinishYear
             ? parseInt(newEducationData.expectedFinishYear, 10)
             : null,
+          deletedAt: null,
         };
         return { ...old, education: [...(old.education || []), tempEducation] };
       });

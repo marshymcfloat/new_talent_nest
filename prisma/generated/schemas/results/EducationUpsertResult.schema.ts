@@ -9,5 +9,6 @@ export const EducationUpsertResultSchema = z.object({
   isComplete: z.boolean(),
   finishedYear: z.number().int().optional(),
   expectedFinishMonth: z.number().int().optional(),
-  expectedFinishYear: z.number().int().optional()
+  expectedFinishYear: z.number().int().optional(),
+  deletedAt: z.date().optional()
 });

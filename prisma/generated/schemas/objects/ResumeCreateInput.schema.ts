@@ -10,6 +10,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   isPrimary: z.boolean(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
+  deletedAt: z.date().nullish(),
   User: z.lazy(() => UserCreateNestedOneWithoutResumesInputObjectSchema),
   JobApplications: z.lazy(() => JobApplicationCreateNestedManyWithoutResumeInputObjectSchema).optional()
 }).strict();

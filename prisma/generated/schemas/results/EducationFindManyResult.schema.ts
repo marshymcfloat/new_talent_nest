@@ -10,7 +10,8 @@ export const EducationFindManyResultSchema = z.object({
   isComplete: z.boolean(),
   finishedYear: z.number().int().optional(),
   expectedFinishMonth: z.number().int().optional(),
-  expectedFinishYear: z.number().int().optional()
+  expectedFinishYear: z.number().int().optional(),
+  deletedAt: z.date().optional()
 })),
   pagination: z.object({
   page: z.number().int().min(1),

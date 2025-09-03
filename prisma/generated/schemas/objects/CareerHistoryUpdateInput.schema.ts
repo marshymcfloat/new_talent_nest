@@ -15,6 +15,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   description: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
+  deletedAt: z.union([z.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)]).nullish(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutPreviousCareersNestedInputObjectSchema).optional()
 }).strict();
 export const CareerHistoryUpdateInputObjectSchema: z.ZodType<Prisma.CareerHistoryUpdateInput> = makeSchema() as unknown as z.ZodType<Prisma.CareerHistoryUpdateInput>;

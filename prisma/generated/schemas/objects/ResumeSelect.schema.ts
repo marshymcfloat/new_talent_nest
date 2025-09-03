@@ -14,6 +14,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   JobApplications: z.union([z.boolean(), z.lazy(() => JobApplicationFindManySchema)]).optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
   _count: z.union([z.boolean(), z.lazy(() => ResumeCountOutputTypeArgsObjectSchema)]).optional()
 }).strict();
 export const ResumeSelectObjectSchema: z.ZodType<Prisma.ResumeSelect> = makeSchema() as unknown as z.ZodType<Prisma.ResumeSelect>;

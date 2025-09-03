@@ -100,6 +100,7 @@ const AddRoleForm = ({
             ? new Date(newCareerFormData.get("dateEnded") as string)
             : null,
           description: (newCareerFormData.get("description") as string) || null,
+          deletedAt: null,
         };
         return {
           ...old,

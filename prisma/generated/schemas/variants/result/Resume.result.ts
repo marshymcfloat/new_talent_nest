@@ -10,7 +10,8 @@ export const ResumeResultSchema = z.object({
     User: z.unknown(),
     JobApplications: z.array(z.unknown()),
     createdAt: z.date(),
-    updatedAt: z.date()
+    updatedAt: z.date(),
+    deletedAt: z.date().nullable()
 }).strict();
 
 export type ResumeResultType = z.infer<typeof ResumeResultSchema>;

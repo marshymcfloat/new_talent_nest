@@ -20,6 +20,7 @@ const EducationCard = ({
   expectedFinishMonth,
   expectedFinishYear,
   highlight,
+  deletedAt,
   userId,
   onDelete,
   onUpdate,
@@ -76,6 +77,7 @@ const EducationCard = ({
               expectedFinishYear,
               highlight,
               userId,
+              deletedAt,
             })
           }
         >

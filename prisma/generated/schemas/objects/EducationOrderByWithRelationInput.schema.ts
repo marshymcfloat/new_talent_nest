@@ -14,6 +14,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   finishedYear: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   expectedFinishMonth: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   expectedFinishYear: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  deletedAt: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputObjectSchema).optional()
 }).strict();
 export const EducationOrderByWithRelationInputObjectSchema: z.ZodType<Prisma.EducationOrderByWithRelationInput> = makeSchema() as unknown as z.ZodType<Prisma.EducationOrderByWithRelationInput>;

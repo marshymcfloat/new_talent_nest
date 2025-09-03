@@ -11,7 +11,8 @@ export const EducationModelSchema = z.object({
     isComplete: z.boolean(),
     finishedYear: z.number().int().nullable(),
     expectedFinishMonth: z.number().int().nullable(),
-    expectedFinishYear: z.number().int().nullable()
+    expectedFinishYear: z.number().int().nullable(),
+    deletedAt: z.date().nullable()
 }).strict();
 
 export type EducationModelType = z.infer<typeof EducationModelSchema>;

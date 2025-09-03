@@ -99,6 +99,7 @@ model CareerHistory {
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
 }
 
@@ -116,6 +117,7 @@ model Education {
   expectedFinishMonth Int?   
   expectedFinishYear  Int?   
 
+deletedAt DateTime?
     @@unique([id, userId])
 }
 
@@ -149,11 +151,9 @@ model Language {
 
   users User[]
 }
-
-
 model Resume {
   id String @id @default(uuid())
-  title String @unique
+  title String 
   url String
   isPrimary Boolean
 
@@ -164,7 +164,9 @@ model Resume {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
+  @@unique([userId, title]) 
 }
 
 model EmployerQuestion {
@@ -172,7 +174,7 @@ model EmployerQuestion {
   text      String  
   type      QuestionType 
   isRequired Boolean  @default(true)
-  options   String[] // For multiple-choice questions
+  options   String[] 
 
   jobId String
   Job   Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)

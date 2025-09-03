@@ -9,6 +9,7 @@ export const EducationGroupByResultSchema = z.array(z.object({
   finishedYear: z.number().int(),
   expectedFinishMonth: z.number().int(),
   expectedFinishYear: z.number().int(),
+  deletedAt: z.date(),
   _count: z.object({
     id: z.number(),
     userId: z.number(),
@@ -19,7 +20,8 @@ export const EducationGroupByResultSchema = z.array(z.object({
     isComplete: z.number(),
     finishedYear: z.number(),
     expectedFinishMonth: z.number(),
-    expectedFinishYear: z.number()
+    expectedFinishYear: z.number(),
+    deletedAt: z.number()
   }).optional(),
   _sum: z.object({
     finishedYear: z.number().nullable(),
@@ -39,7 +41,8 @@ export const EducationGroupByResultSchema = z.array(z.object({
     highlight: z.string().nullable(),
     finishedYear: z.number().int().nullable(),
     expectedFinishMonth: z.number().int().nullable(),
-    expectedFinishYear: z.number().int().nullable()
+    expectedFinishYear: z.number().int().nullable(),
+    deletedAt: z.date().nullable()
   }).nullable().optional(),
   _max: z.object({
     id: z.string().nullable(),
@@ -49,6 +52,7 @@ export const EducationGroupByResultSchema = z.array(z.object({
     highlight: z.string().nullable(),
     finishedYear: z.number().int().nullable(),
     expectedFinishMonth: z.number().int().nullable(),
-    expectedFinishYear: z.number().int().nullable()
+    expectedFinishYear: z.number().int().nullable(),
+    deletedAt: z.date().nullable()
   }).nullable().optional()
 }));

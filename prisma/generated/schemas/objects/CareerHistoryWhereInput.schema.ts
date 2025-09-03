@@ -20,6 +20,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional(),
+  deletedAt: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.date()]).nullish(),
   user: z.union([z.lazy(() => UserScalarRelationFilterObjectSchema), z.lazy(() => UserWhereInputObjectSchema)]).optional()
 }).strict();
 export const CareerHistoryWhereInputObjectSchema: z.ZodType<Prisma.CareerHistoryWhereInput> = makeSchema() as unknown as z.ZodType<Prisma.CareerHistoryWhereInput>;
