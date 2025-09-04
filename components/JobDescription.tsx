@@ -15,6 +15,7 @@ import { Prisma } from "@prisma/client";
 type JobWithQuestions = Prisma.JobGetPayload<{
   include: {
     employerQuestions: true;
+    company: true;
   };
 }>;
 
@@ -40,7 +41,7 @@ const JobDescription = ({
               {title}
             </CardTitle>
             <CardDescription className="text-muted-foreground">
-              {company}
+              {company.name}
             </CardDescription>
           </div>
 

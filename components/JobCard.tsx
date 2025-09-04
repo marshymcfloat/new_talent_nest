@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 type JobWithQuestions = Prisma.JobGetPayload<{
   include: {
     employerQuestions: true;
+    company: true;
   };
 }>;
 
@@ -55,7 +56,7 @@ const JobCard = ({
           <CardTitle className="text-lg font-semibold leading-tight text-foreground">
             {title}
           </CardTitle>
-          <p className="text-sm text-muted-foreground">{company}</p>
+          <p className="text-sm text-muted-foreground">{company.name}</p>
         </div>
         <button
           className={cn(

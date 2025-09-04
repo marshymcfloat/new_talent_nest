@@ -7,7 +7,7 @@ import { JobApplicationUncheckedCreateNestedManyWithoutJobInputObjectSchema } fr
 
 const makeSchema = (): z.ZodObject<any> => z.object({
   id: z.string().optional(),
-  company: z.string(),
+  companyId: z.string(),
   title: z.string(),
   location: z.string(),
   type: JobTypeSchema,

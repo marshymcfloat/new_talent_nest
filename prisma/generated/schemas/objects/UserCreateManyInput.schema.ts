@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
+import { UserRoleSchema } from '../enums/UserRole.schema';
 import { UserAvailabilityTypeSchema } from '../enums/UserAvailabilityType.schema';
 import { JobTypeSchema } from '../enums/JobType.schema';
 import { UserCreatepreferredLocationInputObjectSchema } from './UserCreatepreferredLocationInput.schema';
@@ -15,6 +16,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.string().nullish(),
   username: z.string().nullish(),
   password: z.string().nullish(),
+  role: UserRoleSchema.optional(),
   summary: z.string().nullish(),
   availability: UserAvailabilityTypeSchema.nullish(),
   preferredWorkType: JobTypeSchema.nullish(),

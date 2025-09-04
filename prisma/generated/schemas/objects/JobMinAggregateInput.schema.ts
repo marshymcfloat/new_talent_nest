@@ -4,7 +4,7 @@ import type { Prisma } from '@prisma/client';
 
 const makeSchema = (): z.ZodObject<any> => z.object({
   id: z.literal(true).optional(),
-  company: z.literal(true).optional(),
+  companyId: z.literal(true).optional(),
   title: z.literal(true).optional(),
   location: z.literal(true).optional(),
   type: z.literal(true).optional(),

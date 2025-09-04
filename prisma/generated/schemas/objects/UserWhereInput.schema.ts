@@ -3,12 +3,15 @@ import type { Prisma } from '@prisma/client';
 import { StringFilterObjectSchema } from './StringFilter.schema';
 import { StringNullableFilterObjectSchema } from './StringNullableFilter.schema';
 import { DateTimeNullableFilterObjectSchema } from './DateTimeNullableFilter.schema';
+import { EnumUserRoleFilterObjectSchema } from './EnumUserRoleFilter.schema';
+import { UserRoleSchema } from '../enums/UserRole.schema';
 import { EnumUserAvailabilityTypeNullableFilterObjectSchema } from './EnumUserAvailabilityTypeNullableFilter.schema';
 import { UserAvailabilityTypeSchema } from '../enums/UserAvailabilityType.schema';
 import { EnumJobTypeNullableFilterObjectSchema } from './EnumJobTypeNullableFilter.schema';
 import { JobTypeSchema } from '../enums/JobType.schema';
 import { StringNullableListFilterObjectSchema } from './StringNullableListFilter.schema';
 import { EnumJobClassNullableListFilterObjectSchema } from './EnumJobClassNullableListFilter.schema';
+import { CompanyMemberListRelationFilterObjectSchema } from './CompanyMemberListRelationFilter.schema';
 import { ResumeListRelationFilterObjectSchema } from './ResumeListRelationFilter.schema';
 import { JobApplicationListRelationFilterObjectSchema } from './JobApplicationListRelationFilter.schema';
 import { CareerHistoryListRelationFilterObjectSchema } from './CareerHistoryListRelationFilter.schema';
@@ -29,6 +32,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
   username: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
   password: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
+  role: z.union([z.lazy(() => EnumUserRoleFilterObjectSchema), UserRoleSchema]).optional(),
   summary: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
   availability: z.union([z.lazy(() => EnumUserAvailabilityTypeNullableFilterObjectSchema), UserAvailabilityTypeSchema]).nullish(),
   preferredWorkType: z.union([z.lazy(() => EnumJobTypeNullableFilterObjectSchema), JobTypeSchema]).nullish(),
@@ -36,6 +40,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   rightToWork: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
   expectedSalary: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
   jobClassification: z.lazy(() => EnumJobClassNullableListFilterObjectSchema).optional(),
+  companies: z.lazy(() => CompanyMemberListRelationFilterObjectSchema).optional(),
   resumes: z.lazy(() => ResumeListRelationFilterObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationListRelationFilterObjectSchema).optional(),
   previousCareers: z.lazy(() => CareerHistoryListRelationFilterObjectSchema).optional(),

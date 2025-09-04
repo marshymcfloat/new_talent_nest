@@ -1,0 +1,33 @@
+import { z } from 'zod';
+export const CompanyAggregateResultSchema = z.object({  _count: z.object({
+    id: z.number(),
+    name: z.number(),
+    description: z.number(),
+    websiteUrl: z.number(),
+    logoUrl: z.number(),
+    verifiedDomains: z.number(),
+    jobs: z.number(),
+    members: z.number(),
+    createdAt: z.number(),
+    updatedAt: z.number()
+  }).optional(),
+  _min: z.object({
+    id: z.string().nullable(),
+    name: z.string().nullable(),
+    description: z.string().nullable(),
+    websiteUrl: z.string().nullable(),
+    logoUrl: z.string().nullable(),
+    verifiedDomains: z.array(z.string()).nullable(),
+    createdAt: z.date().nullable(),
+    updatedAt: z.date().nullable()
+  }).nullable().optional(),
+  _max: z.object({
+    id: z.string().nullable(),
+    name: z.string().nullable(),
+    description: z.string().nullable(),
+    websiteUrl: z.string().nullable(),
+    logoUrl: z.string().nullable(),
+    verifiedDomains: z.array(z.string()).nullable(),
+    createdAt: z.date().nullable(),
+    updatedAt: z.date().nullable()
+  }).nullable().optional()});

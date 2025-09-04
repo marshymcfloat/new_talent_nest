@@ -3,6 +3,8 @@ import type { Prisma } from '@prisma/client';
 import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 import { NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
+import { UserRoleSchema } from '../enums/UserRole.schema';
+import { EnumUserRoleFieldUpdateOperationsInputObjectSchema } from './EnumUserRoleFieldUpdateOperationsInput.schema';
 import { UserAvailabilityTypeSchema } from '../enums/UserAvailabilityType.schema';
 import { NullableEnumUserAvailabilityTypeFieldUpdateOperationsInputObjectSchema } from './NullableEnumUserAvailabilityTypeFieldUpdateOperationsInput.schema';
 import { JobTypeSchema } from '../enums/JobType.schema';
@@ -11,6 +13,7 @@ import { UserUpdatepreferredLocationInputObjectSchema } from './UserUpdateprefer
 import { UserUpdaterightToWorkInputObjectSchema } from './UserUpdaterightToWorkInput.schema';
 import { UserUpdatejobClassificationInputObjectSchema } from './UserUpdatejobClassificationInput.schema';
 import { JobClassSchema } from '../enums/JobClass.schema';
+import { CompanyMemberUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './CompanyMemberUncheckedUpdateManyWithoutUserNestedInput.schema';
 import { ResumeUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './ResumeUncheckedUpdateManyWithoutUserNestedInput.schema';
 import { JobApplicationUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './JobApplicationUncheckedUpdateManyWithoutUserNestedInput.schema';
 import { CareerHistoryUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './CareerHistoryUncheckedUpdateManyWithoutUserNestedInput.schema';
@@ -27,6 +30,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
   username: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
   password: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
+  role: z.union([UserRoleSchema, z.lazy(() => EnumUserRoleFieldUpdateOperationsInputObjectSchema)]).optional(),
   summary: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
   availability: z.union([UserAvailabilityTypeSchema, z.lazy(() => NullableEnumUserAvailabilityTypeFieldUpdateOperationsInputObjectSchema)]).nullish(),
   preferredWorkType: z.union([JobTypeSchema, z.lazy(() => NullableEnumJobTypeFieldUpdateOperationsInputObjectSchema)]).nullish(),
@@ -34,6 +38,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   rightToWork: z.union([z.lazy(() => UserUpdaterightToWorkInputObjectSchema), z.string().array()]).optional(),
   expectedSalary: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).nullish(),
   jobClassification: z.union([z.lazy(() => UserUpdatejobClassificationInputObjectSchema), JobClassSchema.array()]).optional(),
+  companies: z.lazy(() => CompanyMemberUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional(),
   resumes: z.lazy(() => ResumeUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional(),
   previousCareers: z.lazy(() => CareerHistoryUncheckedUpdateManyWithoutUserNestedInputObjectSchema).optional(),

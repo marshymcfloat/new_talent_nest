@@ -12,6 +12,7 @@ import { useMediaQuery } from "@/app/hooks/UseMediaQuery";
 type JobWithQuestions = Prisma.JobGetPayload<{
   include: {
     employerQuestions: true;
+    company: true;
   };
 }>;
 
@@ -31,12 +32,6 @@ const JobView = () => {
     },
   });
 
-  useEffect(() => {
-    if (!isMobile && !selectedJob && data?.data && data.data.length > 0) {
-      setSelectedJob(data.data[0]);
-    }
-  }, [data, selectedJob, isMobile]);
-
   return (
     <>
       <div className="hidden md:flex w-full gap-4">
@@ -55,7 +50,7 @@ const JobView = () => {
             </div>
           ) : (
             !isLoading && (
-              <Card className="w-full bg-purple-200 h-[800px] flex justify-center items-center">
+              <Card className="w-full bg-purple-200 h-[800px] flex justify-center items-center md:fixed md:w-[58%] lg:w-[63%]   md:rounded-2xl">
                 <h1 className="uppercase font-bold text-2xl text-purple-900">
                   Please select a job
                 </h1>

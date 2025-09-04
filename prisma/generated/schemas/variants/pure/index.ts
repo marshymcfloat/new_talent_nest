@@ -3,6 +3,8 @@
  * Auto-generated - do not edit manually
  */
 
+export { CompanyModelSchema } from './Company.pure';
+export { CompanyMemberModelSchema } from './CompanyMember.pure';
 export { JobModelSchema } from './Job.pure';
 export { JobApplicationModelSchema } from './JobApplication.pure';
 export { UserModelSchema } from './User.pure';

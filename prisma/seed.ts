@@ -1,4 +1,4 @@
-import { PrismaClient, JobClass, JobType, QuestionType } from "@prisma/client";
+/* import { PrismaClient, JobClass, JobType, QuestionType } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -377,3 +377,96 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+ */
+
+// FILE: prisma/seed.ts
+
+/* import { PrismaClient, CompanyRole, UserRole } from "@prisma/client";
+import * as bcrypt from "bcryptjs";
+
+// Initialize Prisma Client
+const prisma = new PrismaClient();
+
+async function main() {
+  console.log("🌱 Start seeding...");
+
+  // --- 1. Clean up existing data ---
+  // Delete in an order that respects foreign key constraints
+  console.log("🧹 Clearing old data...");
+  await prisma.companyMember.deleteMany();
+  await prisma.job.deleteMany(); // Assuming Job has a relation to Company
+  await prisma.company.deleteMany();
+  console.log("✅ Old data cleared.");
+
+  // --- 2. Create the company you want to test against ---
+  console.log("🏢 Creating Innovatech Solutions...");
+  const innovatech = await prisma.company.create({
+    data: {
+      name: "Innovatech Solutions",
+      description:
+        "Pioneering the future of technology, one solution at a time.",
+      websiteUrl: "https://innovatech.com",
+      // This is the crucial part for your test case!
+      verifiedDomains: ["innovatech.com"],
+    },
+  });
+  console.log(
+    `✅ Created company: ${innovatech.name} with ID: ${innovatech.id}`
+  );
+
+  // --- 3. Create a second, unrelated company ---
+  console.log("🏢 Creating Global Exports...");
+  const globalExports = await prisma.company.create({
+    data: {
+      name: "Global Exports",
+      description: "Connecting markets worldwide.",
+      websiteUrl: "https://globalexports.net",
+      verifiedDomains: ["globalexports.net"],
+    },
+  });
+  console.log(
+    `✅ Created company: ${globalExports.name} with ID: ${globalExports.id}`
+  );
+
+  // --- 4. Create an initial "admin" user for Innovatech ---
+  console.log("👤 Creating initial admin user for Innovatech...");
+  const hashedPassword = await bcrypt.hash("Password123!", 10); // Use a secure default password
+
+  const adminUser = await prisma.user.create({
+    data: {
+      email: "admin@innovatech.com",
+      name: "Alice Admin",
+      password: hashedPassword,
+      role: UserRole.EMPLOYER,
+      emailVerified: new Date(), // Mark as verified for simplicity in seeding
+    },
+  });
+  console.log(
+    `✅ Created user: ${adminUser.name} with email: ${adminUser.email}`
+  );
+
+  // --- 5. Link the admin user to the Innovatech company ---
+  console.log("🔗 Linking admin user to Innovatech...");
+  await prisma.companyMember.create({
+    data: {
+      userId: adminUser.id,
+      companyId: innovatech.id,
+      role: CompanyRole.ADMIN, // The first user is the admin
+    },
+  });
+  console.log("✅ User linked to company as ADMIN.");
+
+  console.log("🌱 Seeding finished.");
+}
+
+// --- Execute the seed script ---
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    // Close the Prisma Client connection
+    await prisma.$disconnect();
+  });
+ */

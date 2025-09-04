@@ -1,11 +1,13 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
+import { UserRoleSchema } from '../enums/UserRole.schema';
 import { UserAvailabilityTypeSchema } from '../enums/UserAvailabilityType.schema';
 import { JobTypeSchema } from '../enums/JobType.schema';
 import { UserCreatepreferredLocationInputObjectSchema } from './UserCreatepreferredLocationInput.schema';
 import { UserCreaterightToWorkInputObjectSchema } from './UserCreaterightToWorkInput.schema';
 import { UserCreatejobClassificationInputObjectSchema } from './UserCreatejobClassificationInput.schema';
 import { JobClassSchema } from '../enums/JobClass.schema';
+import { CompanyMemberCreateNestedManyWithoutUserInputObjectSchema } from './CompanyMemberCreateNestedManyWithoutUserInput.schema';
 import { ResumeCreateNestedManyWithoutUserInputObjectSchema } from './ResumeCreateNestedManyWithoutUserInput.schema';
 import { CareerHistoryCreateNestedManyWithoutUserInputObjectSchema } from './CareerHistoryCreateNestedManyWithoutUserInput.schema';
 import { EducationCreateNestedManyWithoutUserInputObjectSchema } from './EducationCreateNestedManyWithoutUserInput.schema';
@@ -22,6 +24,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.string().nullish(),
   username: z.string().nullish(),
   password: z.string().nullish(),
+  role: UserRoleSchema.optional(),
   summary: z.string().nullish(),
   availability: UserAvailabilityTypeSchema.nullish(),
   preferredWorkType: JobTypeSchema.nullish(),
@@ -29,6 +32,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   rightToWork: z.union([z.lazy(() => UserCreaterightToWorkInputObjectSchema), z.string().array()]).optional(),
   expectedSalary: z.string().nullish(),
   jobClassification: z.union([z.lazy(() => UserCreatejobClassificationInputObjectSchema), JobClassSchema.array()]).optional(),
+  companies: z.lazy(() => CompanyMemberCreateNestedManyWithoutUserInputObjectSchema).optional(),
   resumes: z.lazy(() => ResumeCreateNestedManyWithoutUserInputObjectSchema).optional(),
   previousCareers: z.lazy(() => CareerHistoryCreateNestedManyWithoutUserInputObjectSchema).optional(),
   education: z.lazy(() => EducationCreateNestedManyWithoutUserInputObjectSchema).optional(),

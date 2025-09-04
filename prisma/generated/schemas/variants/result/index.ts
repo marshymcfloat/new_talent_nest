@@ -3,6 +3,8 @@
  * Auto-generated - do not edit manually
  */
 
+export { CompanyResultSchema } from './Company.result';
+export { CompanyMemberResultSchema } from './CompanyMember.result';
 export { JobResultSchema } from './Job.result';
 export { JobApplicationResultSchema } from './JobApplication.result';
 export { UserResultSchema } from './User.result';

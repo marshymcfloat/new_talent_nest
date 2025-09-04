@@ -10,6 +10,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: SortOrderSchema.optional(),
   username: SortOrderSchema.optional(),
   password: SortOrderSchema.optional(),
+  role: SortOrderSchema.optional(),
   summary: SortOrderSchema.optional(),
   availability: SortOrderSchema.optional(),
   preferredWorkType: SortOrderSchema.optional(),

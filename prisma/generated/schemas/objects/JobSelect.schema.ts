@@ -1,12 +1,14 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
+import { CompanyArgsObjectSchema } from './CompanyArgs.schema';
 import { EmployerQuestionFindManySchema } from '../findManyEmployerQuestion.schema';
 import { JobApplicationFindManySchema } from '../findManyJobApplication.schema';
 import { JobCountOutputTypeArgsObjectSchema } from './JobCountOutputTypeArgs.schema'
 
 const makeSchema = (): z.ZodObject<any> => z.object({
   id: z.boolean().optional(),
-  company: z.boolean().optional(),
+  companyId: z.boolean().optional(),
+  company: z.union([z.boolean(), z.lazy(() => CompanyArgsObjectSchema)]).optional(),
   title: z.boolean().optional(),
   location: z.boolean().optional(),
   type: z.boolean().optional(),

@@ -3,6 +3,8 @@
  * Auto-generated - do not edit manually
  */
 
+export { CompanyInputSchema } from './Company.input';
+export { CompanyMemberInputSchema } from './CompanyMember.input';
 export { JobInputSchema } from './Job.input';
 export { JobApplicationInputSchema } from './JobApplication.input';
 export { UserInputSchema } from './User.input';

@@ -14,6 +14,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   username: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   password: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  role: SortOrderSchema.optional(),
   summary: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   availability: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   preferredWorkType: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),

@@ -3,6 +3,8 @@ import type { Prisma } from '@prisma/client';
 import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
 import { StringNullableWithAggregatesFilterObjectSchema } from './StringNullableWithAggregatesFilter.schema';
 import { DateTimeNullableWithAggregatesFilterObjectSchema } from './DateTimeNullableWithAggregatesFilter.schema';
+import { EnumUserRoleWithAggregatesFilterObjectSchema } from './EnumUserRoleWithAggregatesFilter.schema';
+import { UserRoleSchema } from '../enums/UserRole.schema';
 import { EnumUserAvailabilityTypeNullableWithAggregatesFilterObjectSchema } from './EnumUserAvailabilityTypeNullableWithAggregatesFilter.schema';
 import { UserAvailabilityTypeSchema } from '../enums/UserAvailabilityType.schema';
 import { EnumJobTypeNullableWithAggregatesFilterObjectSchema } from './EnumJobTypeNullableWithAggregatesFilter.schema';
@@ -21,6 +23,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
   username: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
   password: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
+  role: z.union([z.lazy(() => EnumUserRoleWithAggregatesFilterObjectSchema), UserRoleSchema]).optional(),
   summary: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
   availability: z.union([z.lazy(() => EnumUserAvailabilityTypeNullableWithAggregatesFilterObjectSchema), UserAvailabilityTypeSchema]).nullish(),
   preferredWorkType: z.union([z.lazy(() => EnumJobTypeNullableWithAggregatesFilterObjectSchema), JobTypeSchema]).nullish(),

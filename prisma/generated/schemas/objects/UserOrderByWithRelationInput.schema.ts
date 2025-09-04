@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
 import { SortOrderInputObjectSchema } from './SortOrderInput.schema';
+import { CompanyMemberOrderByRelationAggregateInputObjectSchema } from './CompanyMemberOrderByRelationAggregateInput.schema';
 import { ResumeOrderByRelationAggregateInputObjectSchema } from './ResumeOrderByRelationAggregateInput.schema';
 import { JobApplicationOrderByRelationAggregateInputObjectSchema } from './JobApplicationOrderByRelationAggregateInput.schema';
 import { CareerHistoryOrderByRelationAggregateInputObjectSchema } from './CareerHistoryOrderByRelationAggregateInput.schema';
@@ -19,6 +20,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   username: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   password: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  role: SortOrderSchema.optional(),
   summary: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   availability: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   preferredWorkType: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
@@ -26,6 +28,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   rightToWork: SortOrderSchema.optional(),
   expectedSalary: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   jobClassification: SortOrderSchema.optional(),
+  companies: z.lazy(() => CompanyMemberOrderByRelationAggregateInputObjectSchema).optional(),
   resumes: z.lazy(() => ResumeOrderByRelationAggregateInputObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationOrderByRelationAggregateInputObjectSchema).optional(),
   previousCareers: z.lazy(() => CareerHistoryOrderByRelationAggregateInputObjectSchema).optional(),

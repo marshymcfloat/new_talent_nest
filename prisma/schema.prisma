@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,186 +11,190 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Company {
+  id              String          @id @default(cuid())
+  name            String          @unique
+  description     String?
+  websiteUrl      String?
+  logoUrl         String?
+  verifiedDomains String[]        @default([])
+  jobs            Job[]
+  members         CompanyMember[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+model CompanyMember {
+  userId    String
+  companyId String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company   Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  role      CompanyRole @default(MEMBER)
+
+  @@id([userId, companyId])
+}
+
 model Job {
   id        String   @id @default(cuid())
-  company   String
+  // --- REMOVED ---
+  // company   String 
+  
+  // --- ADDED RELATION TO COMPANY ---
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  // ------------------------------------
+
   title     String
   location  String
   type      JobType
   salary    String
   jobClass  JobClass
 
-  summary         String   @default("no summary provided")
-  qualifications  String   @default("no qualifications provided")
-  responsibilities String  @default("no responsibilities provided")
-  benefits        String?  
-  
-  employerQuestions EmployerQuestion[] 
-  tags              String[] @default([]) 
-  JobApplication JobApplication[]
-
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  summary          String           @default("no summary provided")
+  qualifications   String           @default("no qualifications provided")
+  responsibilities String           @default("no responsibilities provided")
+  benefits         String?
+  employerQuestions EmployerQuestion[]
+  tags             String[]         @default([])
+  JobApplication   JobApplication[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 }
 
 model JobApplication {
   id     String @id @default(cuid())
-  userId String 
+  userId String
   jobId  String
-
   resumeId String
   resume Resume @relation(fields: [resumeId], references: [id])
-
   Job    Job    @relation(fields: [jobId], references: [id])
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade) 
-
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   answers Answer[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
-
 
 model User {
   id            String    @id @default(cuid())
-  name          String?   
+  name          String?
   email         String?   @unique
   emailVerified DateTime?
-  image         String?   
+  image         String?
+  username      String?   @unique
+  password      String?
+  role          UserRole  @default(JOB_SEEKER)
 
-  username      String?   @unique 
-  password      String?   
+  // --- ADDED RELATION TO COMPANYMEMBER ---
+  // This lets you find which companies a user is a member of.
+  companies     CompanyMember[]
+  // ---------------------------------------
 
-  resumes Resume[]
-  JobApplication JobApplication[]
-
-  summary String?
-  previousCareers CareerHistory[]
-  education Education[]
-  skills Skill[]
-  languages Language[]
-  availability UserAvailabilityType?
-  preferredWorkType JobType?
-  preferredLocation String[]
-  rightToWork String[]
-  expectedSalary String?
-  jobClassification JobClass[]
-
-
-  accounts      Account[]
-  sessions      Session[]
-
+  // Job Seeker specific fields
+  resumes             Resume[]
+  JobApplication      JobApplication[]
+  summary             String?
+  previousCareers     CareerHistory[]
+  education           Education[]
+  skills              Skill[]
+  languages           Language[]
+  availability        UserAvailabilityType?
+  preferredWorkType   JobType?
+  preferredLocation   String[]
+  rightToWork         String[]
+  expectedSalary      String?
+  jobClassification   JobClass[]
+  
+  // Auth models
+  accounts            Account[]
+  sessions            Session[]
 }
 
 model CareerHistory {
-
-  id String @id @default(cuid())
-
-  title String
-  company String
+  id          String    @id @default(cuid())
+  title       String
+  company     String
   dateStarted DateTime
-  dateEnded DateTime?
+  dateEnded   DateTime?
   description String?
-
-  userId String 
-  user User @relation(fields: [userId], references: [id])
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime?
-
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
 }
 
 model Education {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
+  id                  String    @id @default(cuid())
+  userId              String
+  user                User      @relation(fields: [userId], references: [id])
+  course              String
+  institution         String
+  highlight           String?
+  isComplete          Boolean
+  finishedYear        Int?
+  expectedFinishMonth Int?
+  expectedFinishYear  Int?
+  deletedAt           DateTime?
 
-  course      String
-  institution String
-  highlight   String?
-
-  isComplete        Boolean  
-  finishedYear      Int?     
-  expectedFinishMonth Int?   
-  expectedFinishYear  Int?   
-
-deletedAt DateTime?
-    @@unique([id, userId])
+  @@unique([id, userId])
 }
 
 model LicenceAndCertificate {
-
-  id String @id @default(cuid())
-
-  name String
-  organization  String?
-  dateIssed DateTime? 
-  expiryDate DateTime?
+  id          String    @id @default(cuid())
+  name        String
+  organization String?
+  dateIssed   DateTime?
+  expiryDate  DateTime?
   description String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Skill {
-  id Int @id @default(autoincrement())
-
+  id   Int    @id @default(autoincrement())
   name String
-
   users User[]
-
-
 }
 
 model Language {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
-
+  id   Int    @id @default(autoincrement())
+  name String @unique
   users User[]
 }
+
 model Resume {
-  id String @id @default(uuid())
-  title String 
-  url String
-  isPrimary Boolean
-
-  userId String
-  User User @relation(fields: [userId], references: [id])
-
+  id              String           @id @default(uuid())
+  title           String
+  url             String
+  isPrimary       Boolean
+  userId          String
+  User            User             @relation(fields: [userId], references: [id])
   JobApplications JobApplication[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  deletedAt       DateTime?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime?
-
-  @@unique([userId, title]) 
+  @@unique([userId, title])
 }
 
 model EmployerQuestion {
-  id        String   @id @default(cuid())
-  text      String  
-  type      QuestionType 
-  isRequired Boolean  @default(true)
-  options   String[] 
-
-  jobId String
-  Job   Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
-
-  answers Answer[]
+  id         String       @id @default(cuid())
+  text       String
+  type       QuestionType
+  isRequired Boolean      @default(true)
+  options    String[]
+  jobId      String
+  Job        Job          @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  answers    Answer[]
 }
 
-
 model Answer {
-  id   String @id @default(cuid())
-  text String 
-
+  id               String         @id @default(cuid())
+  text             String
   jobApplicationId String
   JobApplication   JobApplication @relation(fields: [jobApplicationId], references: [id], onDelete: Cascade)
-
-  questionId String
-  Question   EmployerQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId       String
+  Question         EmployerQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@unique([jobApplicationId, questionId])
 }
@@ -209,8 +212,7 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -230,8 +232,6 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
-
-
 
 enum JobClass {
   ACCOUNTING
@@ -261,4 +261,14 @@ enum UserAvailabilityType {
   FOURWEEKS
   EIGHTWEEKS
   TWELVEPLUSWEEKS
+}
+
+enum CompanyRole {
+  ADMIN
+  MEMBER
+}
+
+enum UserRole {
+  EMPLOYER
+  JOB_SEEKER
 }

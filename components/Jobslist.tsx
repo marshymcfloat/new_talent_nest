@@ -6,6 +6,7 @@ import { Prisma } from "@prisma/client";
 type JobWithQuestions = Prisma.JobGetPayload<{
   include: {
     employerQuestions: true;
+    company: true;
   };
 }>;
 

@@ -12,6 +12,7 @@ import { JobCountOutputTypeArgsObjectSchema } from './objects/JobCountOutputType
 
 export const JobFindFirstOrThrowSelectSchema: z.ZodType<Prisma.JobSelect> = z.object({
     id: z.boolean().optional(),
+    companyId: z.boolean().optional(),
     company: z.boolean().optional(),
     title: z.boolean().optional(),
     location: z.boolean().optional(),
@@ -32,6 +33,7 @@ export const JobFindFirstOrThrowSelectSchema: z.ZodType<Prisma.JobSelect> = z.ob
 
 export const JobFindFirstOrThrowSelectZodSchema = z.object({
     id: z.boolean().optional(),
+    companyId: z.boolean().optional(),
     company: z.boolean().optional(),
     title: z.boolean().optional(),
     location: z.boolean().optional(),

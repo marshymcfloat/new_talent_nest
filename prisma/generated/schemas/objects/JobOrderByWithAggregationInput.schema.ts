@@ -8,7 +8,7 @@ import { JobMinOrderByAggregateInputObjectSchema } from './JobMinOrderByAggregat
 
 const makeSchema = (): z.ZodObject<any> => z.object({
   id: SortOrderSchema.optional(),
-  company: SortOrderSchema.optional(),
+  companyId: SortOrderSchema.optional(),
   title: SortOrderSchema.optional(),
   location: SortOrderSchema.optional(),
   type: SortOrderSchema.optional(),

@@ -2,7 +2,8 @@ import { z } from 'zod';
 export const JobFindManyResultSchema = z.object({
   data: z.array(z.object({
   id: z.string(),
-  company: z.string(),
+  companyId: z.string(),
+  company: z.unknown(),
   title: z.string(),
   location: z.string(),
   type: z.unknown(),

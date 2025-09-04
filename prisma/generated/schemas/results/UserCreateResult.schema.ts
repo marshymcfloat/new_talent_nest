@@ -7,6 +7,8 @@ export const UserCreateResultSchema = z.object({
   image: z.string().optional(),
   username: z.string().optional(),
   password: z.string().optional(),
+  role: z.unknown(),
+  companies: z.array(z.unknown()),
   resumes: z.array(z.unknown()),
   JobApplication: z.array(z.unknown()),
   summary: z.string().optional(),

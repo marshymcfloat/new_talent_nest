@@ -8,12 +8,12 @@ import { EnumJobClassFieldUpdateOperationsInputObjectSchema } from './EnumJobCla
 import { NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
 import { JobUpdatetagsInputObjectSchema } from './JobUpdatetagsInput.schema';
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
+import { CompanyUpdateOneRequiredWithoutJobsNestedInputObjectSchema } from './CompanyUpdateOneRequiredWithoutJobsNestedInput.schema';
 import { EmployerQuestionUpdateManyWithoutJobNestedInputObjectSchema } from './EmployerQuestionUpdateManyWithoutJobNestedInput.schema';
 import { JobApplicationUpdateManyWithoutJobNestedInputObjectSchema } from './JobApplicationUpdateManyWithoutJobNestedInput.schema'
 
 const makeSchema = (): z.ZodObject<any> => z.object({
   id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
-  company: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   location: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   type: z.union([JobTypeSchema, z.lazy(() => EnumJobTypeFieldUpdateOperationsInputObjectSchema)]).optional(),
@@ -26,6 +26,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   tags: z.union([z.lazy(() => JobUpdatetagsInputObjectSchema), z.string().array()]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
+  company: z.lazy(() => CompanyUpdateOneRequiredWithoutJobsNestedInputObjectSchema).optional(),
   employerQuestions: z.lazy(() => EmployerQuestionUpdateManyWithoutJobNestedInputObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationUpdateManyWithoutJobNestedInputObjectSchema).optional()
 }).strict();

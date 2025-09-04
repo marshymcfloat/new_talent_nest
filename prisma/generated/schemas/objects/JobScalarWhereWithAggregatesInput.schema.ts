@@ -14,7 +14,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   OR: z.lazy(makeSchema).array().optional(),
   NOT: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
   id: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
-  company: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  companyId: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   title: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   location: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   type: z.union([z.lazy(() => EnumJobTypeWithAggregatesFilterObjectSchema), JobTypeSchema]).optional(),

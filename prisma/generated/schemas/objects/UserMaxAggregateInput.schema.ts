@@ -10,6 +10,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   image: z.literal(true).optional(),
   username: z.literal(true).optional(),
   password: z.literal(true).optional(),
+  role: z.literal(true).optional(),
   summary: z.literal(true).optional(),
   availability: z.literal(true).optional(),
   preferredWorkType: z.literal(true).optional(),

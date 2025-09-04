@@ -2,12 +2,13 @@ import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
 import { SortOrderInputObjectSchema } from './SortOrderInput.schema';
+import { CompanyOrderByWithRelationInputObjectSchema } from './CompanyOrderByWithRelationInput.schema';
 import { EmployerQuestionOrderByRelationAggregateInputObjectSchema } from './EmployerQuestionOrderByRelationAggregateInput.schema';
 import { JobApplicationOrderByRelationAggregateInputObjectSchema } from './JobApplicationOrderByRelationAggregateInput.schema'
 
 const makeSchema = (): z.ZodObject<any> => z.object({
   id: SortOrderSchema.optional(),
-  company: SortOrderSchema.optional(),
+  companyId: SortOrderSchema.optional(),
   title: SortOrderSchema.optional(),
   location: SortOrderSchema.optional(),
   type: SortOrderSchema.optional(),
@@ -20,6 +21,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   tags: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),
   updatedAt: SortOrderSchema.optional(),
+  company: z.lazy(() => CompanyOrderByWithRelationInputObjectSchema).optional(),
   employerQuestions: z.lazy(() => EmployerQuestionOrderByRelationAggregateInputObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationOrderByRelationAggregateInputObjectSchema).optional()
 }).strict();

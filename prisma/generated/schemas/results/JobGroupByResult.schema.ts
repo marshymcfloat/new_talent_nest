@@ -1,7 +1,7 @@
 import { z } from 'zod';
 export const JobGroupByResultSchema = z.array(z.object({
   id: z.string(),
-  company: z.string(),
+  companyId: z.string(),
   title: z.string(),
   location: z.string(),
   salary: z.string(),
@@ -14,6 +14,7 @@ export const JobGroupByResultSchema = z.array(z.object({
   updatedAt: z.date(),
   _count: z.object({
     id: z.number(),
+    companyId: z.number(),
     company: z.number(),
     title: z.number(),
     location: z.number(),
@@ -32,7 +33,7 @@ export const JobGroupByResultSchema = z.array(z.object({
   }).optional(),
   _min: z.object({
     id: z.string().nullable(),
-    company: z.string().nullable(),
+    companyId: z.string().nullable(),
     title: z.string().nullable(),
     location: z.string().nullable(),
     salary: z.string().nullable(),
@@ -46,7 +47,7 @@ export const JobGroupByResultSchema = z.array(z.object({
   }).nullable().optional(),
   _max: z.object({
     id: z.string().nullable(),
-    company: z.string().nullable(),
+    companyId: z.string().nullable(),
     title: z.string().nullable(),
     location: z.string().nullable(),
     salary: z.string().nullable(),

@@ -5,7 +5,8 @@ import { JobClassSchema } from '../../enums/JobClass.schema';
 // prettier-ignore
 export const JobModelSchema = z.object({
     id: z.string(),
-    company: z.string(),
+    companyId: z.string(),
+    company: z.unknown(),
     title: z.string(),
     location: z.string(),
     type: JobTypeSchema,

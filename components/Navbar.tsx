@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
+import Image from "next/image";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,6 +16,7 @@ const Navbar = () => {
   const navLinks = [
     { href: "/jobs", label: "Find Jobs" },
     { href: "/about", label: "About Us" },
+    { href: "/signIn/employer", label: "Find Talent" },
   ];
 
   const mobileMenuVariants: Variants = {
@@ -57,14 +59,21 @@ const Navbar = () => {
       >
         <Link
           href="/"
-          className="text-xl font-bold tracking-wider text-foreground transition-colors hover:text-purple-500"
+          className="text-xl font-bold tracking-wider text-foreground transition-colors hover:text-purple-500 flex gap-2 items-center "
         >
+          <Image
+            width={40}
+            height={40}
+            alt="Talent nest logo"
+            src={"/talentNestIcon.png"}
+          />
           TALENT NEST
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => {
             const isActive = pathname.startsWith(link.href);
+            const isFindTalent = link.label == "Find Talent";
             return (
               <Link
                 key={link.href}
@@ -73,7 +82,8 @@ const Navbar = () => {
                   "text-sm font-medium uppercase transition-colors relative",
                   isActive
                     ? "text-foreground font-semibold"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
+                  isFindTalent && "text-purple-500 hover:text-purple-700!"
                 )}
               >
                 {link.label}

@@ -6,6 +6,7 @@ export async function GET() {
     const jobs = await prisma.job.findMany({
       include: {
         employerQuestions: true,
+        company: true,
       },
       orderBy: {
         createdAt: "desc",

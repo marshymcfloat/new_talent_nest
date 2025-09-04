@@ -8,6 +8,8 @@ import { JobClassSchema } from '../enums/JobClass.schema';
 import { StringNullableFilterObjectSchema } from './StringNullableFilter.schema';
 import { StringNullableListFilterObjectSchema } from './StringNullableListFilter.schema';
 import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
+import { CompanyScalarRelationFilterObjectSchema } from './CompanyScalarRelationFilter.schema';
+import { CompanyWhereInputObjectSchema } from './CompanyWhereInput.schema';
 import { EmployerQuestionListRelationFilterObjectSchema } from './EmployerQuestionListRelationFilter.schema';
 import { JobApplicationListRelationFilterObjectSchema } from './JobApplicationListRelationFilter.schema'
 
@@ -16,7 +18,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   OR: z.lazy(makeSchema).array().optional(),
   NOT: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
   id: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
-  company: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
+  companyId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   title: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   location: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   type: z.union([z.lazy(() => EnumJobTypeFilterObjectSchema), JobTypeSchema]).optional(),
@@ -29,6 +31,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   tags: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
   createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional(),
+  company: z.union([z.lazy(() => CompanyScalarRelationFilterObjectSchema), z.lazy(() => CompanyWhereInputObjectSchema)]).optional(),
   employerQuestions: z.lazy(() => EmployerQuestionListRelationFilterObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationListRelationFilterObjectSchema).optional()
 }).strict();

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { UserRoleSchema } from '../../enums/UserRole.schema';
 import { UserAvailabilityTypeSchema } from '../../enums/UserAvailabilityType.schema';
 import { JobTypeSchema } from '../../enums/JobType.schema';
 import { JobClassSchema } from '../../enums/JobClass.schema';
@@ -12,6 +13,8 @@ export const UserModelSchema = z.object({
     image: z.string().nullable(),
     username: z.string().nullable(),
     password: z.string().nullable(),
+    role: UserRoleSchema,
+    companies: z.array(z.unknown()),
     resumes: z.array(z.unknown()),
     JobApplication: z.array(z.unknown()),
     summary: z.string().nullable(),
