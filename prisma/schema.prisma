@@ -36,13 +36,8 @@ model CompanyMember {
 
 model Job {
   id        String   @id @default(cuid())
-  // --- REMOVED ---
-  // company   String 
-  
-  // --- ADDED RELATION TO COMPANY ---
   companyId String
   company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  // ------------------------------------
 
   title     String
   location  String
@@ -84,12 +79,8 @@ model User {
   password      String?
   role          UserRole  @default(JOB_SEEKER)
 
-  // --- ADDED RELATION TO COMPANYMEMBER ---
-  // This lets you find which companies a user is a member of.
   companies     CompanyMember[]
-  // ---------------------------------------
 
-  // Job Seeker specific fields
   resumes             Resume[]
   JobApplication      JobApplication[]
   summary             String?
@@ -104,7 +95,6 @@ model User {
   expectedSalary      String?
   jobClassification   JobClass[]
   
-  // Auth models
   accounts            Account[]
   sessions            Session[]
 }

@@ -63,3 +63,30 @@ export function createValidatedAction<TInput extends z.ZodTypeAny, TOutput>(
     }
   };
 }
+
+export function createValidatedFormDataAction<
+  TInput extends z.ZodTypeAny,
+  TOutput,
+>(
+  schema: TInput,
+  handler: (validatedData: z.infer<TInput>) => Promise<ActionResponse<TOutput>>
+) {
+  return async (formData: FormData): Promise<ActionResponse<TOutput>> => {
+    const data = Object.fromEntries(formData.entries());
+
+    const validationResult = schema.safeParse(data);
+    if (!validationResult.success) {
+      return {
+        error: "Invalid form data.",
+        validationErrors: validationResult.error.issues,
+      };
+    }
+
+    try {
+      return await handler(validationResult.data);
+    } catch (e) {
+      console.error("Action Error:", e);
+      return { error: "An unexpected error occurred." };
+    }
+  };
+}

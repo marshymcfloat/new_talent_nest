@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import React, { useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
@@ -25,7 +25,10 @@ import {
 import { ChevronLeft, Loader2 } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 
-import { validateEmployerSignUpStep1 } from "@/lib/actions/employerAuthActions";
+import {
+  registerJoinedCompanyEmployer,
+  validateEmployerSignUpStep1,
+} from "@/lib/actions/employerAuthActions";
 import {
   employerLoginSchema,
   employerRegister1Schema,
@@ -34,7 +37,14 @@ import {
   EmployerSignUpValues1,
   EmployerSignUpValues2,
 } from "@/lib/zod schemas/employerLoginSchema";
+import {
+  EmployerConfirmedCompanyValues,
+  employerRegisterConfirmedCompanySchema,
+} from "@/lib/zod schemas/employerLoginSchema.client";
+
 import { ValidateStep1Result } from "@/lib/types/employerAuthActiontsType";
+import { objectToFormData } from "@/lib/utils";
+
 const singUpFields1 = [
   {
     label: "email address",
@@ -99,6 +109,21 @@ const signInFields = [
   },
 ] as const;
 
+const signupJoinedCompanyFields = [
+  {
+    label: "firstname",
+    type: "text",
+    placeholder: "Juan",
+    name: "confirmFirstname",
+  },
+  {
+    label: "lastname",
+    type: "text",
+    placeholder: "De la Cruz",
+    name: "confirmLastname",
+  },
+] as const;
+
 const EmployeerInterceptedLoginPage = () => {
   const router = useRouter();
 
@@ -106,9 +131,23 @@ const EmployeerInterceptedLoginPage = () => {
     "signIn"
   );
   const [registerStep, setRegisterStep] = useState<
-    "1" | "2_confirm" | "2_create"
+    "1" | "2_confirm" | "3_joined" | "2_create"
   >("1");
   const [registrationData, setRegistrationData] = useState<any | null>(null);
+
+  const [registrationProfilePicture, setRegistrationProfilePicture] =
+    useState<File | null>(null);
+
+  const [registrationProfilePictureURL, setRegistrationProfilePictureURL] =
+    useState<string | null>(null);
+
+  useEffect(() => {
+    if (registrationProfilePicture && registrationProfilePicture.name) {
+      const profilePic = URL.createObjectURL(registrationProfilePicture);
+
+      setRegistrationProfilePictureURL(profilePic);
+    }
+  }, [registrationProfilePicture]);
 
   const signUpForm1 = useForm<EmployerSignUpValues1>({
     resolver: zodResolver(employerRegister1Schema),
@@ -116,6 +155,15 @@ const EmployeerInterceptedLoginPage = () => {
       signUpEmail: "",
       signUpPassword: "",
       confirmsignUpPassword: "",
+    },
+  });
+
+  const signUpConfirmedCompanyForm = useForm<EmployerConfirmedCompanyValues>({
+    resolver: zodResolver(employerRegisterConfirmedCompanySchema),
+    defaultValues: {
+      confirmFirstname: "",
+      confirmLastname: "",
+      confirmUserLogo: undefined,
     },
   });
 
@@ -140,6 +188,7 @@ const EmployeerInterceptedLoginPage = () => {
     onSuccess: (response: ValidateStep1Result) => {
       if (response.data) {
         setRegistrationData(response.data);
+
         if (response.data.suggestedCompany) {
           setRegisterStep("2_confirm");
         } else {
@@ -154,15 +203,31 @@ const EmployeerInterceptedLoginPage = () => {
     },
   });
 
+  const {
+    mutate: mutateJoinedFinalSignUp,
+    isPending: isPendingJoinedFinalSignUp,
+  } = useMutation({
+    mutationFn: registerJoinedCompanyEmployer,
+  });
+
   const handleStep1Submission = (values: EmployerSignUpValues1) => {
     mutateStep1(values);
   };
 
   const handleJoinCompany = () => {
-    console.log(
-      "User wants to join existing company:",
-      registrationData.suggestedCompany.id
-    );
+    signUpForm2.setValue("companyName", registrationData.suggestedCompany.name);
+    setRegisterStep("3_joined");
+  };
+
+  const handleJoinedComppanyRegisterEmployer = (
+    valuesFromStep3: EmployerConfirmedCompanyValues
+  ) => {
+    const valuesFromStep1 = signUpForm1.getValues();
+    const combinedData = { ...valuesFromStep1, ...valuesFromStep3 };
+
+    const formData = objectToFormData(combinedData);
+
+    mutateJoinedFinalSignUp(formData);
   };
 
   const handleCreateCompany = (values: EmployerSignUpValues2) => {
@@ -312,6 +377,92 @@ const EmployeerInterceptedLoginPage = () => {
                     </Button>
                   </div>
                 </div>
+              )}
+
+            {registerStep === "3_joined" &&
+              registrationData.suggestedCompany && (
+                <>
+                  {registrationProfilePicture &&
+                    registrationProfilePictureURL && (
+                      <Image
+                        src={registrationProfilePictureURL}
+                        alt="employer profile picture"
+                        className="rounded-full mx-auto border-2 border-purple-500 p-1 object-cover size-[70px]"
+                        width={70}
+                        height={70}
+                      />
+                    )}
+                  <Form {...signUpConfirmedCompanyForm}>
+                    <form
+                      className="space-y-4"
+                      onSubmit={signUpConfirmedCompanyForm.handleSubmit(
+                        handleJoinedComppanyRegisterEmployer
+                      )}
+                    >
+                      <FormField
+                        name="confirmUserLogo"
+                        control={signUpConfirmedCompanyForm.control}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Profile Picture</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="file"
+                                accept="image/*"
+                                name={field.name}
+                                ref={field.ref}
+                                onBlur={field.onBlur}
+                                onChange={(
+                                  e: ChangeEvent<HTMLInputElement>
+                                ) => {
+                                  field.onChange(e.target.files);
+
+                                  if (
+                                    e.target &&
+                                    e.target.files &&
+                                    e.target.files.length > 0
+                                  ) {
+                                    setRegistrationProfilePicture(
+                                      e.target.files[0]
+                                    );
+                                  } else {
+                                    setRegistrationProfilePicture(null);
+                                  }
+                                }}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      ></FormField>
+
+                      {signupJoinedCompanyFields.map((input) => (
+                        <div className="space-y-2" key={input.name}>
+                          <FormField
+                            control={signUpConfirmedCompanyForm.control}
+                            name={input.name}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="capitalize">
+                                  {input.label}
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    {...field}
+                                    placeholder={input.placeholder}
+                                    type={input.type}
+                                  />
+                                </FormControl>
+                              </FormItem>
+                            )}
+                          ></FormField>
+                        </div>
+                      ))}
+                      <Button type="submit" className="mx-auto w-full mt-8">
+                        Complete Sign Up
+                      </Button>
+                    </form>
+                  </Form>
+                </>
               )}
 
             {registerStep === "2_create" && (
