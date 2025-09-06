@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+
 import AuthButton from "./AuthButton";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,16 +9,44 @@ import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { UserRole } from "@prisma/client";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { data: session } = useSession();
+
+  const signOutRedirectUrl = "/jobs";
 
   const navLinks = [
     { href: "/jobs", label: "Find Jobs" },
     { href: "/about", label: "About Us" },
-    { href: "/signIn/employer", label: "Find Talent" },
+    {
+      href:
+        session?.user?.role === UserRole.EMPLOYER
+          ? "/:id/dashboard"
+          : "/profile",
+      label: "Dashboard",
+      roles: ["EMPLOYER", "JOB_SEEKER"],
+    },
+    {
+      href: "/signIn/employer",
+      label: "Find Talent",
+      roles: ["JOB_SEEKER", null],
+    },
   ];
+
+  const filteredNavLinks = navLinks.filter((link) => {
+    if (!link.roles) {
+      return true;
+    }
+    if (!session) {
+      return link.roles.includes(null);
+    }
+
+    return link.roles.includes(session.user.role);
+  });
 
   const mobileMenuVariants: Variants = {
     hidden: { opacity: 0, y: -20 },
@@ -35,11 +64,7 @@ const Navbar = () => {
 
   const navContainerVariants: Variants = {
     hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
+    visible: { transition: { staggerChildren: 0.1 } },
   };
 
   const navItemVariants: Variants = {
@@ -71,9 +96,9 @@ const Navbar = () => {
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
-          {navLinks.map((link) => {
+          {filteredNavLinks.map((link) => {
             const isActive = pathname.startsWith(link.href);
-            const isFindTalent = link.label == "Find Talent";
+            const isFindTalent = link.label === "Find Talent";
             return (
               <Link
                 key={link.href}
@@ -97,7 +122,7 @@ const Navbar = () => {
               </Link>
             );
           })}
-          <AuthButton />
+          <AuthButton signOutRedirectUrl={signOutRedirectUrl} />
         </nav>
 
         <div className="md:hidden">
@@ -138,7 +163,7 @@ const Navbar = () => {
               animate="visible"
               className="flex flex-col items-center justify-center gap-8 pt-16"
             >
-              {navLinks.map((link) => (
+              {filteredNavLinks.map((link) => (
                 <motion.div key={link.href} variants={navItemVariants}>
                   <Link
                     href={link.href}
@@ -150,7 +175,7 @@ const Navbar = () => {
                 </motion.div>
               ))}
               <motion.div variants={navItemVariants} className="mt-8">
-                <AuthButton />
+                <AuthButton signOutRedirectUrl={signOutRedirectUrl} />
               </motion.div>
             </motion.nav>
           </motion.div>

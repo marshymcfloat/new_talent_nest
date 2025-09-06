@@ -1,5 +1,5 @@
 import { getProviders } from "next-auth/react";
-import { LoginButtons } from "@/components/LoginButtons"; // Assuming this path is correct
+import { LoginButtons } from "@/components/LoginButtons";
 import Image from "next/image";
 
 export default async function SignInPage() {

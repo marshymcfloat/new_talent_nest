@@ -1,7 +1,11 @@
 import React from "react";
 
-const page = () => {
-  return <div></div>;
+const EmployerDashboardPage = () => {
+  return (
+    <main>
+      <h1>employer page</h1>
+    </main>
+  );
 };
 
-export default page;
+export default EmployerDashboardPage;

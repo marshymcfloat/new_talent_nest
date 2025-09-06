@@ -3,7 +3,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { Skeleton } from "./ui/skeleton";
-import { useEffect, useRef, useState, RefObject } from "react";
+import { useRef, useState } from "react";
 import { LogOut, User as UserIcon } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "./ui/button";
@@ -11,7 +11,11 @@ import { useOnClickOutside } from "@/app/hooks/UseOnClickOutside";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-const AuthButton = () => {
+interface AuthButtonProps {
+  signOutRedirectUrl?: string;
+}
+
+const AuthButton = ({ signOutRedirectUrl = "/" }: AuthButtonProps) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const { data: session, status } = useSession();
 
@@ -41,7 +45,7 @@ const AuthButton = () => {
                   ? `${session.user.name}'s photo`
                   : "User photo"
               }
-              className="object-cover rounded-full"
+              className="object-cover rounded-full size-10 border-2 border-purple-400 p-1 "
             />
           ) : (
             <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground font-semibold">
@@ -85,7 +89,7 @@ const AuthButton = () => {
               <div className="p-2 border-t">
                 <Button
                   variant="ghost"
-                  onClick={() => signOut()}
+                  onClick={() => signOut({ callbackUrl: signOutRedirectUrl })}
                   className="w-full justify-start text-red-500 hover:text-red-500 hover:bg-red-500/10"
                 >
                   <LogOut size={16} className="mr-2" /> Sign Out
