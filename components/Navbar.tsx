@@ -22,14 +22,7 @@ const Navbar = () => {
   const navLinks = [
     { href: "/jobs", label: "Find Jobs" },
     { href: "/about", label: "About Us" },
-    {
-      href:
-        session?.user?.role === UserRole.EMPLOYER
-          ? "/:id/dashboard"
-          : "/profile",
-      label: "Dashboard",
-      roles: ["EMPLOYER", "JOB_SEEKER"],
-    },
+
     {
       href: "/signIn/employer",
       label: "Find Talent",

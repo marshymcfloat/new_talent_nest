@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { JobTypeSchema } from '../../enums/JobType.schema';
 import { JobClassSchema } from '../../enums/JobClass.schema';
+import { JobStatusSchema } from '../../enums/JobStatus.schema';
 // prettier-ignore
 export const JobInputSchema = z.object({
     id: z.string(),
@@ -12,6 +13,7 @@ export const JobInputSchema = z.object({
     type: JobTypeSchema,
     salary: z.string(),
     jobClass: JobClassSchema,
+    status: JobStatusSchema,
     summary: z.string(),
     qualifications: z.string(),
     responsibilities: z.string(),

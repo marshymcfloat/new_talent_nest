@@ -15,6 +15,9 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   Job: z.union([z.boolean(), z.lazy(() => JobArgsObjectSchema)]).optional(),
   User: z.union([z.boolean(), z.lazy(() => UserArgsObjectSchema)]).optional(),
   answers: z.union([z.boolean(), z.lazy(() => AnswerFindManySchema)]).optional(),
+  status: z.boolean().optional(),
+  notes: z.boolean().optional(),
+  isArchived: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
   _count: z.union([z.boolean(), z.lazy(() => JobApplicationCountOutputTypeArgsObjectSchema)]).optional()

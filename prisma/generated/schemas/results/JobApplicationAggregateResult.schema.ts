@@ -8,6 +8,9 @@ export const JobApplicationAggregateResultSchema = z.object({  _count: z.object(
     Job: z.number(),
     User: z.number(),
     answers: z.number(),
+    status: z.number(),
+    notes: z.number(),
+    isArchived: z.number(),
     createdAt: z.number(),
     updatedAt: z.number()
   }).optional(),
@@ -16,6 +19,7 @@ export const JobApplicationAggregateResultSchema = z.object({  _count: z.object(
     userId: z.string().nullable(),
     jobId: z.string().nullable(),
     resumeId: z.string().nullable(),
+    notes: z.string().nullable(),
     createdAt: z.date().nullable(),
     updatedAt: z.date().nullable()
   }).nullable().optional(),
@@ -24,6 +28,7 @@ export const JobApplicationAggregateResultSchema = z.object({  _count: z.object(
     userId: z.string().nullable(),
     jobId: z.string().nullable(),
     resumeId: z.string().nullable(),
+    notes: z.string().nullable(),
     createdAt: z.date().nullable(),
     updatedAt: z.date().nullable()
   }).nullable().optional()});

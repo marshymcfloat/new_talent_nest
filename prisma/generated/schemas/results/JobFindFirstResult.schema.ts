@@ -8,6 +8,7 @@ export const JobFindFirstResultSchema = z.nullable(z.object({
   type: z.unknown(),
   salary: z.string(),
   jobClass: z.unknown(),
+  status: z.unknown(),
   summary: z.string(),
   qualifications: z.string(),
   responsibilities: z.string(),

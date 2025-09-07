@@ -44,6 +44,7 @@ model Job {
   type      JobType
   salary    String
   jobClass  JobClass
+  status JobStatus @default(ACTIVE)
 
   summary          String           @default("no summary provided")
   qualifications   String           @default("no qualifications provided")
@@ -65,6 +66,9 @@ model JobApplication {
   Job    Job    @relation(fields: [jobId], references: [id])
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   answers Answer[]
+   status    ApplicationStatus @default(NEW) 
+    notes     String?
+     isArchived Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -261,4 +265,19 @@ enum CompanyRole {
 enum UserRole {
   EMPLOYER
   JOB_SEEKER
+}
+
+enum JobStatus {
+  ACTIVE
+  PAUSED
+  CLOSED
+}
+
+enum ApplicationStatus {
+  NEW
+  IN_REVIEW
+  INTERVIEWING
+  OFFERED
+  HIRED
+  REJECTED
 }

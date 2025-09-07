@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { JobTypeSchema } from '../enums/JobType.schema';
 import { JobClassSchema } from '../enums/JobClass.schema';
+import { JobStatusSchema } from '../enums/JobStatus.schema';
 import { JobCreatetagsInputObjectSchema } from './JobCreatetagsInput.schema';
 import { CompanyCreateNestedOneWithoutJobsInputObjectSchema } from './CompanyCreateNestedOneWithoutJobsInput.schema';
 import { EmployerQuestionCreateNestedManyWithoutJobInputObjectSchema } from './EmployerQuestionCreateNestedManyWithoutJobInput.schema';
@@ -14,6 +15,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   type: JobTypeSchema,
   salary: z.string(),
   jobClass: JobClassSchema,
+  status: JobStatusSchema.optional(),
   summary: z.string().optional(),
   qualifications: z.string().optional(),
   responsibilities: z.string().optional(),

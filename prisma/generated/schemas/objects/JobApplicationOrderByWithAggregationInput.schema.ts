@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
+import { SortOrderInputObjectSchema } from './SortOrderInput.schema';
 import { JobApplicationCountOrderByAggregateInputObjectSchema } from './JobApplicationCountOrderByAggregateInput.schema';
 import { JobApplicationMaxOrderByAggregateInputObjectSchema } from './JobApplicationMaxOrderByAggregateInput.schema';
 import { JobApplicationMinOrderByAggregateInputObjectSchema } from './JobApplicationMinOrderByAggregateInput.schema'
@@ -10,6 +11,9 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: SortOrderSchema.optional(),
   jobId: SortOrderSchema.optional(),
   resumeId: SortOrderSchema.optional(),
+  status: SortOrderSchema.optional(),
+  notes: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  isArchived: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),
   updatedAt: SortOrderSchema.optional(),
   _count: z.lazy(() => JobApplicationCountOrderByAggregateInputObjectSchema).optional(),

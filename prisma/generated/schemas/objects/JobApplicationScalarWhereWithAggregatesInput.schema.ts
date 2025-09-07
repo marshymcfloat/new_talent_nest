@@ -1,6 +1,10 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
+import { EnumApplicationStatusWithAggregatesFilterObjectSchema } from './EnumApplicationStatusWithAggregatesFilter.schema';
+import { ApplicationStatusSchema } from '../enums/ApplicationStatus.schema';
+import { StringNullableWithAggregatesFilterObjectSchema } from './StringNullableWithAggregatesFilter.schema';
+import { BoolWithAggregatesFilterObjectSchema } from './BoolWithAggregatesFilter.schema';
 import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema'
 
 const makeSchema = (): z.ZodObject<any> => z.object({
@@ -11,6 +15,9 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   jobId: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   resumeId: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  status: z.union([z.lazy(() => EnumApplicationStatusWithAggregatesFilterObjectSchema), ApplicationStatusSchema]).optional(),
+  notes: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
+  isArchived: z.union([z.lazy(() => BoolWithAggregatesFilterObjectSchema), z.boolean()]).optional(),
   createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional()
 }).strict();

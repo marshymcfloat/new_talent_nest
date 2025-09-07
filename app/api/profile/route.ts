@@ -13,6 +13,8 @@ export const GET = async (req: Request) => {
         { status: 401 }
       );
     }
+
+    console.log("Server session from profile route", session);
     const userId = session.user.id;
 
     const [user, allLanguages] = await Promise.all([

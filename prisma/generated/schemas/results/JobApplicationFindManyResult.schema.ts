@@ -9,6 +9,9 @@ export const JobApplicationFindManyResultSchema = z.object({
   Job: z.unknown(),
   User: z.unknown(),
   answers: z.array(z.unknown()),
+  status: z.unknown(),
+  notes: z.string().optional(),
+  isArchived: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date()
 })),

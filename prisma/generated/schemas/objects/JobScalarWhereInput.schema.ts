@@ -5,6 +5,8 @@ import { EnumJobTypeFilterObjectSchema } from './EnumJobTypeFilter.schema';
 import { JobTypeSchema } from '../enums/JobType.schema';
 import { EnumJobClassFilterObjectSchema } from './EnumJobClassFilter.schema';
 import { JobClassSchema } from '../enums/JobClass.schema';
+import { EnumJobStatusFilterObjectSchema } from './EnumJobStatusFilter.schema';
+import { JobStatusSchema } from '../enums/JobStatus.schema';
 import { StringNullableFilterObjectSchema } from './StringNullableFilter.schema';
 import { StringNullableListFilterObjectSchema } from './StringNullableListFilter.schema';
 import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema'
@@ -20,6 +22,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   type: z.union([z.lazy(() => EnumJobTypeFilterObjectSchema), JobTypeSchema]).optional(),
   salary: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   jobClass: z.union([z.lazy(() => EnumJobClassFilterObjectSchema), JobClassSchema]).optional(),
+  status: z.union([z.lazy(() => EnumJobStatusFilterObjectSchema), JobStatusSchema]).optional(),
   summary: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   qualifications: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   responsibilities: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),

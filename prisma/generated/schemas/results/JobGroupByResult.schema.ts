@@ -21,6 +21,7 @@ export const JobGroupByResultSchema = z.array(z.object({
     type: z.number(),
     salary: z.number(),
     jobClass: z.number(),
+    status: z.number(),
     summary: z.number(),
     qualifications: z.number(),
     responsibilities: z.number(),

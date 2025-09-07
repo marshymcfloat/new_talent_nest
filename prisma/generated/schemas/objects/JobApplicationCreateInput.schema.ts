@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
+import { ApplicationStatusSchema } from '../enums/ApplicationStatus.schema';
 import { ResumeCreateNestedOneWithoutJobApplicationsInputObjectSchema } from './ResumeCreateNestedOneWithoutJobApplicationsInput.schema';
 import { JobCreateNestedOneWithoutJobApplicationInputObjectSchema } from './JobCreateNestedOneWithoutJobApplicationInput.schema';
 import { UserCreateNestedOneWithoutJobApplicationInputObjectSchema } from './UserCreateNestedOneWithoutJobApplicationInput.schema';
@@ -7,6 +8,9 @@ import { AnswerCreateNestedManyWithoutJobApplicationInputObjectSchema } from './
 
 const makeSchema = (): z.ZodObject<any> => z.object({
   id: z.string().optional(),
+  status: ApplicationStatusSchema.optional(),
+  notes: z.string().nullish(),
+  isArchived: z.boolean().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
   resume: z.lazy(() => ResumeCreateNestedOneWithoutJobApplicationsInputObjectSchema),

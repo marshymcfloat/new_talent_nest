@@ -14,6 +14,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   type: z.boolean().optional(),
   salary: z.boolean().optional(),
   jobClass: z.boolean().optional(),
+  status: z.boolean().optional(),
   summary: z.boolean().optional(),
   qualifications: z.boolean().optional(),
   responsibilities: z.boolean().optional(),

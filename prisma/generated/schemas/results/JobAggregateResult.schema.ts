@@ -8,6 +8,7 @@ export const JobAggregateResultSchema = z.object({  _count: z.object({
     type: z.number(),
     salary: z.number(),
     jobClass: z.number(),
+    status: z.number(),
     summary: z.number(),
     qualifications: z.number(),
     responsibilities: z.number(),

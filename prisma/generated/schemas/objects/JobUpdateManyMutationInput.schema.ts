@@ -5,6 +5,8 @@ import { JobTypeSchema } from '../enums/JobType.schema';
 import { EnumJobTypeFieldUpdateOperationsInputObjectSchema } from './EnumJobTypeFieldUpdateOperationsInput.schema';
 import { JobClassSchema } from '../enums/JobClass.schema';
 import { EnumJobClassFieldUpdateOperationsInputObjectSchema } from './EnumJobClassFieldUpdateOperationsInput.schema';
+import { JobStatusSchema } from '../enums/JobStatus.schema';
+import { EnumJobStatusFieldUpdateOperationsInputObjectSchema } from './EnumJobStatusFieldUpdateOperationsInput.schema';
 import { NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
 import { JobUpdatetagsInputObjectSchema } from './JobUpdatetagsInput.schema';
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema'
@@ -16,6 +18,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   type: z.union([JobTypeSchema, z.lazy(() => EnumJobTypeFieldUpdateOperationsInputObjectSchema)]).optional(),
   salary: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   jobClass: z.union([JobClassSchema, z.lazy(() => EnumJobClassFieldUpdateOperationsInputObjectSchema)]).optional(),
+  status: z.union([JobStatusSchema, z.lazy(() => EnumJobStatusFieldUpdateOperationsInputObjectSchema)]).optional(),
   summary: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   qualifications: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   responsibilities: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),

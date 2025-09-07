@@ -4,6 +4,8 @@ export const JobApplicationGroupByResultSchema = z.array(z.object({
   userId: z.string(),
   jobId: z.string(),
   resumeId: z.string(),
+  notes: z.string(),
+  isArchived: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),
   _count: z.object({
@@ -15,6 +17,9 @@ export const JobApplicationGroupByResultSchema = z.array(z.object({
     Job: z.number(),
     User: z.number(),
     answers: z.number(),
+    status: z.number(),
+    notes: z.number(),
+    isArchived: z.number(),
     createdAt: z.number(),
     updatedAt: z.number()
   }).optional(),
@@ -23,6 +28,7 @@ export const JobApplicationGroupByResultSchema = z.array(z.object({
     userId: z.string().nullable(),
     jobId: z.string().nullable(),
     resumeId: z.string().nullable(),
+    notes: z.string().nullable(),
     createdAt: z.date().nullable(),
     updatedAt: z.date().nullable()
   }).nullable().optional(),
@@ -31,6 +37,7 @@ export const JobApplicationGroupByResultSchema = z.array(z.object({
     userId: z.string().nullable(),
     jobId: z.string().nullable(),
     resumeId: z.string().nullable(),
+    notes: z.string().nullable(),
     createdAt: z.date().nullable(),
     updatedAt: z.date().nullable()
   }).nullable().optional()

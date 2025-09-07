@@ -10,6 +10,7 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   type: z.literal(true).optional(),
   salary: z.literal(true).optional(),
   jobClass: z.literal(true).optional(),
+  status: z.literal(true).optional(),
   summary: z.literal(true).optional(),
   qualifications: z.literal(true).optional(),
   responsibilities: z.literal(true).optional(),

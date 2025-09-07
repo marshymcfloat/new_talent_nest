@@ -7,6 +7,9 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   userId: SortOrderSchema.optional(),
   jobId: SortOrderSchema.optional(),
   resumeId: SortOrderSchema.optional(),
+  status: SortOrderSchema.optional(),
+  notes: SortOrderSchema.optional(),
+  isArchived: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),
   updatedAt: SortOrderSchema.optional()
 }).strict();
