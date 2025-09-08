@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { ResumeWhereInputObjectSchema } from './ResumeWhereInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   is: z.lazy(() => ResumeWhereInputObjectSchema).optional(),
   isNot: z.lazy(() => ResumeWhereInputObjectSchema).optional()
 }).strict();

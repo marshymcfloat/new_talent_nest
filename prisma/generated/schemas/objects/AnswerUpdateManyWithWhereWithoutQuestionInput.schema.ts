@@ -4,7 +4,7 @@ import { AnswerScalarWhereInputObjectSchema } from './AnswerScalarWhereInput.sch
 import { AnswerUpdateManyMutationInputObjectSchema } from './AnswerUpdateManyMutationInput.schema';
 import { AnswerUncheckedUpdateManyWithoutQuestionInputObjectSchema } from './AnswerUncheckedUpdateManyWithoutQuestionInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => AnswerScalarWhereInputObjectSchema),
   data: z.union([z.lazy(() => AnswerUpdateManyMutationInputObjectSchema), z.lazy(() => AnswerUncheckedUpdateManyWithoutQuestionInputObjectSchema)])
 }).strict();

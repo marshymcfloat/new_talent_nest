@@ -5,7 +5,7 @@ import { CompanyMemberCountOrderByAggregateInputObjectSchema } from './CompanyMe
 import { CompanyMemberMaxOrderByAggregateInputObjectSchema } from './CompanyMemberMaxOrderByAggregateInput.schema';
 import { CompanyMemberMinOrderByAggregateInputObjectSchema } from './CompanyMemberMinOrderByAggregateInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   userId: SortOrderSchema.optional(),
   companyId: SortOrderSchema.optional(),
   role: SortOrderSchema.optional(),

@@ -4,7 +4,7 @@ import { LanguageWhereUniqueInputObjectSchema } from './LanguageWhereUniqueInput
 import { LanguageUpdateWithoutUsersInputObjectSchema } from './LanguageUpdateWithoutUsersInput.schema';
 import { LanguageUncheckedUpdateWithoutUsersInputObjectSchema } from './LanguageUncheckedUpdateWithoutUsersInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => LanguageWhereUniqueInputObjectSchema),
   data: z.union([z.lazy(() => LanguageUpdateWithoutUsersInputObjectSchema), z.lazy(() => LanguageUncheckedUpdateWithoutUsersInputObjectSchema)])
 }).strict();

@@ -11,7 +11,7 @@ import { AccountFindManySchema } from '../findManyAccount.schema';
 import { SessionFindManySchema } from '../findManySession.schema';
 import { UserCountOutputTypeArgsObjectSchema } from './UserCountOutputTypeArgs.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.boolean().optional(),
   name: z.boolean().optional(),
   email: z.boolean().optional(),

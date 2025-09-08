@@ -42,7 +42,10 @@ model Job {
   title     String
   location  String
   type      JobType
-  salary    String
+  minSalary    Int?          
+  maxSalary    Int?          
+  currency     String        @default("PHP") 
+  payPeriod    SalaryPeriod? 
   jobClass  JobClass
   status JobStatus @default(ACTIVE)
 
@@ -280,4 +283,10 @@ enum ApplicationStatus {
   OFFERED
   HIRED
   REJECTED
+}
+
+enum SalaryPeriod {
+  HOURLY
+  MONTHLY
+  ANNUAL
 }

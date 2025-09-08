@@ -6,7 +6,7 @@ import { LicenceAndCertificateCountOrderByAggregateInputObjectSchema } from './L
 import { LicenceAndCertificateMaxOrderByAggregateInputObjectSchema } from './LicenceAndCertificateMaxOrderByAggregateInput.schema';
 import { LicenceAndCertificateMinOrderByAggregateInputObjectSchema } from './LicenceAndCertificateMinOrderByAggregateInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   name: SortOrderSchema.optional(),
   organization: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),

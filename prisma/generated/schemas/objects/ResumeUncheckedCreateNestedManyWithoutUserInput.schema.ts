@@ -6,7 +6,7 @@ import { ResumeCreateOrConnectWithoutUserInputObjectSchema } from './ResumeCreat
 import { ResumeCreateManyUserInputEnvelopeObjectSchema } from './ResumeCreateManyUserInputEnvelope.schema';
 import { ResumeWhereUniqueInputObjectSchema } from './ResumeWhereUniqueInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => ResumeCreateWithoutUserInputObjectSchema), z.lazy(() => ResumeCreateWithoutUserInputObjectSchema).array(), z.lazy(() => ResumeUncheckedCreateWithoutUserInputObjectSchema), z.lazy(() => ResumeUncheckedCreateWithoutUserInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => ResumeCreateOrConnectWithoutUserInputObjectSchema), z.lazy(() => ResumeCreateOrConnectWithoutUserInputObjectSchema).array()]).optional(),
   createMany: z.lazy(() => ResumeCreateManyUserInputEnvelopeObjectSchema).optional(),

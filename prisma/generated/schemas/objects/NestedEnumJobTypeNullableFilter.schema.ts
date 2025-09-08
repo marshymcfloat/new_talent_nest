@@ -2,11 +2,11 @@ import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { JobTypeSchema } from '../enums/JobType.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
-  equals: JobTypeSchema.nullish(),
-  in: JobTypeSchema.array().nullish(),
-  notIn: JobTypeSchema.array().nullish(),
-  not: z.union([JobTypeSchema, z.lazy(makeSchema)]).nullish()
+const schema = z.object({
+  equals: JobTypeSchema.optional().nullable(),
+  in: JobTypeSchema.array().optional().nullable(),
+  notIn: JobTypeSchema.array().optional().nullable(),
+  not: z.union([JobTypeSchema, z.lazy(() => NestedEnumJobTypeNullableFilterObjectSchema)]).optional().nullable()
 }).strict();
-export const NestedEnumJobTypeNullableFilterObjectSchema: z.ZodType<Prisma.NestedEnumJobTypeNullableFilter> = makeSchema() as unknown as z.ZodType<Prisma.NestedEnumJobTypeNullableFilter>;
-export const NestedEnumJobTypeNullableFilterObjectZodSchema = makeSchema();
+export const NestedEnumJobTypeNullableFilterObjectSchema: z.ZodType<Prisma.NestedEnumJobTypeNullableFilter> = schema as unknown as z.ZodType<Prisma.NestedEnumJobTypeNullableFilter>;
+export const NestedEnumJobTypeNullableFilterObjectZodSchema = schema;

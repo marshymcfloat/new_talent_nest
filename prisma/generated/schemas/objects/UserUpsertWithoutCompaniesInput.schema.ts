@@ -6,7 +6,7 @@ import { UserCreateWithoutCompaniesInputObjectSchema } from './UserCreateWithout
 import { UserUncheckedCreateWithoutCompaniesInputObjectSchema } from './UserUncheckedCreateWithoutCompaniesInput.schema';
 import { UserWhereInputObjectSchema } from './UserWhereInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   update: z.union([z.lazy(() => UserUpdateWithoutCompaniesInputObjectSchema), z.lazy(() => UserUncheckedUpdateWithoutCompaniesInputObjectSchema)]),
   create: z.union([z.lazy(() => UserCreateWithoutCompaniesInputObjectSchema), z.lazy(() => UserUncheckedCreateWithoutCompaniesInputObjectSchema)]),
   where: z.lazy(() => UserWhereInputObjectSchema).optional()

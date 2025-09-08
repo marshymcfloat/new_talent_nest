@@ -7,7 +7,7 @@ import { JobOrderByWithRelationInputObjectSchema } from './JobOrderByWithRelatio
 import { UserOrderByWithRelationInputObjectSchema } from './UserOrderByWithRelationInput.schema';
 import { AnswerOrderByRelationAggregateInputObjectSchema } from './AnswerOrderByRelationAggregateInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   userId: SortOrderSchema.optional(),
   jobId: SortOrderSchema.optional(),

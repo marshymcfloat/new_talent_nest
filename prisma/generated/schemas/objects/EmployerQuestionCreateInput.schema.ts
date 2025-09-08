@@ -5,14 +5,14 @@ import { EmployerQuestionCreateoptionsInputObjectSchema } from './EmployerQuesti
 import { JobCreateNestedOneWithoutEmployerQuestionsInputObjectSchema } from './JobCreateNestedOneWithoutEmployerQuestionsInput.schema';
 import { AnswerCreateNestedManyWithoutQuestionInputObjectSchema } from './AnswerCreateNestedManyWithoutQuestionInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.string().optional(),
   text: z.string(),
   type: QuestionTypeSchema,
   isRequired: z.boolean().optional(),
-  options: z.union([z.lazy(() => EmployerQuestionCreateoptionsInputObjectSchema), z.string().array()]).optional(),
+  options: z.union([z.lazy(() => EmployerQuestionCreateoptionsInputObjectSchema), z.string().array()]),
   Job: z.lazy(() => JobCreateNestedOneWithoutEmployerQuestionsInputObjectSchema),
-  answers: z.lazy(() => AnswerCreateNestedManyWithoutQuestionInputObjectSchema).optional()
+  answers: z.lazy(() => AnswerCreateNestedManyWithoutQuestionInputObjectSchema)
 }).strict();
 export const EmployerQuestionCreateInputObjectSchema: z.ZodType<Prisma.EmployerQuestionCreateInput> = makeSchema() as unknown as z.ZodType<Prisma.EmployerQuestionCreateInput>;
 export const EmployerQuestionCreateInputObjectZodSchema = makeSchema();

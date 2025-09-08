@@ -8,7 +8,7 @@ import { EducationMaxOrderByAggregateInputObjectSchema } from './EducationMaxOrd
 import { EducationMinOrderByAggregateInputObjectSchema } from './EducationMinOrderByAggregateInput.schema';
 import { EducationSumOrderByAggregateInputObjectSchema } from './EducationSumOrderByAggregateInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   userId: SortOrderSchema.optional(),
   course: SortOrderSchema.optional(),

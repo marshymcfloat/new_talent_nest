@@ -10,7 +10,7 @@ import { AnswerUpdateWithWhereUniqueWithoutQuestionInputObjectSchema } from './A
 import { AnswerUpdateManyWithWhereWithoutQuestionInputObjectSchema } from './AnswerUpdateManyWithWhereWithoutQuestionInput.schema';
 import { AnswerScalarWhereInputObjectSchema } from './AnswerScalarWhereInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => AnswerCreateWithoutQuestionInputObjectSchema), z.lazy(() => AnswerCreateWithoutQuestionInputObjectSchema).array(), z.lazy(() => AnswerUncheckedCreateWithoutQuestionInputObjectSchema), z.lazy(() => AnswerUncheckedCreateWithoutQuestionInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => AnswerCreateOrConnectWithoutQuestionInputObjectSchema), z.lazy(() => AnswerCreateOrConnectWithoutQuestionInputObjectSchema).array()]).optional(),
   upsert: z.union([z.lazy(() => AnswerUpsertWithWhereUniqueWithoutQuestionInputObjectSchema), z.lazy(() => AnswerUpsertWithWhereUniqueWithoutQuestionInputObjectSchema).array()]).optional(),

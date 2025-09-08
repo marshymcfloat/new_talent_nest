@@ -16,21 +16,21 @@ import { SkillUncheckedCreateNestedManyWithoutUsersInputObjectSchema } from './S
 import { AccountUncheckedCreateNestedManyWithoutUserInputObjectSchema } from './AccountUncheckedCreateNestedManyWithoutUserInput.schema';
 import { SessionUncheckedCreateNestedManyWithoutUserInputObjectSchema } from './SessionUncheckedCreateNestedManyWithoutUserInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.string().optional(),
-  name: z.string().nullish(),
-  email: z.string().nullish(),
-  emailVerified: z.date().nullish(),
-  image: z.string().nullish(),
-  username: z.string().nullish(),
-  password: z.string().nullish(),
+  name: z.string().optional().nullable(),
+  email: z.string().optional().nullable(),
+  emailVerified: z.coerce.date().optional().nullable(),
+  image: z.string().optional().nullable(),
+  username: z.string().optional().nullable(),
+  password: z.string().optional().nullable(),
   role: UserRoleSchema.optional(),
-  summary: z.string().nullish(),
-  availability: UserAvailabilityTypeSchema.nullish(),
-  preferredWorkType: JobTypeSchema.nullish(),
+  summary: z.string().optional().nullable(),
+  availability: UserAvailabilityTypeSchema.optional().nullable(),
+  preferredWorkType: JobTypeSchema.optional().nullable(),
   preferredLocation: z.union([z.lazy(() => UserCreatepreferredLocationInputObjectSchema), z.string().array()]).optional(),
   rightToWork: z.union([z.lazy(() => UserCreaterightToWorkInputObjectSchema), z.string().array()]).optional(),
-  expectedSalary: z.string().nullish(),
+  expectedSalary: z.string().optional().nullable(),
   jobClassification: z.union([z.lazy(() => UserCreatejobClassificationInputObjectSchema), JobClassSchema.array()]).optional(),
   companies: z.lazy(() => CompanyMemberUncheckedCreateNestedManyWithoutUserInputObjectSchema).optional(),
   resumes: z.lazy(() => ResumeUncheckedCreateNestedManyWithoutUserInputObjectSchema).optional(),

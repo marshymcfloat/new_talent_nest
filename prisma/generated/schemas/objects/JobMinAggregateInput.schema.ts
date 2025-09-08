@@ -2,13 +2,16 @@ import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.literal(true).optional(),
   companyId: z.literal(true).optional(),
   title: z.literal(true).optional(),
   location: z.literal(true).optional(),
   type: z.literal(true).optional(),
-  salary: z.literal(true).optional(),
+  minSalary: z.literal(true).optional(),
+  maxSalary: z.literal(true).optional(),
+  currency: z.literal(true).optional(),
+  payPeriod: z.literal(true).optional(),
   jobClass: z.literal(true).optional(),
   status: z.literal(true).optional(),
   summary: z.literal(true).optional(),

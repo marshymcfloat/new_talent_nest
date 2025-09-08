@@ -5,7 +5,7 @@ import { SortOrderInputObjectSchema } from './SortOrderInput.schema';
 import { JobOrderByRelationAggregateInputObjectSchema } from './JobOrderByRelationAggregateInput.schema';
 import { CompanyMemberOrderByRelationAggregateInputObjectSchema } from './CompanyMemberOrderByRelationAggregateInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   name: SortOrderSchema.optional(),
   description: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),

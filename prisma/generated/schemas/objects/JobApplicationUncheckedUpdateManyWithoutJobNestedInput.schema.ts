@@ -10,7 +10,7 @@ import { JobApplicationUpdateWithWhereUniqueWithoutJobInputObjectSchema } from '
 import { JobApplicationUpdateManyWithWhereWithoutJobInputObjectSchema } from './JobApplicationUpdateManyWithWhereWithoutJobInput.schema';
 import { JobApplicationScalarWhereInputObjectSchema } from './JobApplicationScalarWhereInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => JobApplicationCreateWithoutJobInputObjectSchema), z.lazy(() => JobApplicationCreateWithoutJobInputObjectSchema).array(), z.lazy(() => JobApplicationUncheckedCreateWithoutJobInputObjectSchema), z.lazy(() => JobApplicationUncheckedCreateWithoutJobInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => JobApplicationCreateOrConnectWithoutJobInputObjectSchema), z.lazy(() => JobApplicationCreateOrConnectWithoutJobInputObjectSchema).array()]).optional(),
   upsert: z.union([z.lazy(() => JobApplicationUpsertWithWhereUniqueWithoutJobInputObjectSchema), z.lazy(() => JobApplicationUpsertWithWhereUniqueWithoutJobInputObjectSchema).array()]).optional(),

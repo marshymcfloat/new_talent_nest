@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { AnswerSelectObjectSchema } from './AnswerSelect.schema';
 import { AnswerIncludeObjectSchema } from './AnswerInclude.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   select: z.lazy(() => AnswerSelectObjectSchema).optional(),
   include: z.lazy(() => AnswerIncludeObjectSchema).optional()
 }).strict();

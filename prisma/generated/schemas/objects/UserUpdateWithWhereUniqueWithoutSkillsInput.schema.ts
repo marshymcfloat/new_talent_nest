@@ -4,7 +4,7 @@ import { UserWhereUniqueInputObjectSchema } from './UserWhereUniqueInput.schema'
 import { UserUpdateWithoutSkillsInputObjectSchema } from './UserUpdateWithoutSkillsInput.schema';
 import { UserUncheckedUpdateWithoutSkillsInputObjectSchema } from './UserUncheckedUpdateWithoutSkillsInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => UserWhereUniqueInputObjectSchema),
   data: z.union([z.lazy(() => UserUpdateWithoutSkillsInputObjectSchema), z.lazy(() => UserUncheckedUpdateWithoutSkillsInputObjectSchema)])
 }).strict();

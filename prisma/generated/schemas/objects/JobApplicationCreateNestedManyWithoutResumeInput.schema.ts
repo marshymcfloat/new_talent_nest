@@ -6,7 +6,7 @@ import { JobApplicationCreateOrConnectWithoutResumeInputObjectSchema } from './J
 import { JobApplicationCreateManyResumeInputEnvelopeObjectSchema } from './JobApplicationCreateManyResumeInputEnvelope.schema';
 import { JobApplicationWhereUniqueInputObjectSchema } from './JobApplicationWhereUniqueInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => JobApplicationCreateWithoutResumeInputObjectSchema), z.lazy(() => JobApplicationCreateWithoutResumeInputObjectSchema).array(), z.lazy(() => JobApplicationUncheckedCreateWithoutResumeInputObjectSchema), z.lazy(() => JobApplicationUncheckedCreateWithoutResumeInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => JobApplicationCreateOrConnectWithoutResumeInputObjectSchema), z.lazy(() => JobApplicationCreateOrConnectWithoutResumeInputObjectSchema).array()]).optional(),
   createMany: z.lazy(() => JobApplicationCreateManyResumeInputEnvelopeObjectSchema).optional(),

@@ -5,7 +5,7 @@ import { NestedEnumQuestionTypeWithAggregatesFilterObjectSchema } from './Nested
 import { NestedIntFilterObjectSchema } from './NestedIntFilter.schema';
 import { NestedEnumQuestionTypeFilterObjectSchema } from './NestedEnumQuestionTypeFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   equals: QuestionTypeSchema.optional(),
   in: QuestionTypeSchema.array().optional(),
   notIn: QuestionTypeSchema.array().optional(),

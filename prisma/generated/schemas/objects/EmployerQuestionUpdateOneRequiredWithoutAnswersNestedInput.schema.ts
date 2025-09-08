@@ -9,7 +9,7 @@ import { EmployerQuestionUpdateToOneWithWhereWithoutAnswersInputObjectSchema } f
 import { EmployerQuestionUpdateWithoutAnswersInputObjectSchema } from './EmployerQuestionUpdateWithoutAnswersInput.schema';
 import { EmployerQuestionUncheckedUpdateWithoutAnswersInputObjectSchema } from './EmployerQuestionUncheckedUpdateWithoutAnswersInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => EmployerQuestionCreateWithoutAnswersInputObjectSchema), z.lazy(() => EmployerQuestionUncheckedCreateWithoutAnswersInputObjectSchema)]).optional(),
   connectOrCreate: z.lazy(() => EmployerQuestionCreateOrConnectWithoutAnswersInputObjectSchema).optional(),
   upsert: z.lazy(() => EmployerQuestionUpsertWithoutAnswersInputObjectSchema).optional(),

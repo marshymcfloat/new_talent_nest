@@ -4,7 +4,7 @@ import { JobApplicationScalarWhereInputObjectSchema } from './JobApplicationScal
 import { JobApplicationUpdateManyMutationInputObjectSchema } from './JobApplicationUpdateManyMutationInput.schema';
 import { JobApplicationUncheckedUpdateManyWithoutResumeInputObjectSchema } from './JobApplicationUncheckedUpdateManyWithoutResumeInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => JobApplicationScalarWhereInputObjectSchema),
   data: z.union([z.lazy(() => JobApplicationUpdateManyMutationInputObjectSchema), z.lazy(() => JobApplicationUncheckedUpdateManyWithoutResumeInputObjectSchema)])
 }).strict();

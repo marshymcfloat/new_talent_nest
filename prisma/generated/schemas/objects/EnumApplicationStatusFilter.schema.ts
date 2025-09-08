@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { ApplicationStatusSchema } from '../enums/ApplicationStatus.schema';
 import { NestedEnumApplicationStatusFilterObjectSchema } from './NestedEnumApplicationStatusFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   equals: ApplicationStatusSchema.optional(),
   in: ApplicationStatusSchema.array().optional(),
   notIn: ApplicationStatusSchema.array().optional(),

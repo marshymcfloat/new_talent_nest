@@ -6,7 +6,7 @@ import { JobUncheckedUpdateWithoutCompanyInputObjectSchema } from './JobUnchecke
 import { JobCreateWithoutCompanyInputObjectSchema } from './JobCreateWithoutCompanyInput.schema';
 import { JobUncheckedCreateWithoutCompanyInputObjectSchema } from './JobUncheckedCreateWithoutCompanyInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => JobWhereUniqueInputObjectSchema),
   update: z.union([z.lazy(() => JobUpdateWithoutCompanyInputObjectSchema), z.lazy(() => JobUncheckedUpdateWithoutCompanyInputObjectSchema)]),
   create: z.union([z.lazy(() => JobCreateWithoutCompanyInputObjectSchema), z.lazy(() => JobUncheckedCreateWithoutCompanyInputObjectSchema)])

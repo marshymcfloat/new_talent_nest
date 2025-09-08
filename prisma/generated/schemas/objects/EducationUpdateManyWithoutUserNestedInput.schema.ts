@@ -10,7 +10,7 @@ import { EducationUpdateWithWhereUniqueWithoutUserInputObjectSchema } from './Ed
 import { EducationUpdateManyWithWhereWithoutUserInputObjectSchema } from './EducationUpdateManyWithWhereWithoutUserInput.schema';
 import { EducationScalarWhereInputObjectSchema } from './EducationScalarWhereInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => EducationCreateWithoutUserInputObjectSchema), z.lazy(() => EducationCreateWithoutUserInputObjectSchema).array(), z.lazy(() => EducationUncheckedCreateWithoutUserInputObjectSchema), z.lazy(() => EducationUncheckedCreateWithoutUserInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => EducationCreateOrConnectWithoutUserInputObjectSchema), z.lazy(() => EducationCreateOrConnectWithoutUserInputObjectSchema).array()]).optional(),
   upsert: z.union([z.lazy(() => EducationUpsertWithWhereUniqueWithoutUserInputObjectSchema), z.lazy(() => EducationUpsertWithWhereUniqueWithoutUserInputObjectSchema).array()]).optional(),

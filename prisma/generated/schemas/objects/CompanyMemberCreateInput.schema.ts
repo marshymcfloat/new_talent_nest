@@ -4,7 +4,7 @@ import { CompanyRoleSchema } from '../enums/CompanyRole.schema';
 import { UserCreateNestedOneWithoutCompaniesInputObjectSchema } from './UserCreateNestedOneWithoutCompaniesInput.schema';
 import { CompanyCreateNestedOneWithoutMembersInputObjectSchema } from './CompanyCreateNestedOneWithoutMembersInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   role: CompanyRoleSchema.optional(),
   user: z.lazy(() => UserCreateNestedOneWithoutCompaniesInputObjectSchema),
   company: z.lazy(() => CompanyCreateNestedOneWithoutMembersInputObjectSchema)

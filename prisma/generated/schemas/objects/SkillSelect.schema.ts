@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { UserFindManySchema } from '../findManyUser.schema';
 import { SkillCountOutputTypeArgsObjectSchema } from './SkillCountOutputTypeArgs.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.boolean().optional(),
   name: z.boolean().optional(),
   users: z.union([z.boolean(), z.lazy(() => UserFindManySchema)]).optional(),

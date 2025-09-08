@@ -4,7 +4,7 @@ import { CompanyMemberScalarWhereInputObjectSchema } from './CompanyMemberScalar
 import { CompanyMemberUpdateManyMutationInputObjectSchema } from './CompanyMemberUpdateManyMutationInput.schema';
 import { CompanyMemberUncheckedUpdateManyWithoutUserInputObjectSchema } from './CompanyMemberUncheckedUpdateManyWithoutUserInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => CompanyMemberScalarWhereInputObjectSchema),
   data: z.union([z.lazy(() => CompanyMemberUpdateManyMutationInputObjectSchema), z.lazy(() => CompanyMemberUncheckedUpdateManyWithoutUserInputObjectSchema)])
 }).strict();

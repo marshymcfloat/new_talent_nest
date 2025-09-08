@@ -12,7 +12,7 @@ import { LanguageOrderByRelationAggregateInputObjectSchema } from './LanguageOrd
 import { AccountOrderByRelationAggregateInputObjectSchema } from './AccountOrderByRelationAggregateInput.schema';
 import { SessionOrderByRelationAggregateInputObjectSchema } from './SessionOrderByRelationAggregateInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   name: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   email: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),

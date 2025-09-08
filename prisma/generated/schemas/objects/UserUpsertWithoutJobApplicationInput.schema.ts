@@ -6,7 +6,7 @@ import { UserCreateWithoutJobApplicationInputObjectSchema } from './UserCreateWi
 import { UserUncheckedCreateWithoutJobApplicationInputObjectSchema } from './UserUncheckedCreateWithoutJobApplicationInput.schema';
 import { UserWhereInputObjectSchema } from './UserWhereInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   update: z.union([z.lazy(() => UserUpdateWithoutJobApplicationInputObjectSchema), z.lazy(() => UserUncheckedUpdateWithoutJobApplicationInputObjectSchema)]),
   create: z.union([z.lazy(() => UserCreateWithoutJobApplicationInputObjectSchema), z.lazy(() => UserUncheckedCreateWithoutJobApplicationInputObjectSchema)]),
   where: z.lazy(() => UserWhereInputObjectSchema).optional()

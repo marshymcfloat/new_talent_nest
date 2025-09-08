@@ -4,7 +4,7 @@ import { ResumeScalarWhereInputObjectSchema } from './ResumeScalarWhereInput.sch
 import { ResumeUpdateManyMutationInputObjectSchema } from './ResumeUpdateManyMutationInput.schema';
 import { ResumeUncheckedUpdateManyWithoutUserInputObjectSchema } from './ResumeUncheckedUpdateManyWithoutUserInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => ResumeScalarWhereInputObjectSchema),
   data: z.union([z.lazy(() => ResumeUpdateManyMutationInputObjectSchema), z.lazy(() => ResumeUncheckedUpdateManyWithoutUserInputObjectSchema)])
 }).strict();

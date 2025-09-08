@@ -5,18 +5,18 @@ import { BoolWithAggregatesFilterObjectSchema } from './BoolWithAggregatesFilter
 import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
 import { DateTimeNullableWithAggregatesFilterObjectSchema } from './DateTimeNullableWithAggregatesFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
-  AND: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
-  OR: z.lazy(makeSchema).array().optional(),
-  NOT: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
+const schema = z.object({
+  AND: z.union([z.lazy(() => ResumeScalarWhereWithAggregatesInputObjectSchema), z.lazy(() => ResumeScalarWhereWithAggregatesInputObjectSchema).array()]).optional(),
+  OR: z.lazy(() => ResumeScalarWhereWithAggregatesInputObjectSchema).array().optional(),
+  NOT: z.union([z.lazy(() => ResumeScalarWhereWithAggregatesInputObjectSchema), z.lazy(() => ResumeScalarWhereWithAggregatesInputObjectSchema).array()]).optional(),
   id: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   title: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   url: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   isPrimary: z.union([z.lazy(() => BoolWithAggregatesFilterObjectSchema), z.boolean()]).optional(),
   userId: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
-  createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional(),
-  updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional(),
-  deletedAt: z.union([z.lazy(() => DateTimeNullableWithAggregatesFilterObjectSchema), z.date()]).nullish()
+  createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.date()]).optional(),
+  updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.date()]).optional(),
+  deletedAt: z.union([z.lazy(() => DateTimeNullableWithAggregatesFilterObjectSchema), z.coerce.date()]).optional().nullable()
 }).strict();
-export const ResumeScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.ResumeScalarWhereWithAggregatesInput> = makeSchema() as unknown as z.ZodType<Prisma.ResumeScalarWhereWithAggregatesInput>;
-export const ResumeScalarWhereWithAggregatesInputObjectZodSchema = makeSchema();
+export const ResumeScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.ResumeScalarWhereWithAggregatesInput> = schema as unknown as z.ZodType<Prisma.ResumeScalarWhereWithAggregatesInput>;
+export const ResumeScalarWhereWithAggregatesInputObjectZodSchema = schema;

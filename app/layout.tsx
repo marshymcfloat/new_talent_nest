@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br to-purple-100 from-slate-100 `}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br to-purple-300 from-slate-100 `}
       >
         <TanstackProvider>
           <AuthProvder>

@@ -4,7 +4,7 @@ import { SkillWhereUniqueInputObjectSchema } from './SkillWhereUniqueInput.schem
 import { SkillUpdateWithoutUsersInputObjectSchema } from './SkillUpdateWithoutUsersInput.schema';
 import { SkillUncheckedUpdateWithoutUsersInputObjectSchema } from './SkillUncheckedUpdateWithoutUsersInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => SkillWhereUniqueInputObjectSchema),
   data: z.union([z.lazy(() => SkillUpdateWithoutUsersInputObjectSchema), z.lazy(() => SkillUncheckedUpdateWithoutUsersInputObjectSchema)])
 }).strict();

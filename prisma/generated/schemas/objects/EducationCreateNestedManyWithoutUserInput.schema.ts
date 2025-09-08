@@ -6,7 +6,7 @@ import { EducationCreateOrConnectWithoutUserInputObjectSchema } from './Educatio
 import { EducationCreateManyUserInputEnvelopeObjectSchema } from './EducationCreateManyUserInputEnvelope.schema';
 import { EducationWhereUniqueInputObjectSchema } from './EducationWhereUniqueInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => EducationCreateWithoutUserInputObjectSchema), z.lazy(() => EducationCreateWithoutUserInputObjectSchema).array(), z.lazy(() => EducationUncheckedCreateWithoutUserInputObjectSchema), z.lazy(() => EducationUncheckedCreateWithoutUserInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => EducationCreateOrConnectWithoutUserInputObjectSchema), z.lazy(() => EducationCreateOrConnectWithoutUserInputObjectSchema).array()]).optional(),
   createMany: z.lazy(() => EducationCreateManyUserInputEnvelopeObjectSchema).optional(),

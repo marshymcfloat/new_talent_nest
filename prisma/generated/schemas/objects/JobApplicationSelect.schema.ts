@@ -6,7 +6,7 @@ import { UserArgsObjectSchema } from './UserArgs.schema';
 import { AnswerFindManySchema } from '../findManyAnswer.schema';
 import { JobApplicationCountOutputTypeArgsObjectSchema } from './JobApplicationCountOutputTypeArgs.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.boolean().optional(),
   userId: z.boolean().optional(),
   jobId: z.boolean().optional(),

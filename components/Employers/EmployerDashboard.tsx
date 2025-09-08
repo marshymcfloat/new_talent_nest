@@ -1,10 +1,3 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Briefcase, Users, UserCheck, FileClock } from "lucide-react";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
@@ -14,6 +7,7 @@ import { StatCard } from "./StatCard";
 import { ApplicantChart } from "./ApplicantChartComponent";
 import { RecentApplicants } from "./RecentApplicants";
 import { prisma } from "@/lib/prisma";
+import QuickActionnDashboardButton from "./QuickActionDashboardButton";
 const getCompanyIdForCurrentUser = async (userId: string) => {
   const companyMember = await prisma.companyMember.findFirst({
     where: { userId: userId },
@@ -95,6 +89,7 @@ const EmployerDashboard = async () => {
           </h2>
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <QuickActionnDashboardButton />
           <StatCard
             title="Active Jobs"
             value={data.activeJobs}

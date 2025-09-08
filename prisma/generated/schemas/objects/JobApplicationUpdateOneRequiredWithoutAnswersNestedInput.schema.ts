@@ -9,7 +9,7 @@ import { JobApplicationUpdateToOneWithWhereWithoutAnswersInputObjectSchema } fro
 import { JobApplicationUpdateWithoutAnswersInputObjectSchema } from './JobApplicationUpdateWithoutAnswersInput.schema';
 import { JobApplicationUncheckedUpdateWithoutAnswersInputObjectSchema } from './JobApplicationUncheckedUpdateWithoutAnswersInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => JobApplicationCreateWithoutAnswersInputObjectSchema), z.lazy(() => JobApplicationUncheckedCreateWithoutAnswersInputObjectSchema)]).optional(),
   connectOrCreate: z.lazy(() => JobApplicationCreateOrConnectWithoutAnswersInputObjectSchema).optional(),
   upsert: z.lazy(() => JobApplicationUpsertWithoutAnswersInputObjectSchema).optional(),

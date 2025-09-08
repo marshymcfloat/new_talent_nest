@@ -6,7 +6,7 @@ import { AnswerCreateOrConnectWithoutQuestionInputObjectSchema } from './AnswerC
 import { AnswerCreateManyQuestionInputEnvelopeObjectSchema } from './AnswerCreateManyQuestionInputEnvelope.schema';
 import { AnswerWhereUniqueInputObjectSchema } from './AnswerWhereUniqueInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => AnswerCreateWithoutQuestionInputObjectSchema), z.lazy(() => AnswerCreateWithoutQuestionInputObjectSchema).array(), z.lazy(() => AnswerUncheckedCreateWithoutQuestionInputObjectSchema), z.lazy(() => AnswerUncheckedCreateWithoutQuestionInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => AnswerCreateOrConnectWithoutQuestionInputObjectSchema), z.lazy(() => AnswerCreateOrConnectWithoutQuestionInputObjectSchema).array()]).optional(),
   createMany: z.lazy(() => AnswerCreateManyQuestionInputEnvelopeObjectSchema).optional(),

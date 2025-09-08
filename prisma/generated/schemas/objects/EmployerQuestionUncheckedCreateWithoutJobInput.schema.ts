@@ -4,7 +4,7 @@ import { QuestionTypeSchema } from '../enums/QuestionType.schema';
 import { EmployerQuestionCreateoptionsInputObjectSchema } from './EmployerQuestionCreateoptionsInput.schema';
 import { AnswerUncheckedCreateNestedManyWithoutQuestionInputObjectSchema } from './AnswerUncheckedCreateNestedManyWithoutQuestionInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.string().optional(),
   text: z.string(),
   type: QuestionTypeSchema,

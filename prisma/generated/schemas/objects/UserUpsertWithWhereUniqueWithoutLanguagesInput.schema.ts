@@ -6,7 +6,7 @@ import { UserUncheckedUpdateWithoutLanguagesInputObjectSchema } from './UserUnch
 import { UserCreateWithoutLanguagesInputObjectSchema } from './UserCreateWithoutLanguagesInput.schema';
 import { UserUncheckedCreateWithoutLanguagesInputObjectSchema } from './UserUncheckedCreateWithoutLanguagesInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => UserWhereUniqueInputObjectSchema),
   update: z.union([z.lazy(() => UserUpdateWithoutLanguagesInputObjectSchema), z.lazy(() => UserUncheckedUpdateWithoutLanguagesInputObjectSchema)]),
   create: z.union([z.lazy(() => UserCreateWithoutLanguagesInputObjectSchema), z.lazy(() => UserUncheckedCreateWithoutLanguagesInputObjectSchema)])

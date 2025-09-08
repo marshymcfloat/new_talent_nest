@@ -2,16 +2,16 @@ import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { ApplicationStatusSchema } from '../enums/ApplicationStatus.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.string().optional(),
   userId: z.string(),
   jobId: z.string(),
   resumeId: z.string(),
   status: ApplicationStatusSchema.optional(),
-  notes: z.string().nullish(),
+  notes: z.string().optional().nullable(),
   isArchived: z.boolean().optional(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional()
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
 }).strict();
 export const JobApplicationUncheckedCreateWithoutAnswersInputObjectSchema: z.ZodType<Prisma.JobApplicationUncheckedCreateWithoutAnswersInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationUncheckedCreateWithoutAnswersInput>;
 export const JobApplicationUncheckedCreateWithoutAnswersInputObjectZodSchema = makeSchema();

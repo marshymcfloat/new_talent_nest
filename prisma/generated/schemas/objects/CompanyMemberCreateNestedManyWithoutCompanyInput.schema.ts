@@ -6,7 +6,7 @@ import { CompanyMemberCreateOrConnectWithoutCompanyInputObjectSchema } from './C
 import { CompanyMemberCreateManyCompanyInputEnvelopeObjectSchema } from './CompanyMemberCreateManyCompanyInputEnvelope.schema';
 import { CompanyMemberWhereUniqueInputObjectSchema } from './CompanyMemberWhereUniqueInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => CompanyMemberCreateWithoutCompanyInputObjectSchema), z.lazy(() => CompanyMemberCreateWithoutCompanyInputObjectSchema).array(), z.lazy(() => CompanyMemberUncheckedCreateWithoutCompanyInputObjectSchema), z.lazy(() => CompanyMemberUncheckedCreateWithoutCompanyInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => CompanyMemberCreateOrConnectWithoutCompanyInputObjectSchema), z.lazy(() => CompanyMemberCreateOrConnectWithoutCompanyInputObjectSchema).array()]).optional(),
   createMany: z.lazy(() => CompanyMemberCreateManyCompanyInputEnvelopeObjectSchema).optional(),

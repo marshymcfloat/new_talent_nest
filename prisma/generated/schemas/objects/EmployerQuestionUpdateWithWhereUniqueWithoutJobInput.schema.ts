@@ -4,7 +4,7 @@ import { EmployerQuestionWhereUniqueInputObjectSchema } from './EmployerQuestion
 import { EmployerQuestionUpdateWithoutJobInputObjectSchema } from './EmployerQuestionUpdateWithoutJobInput.schema';
 import { EmployerQuestionUncheckedUpdateWithoutJobInputObjectSchema } from './EmployerQuestionUncheckedUpdateWithoutJobInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => EmployerQuestionWhereUniqueInputObjectSchema),
   data: z.union([z.lazy(() => EmployerQuestionUpdateWithoutJobInputObjectSchema), z.lazy(() => EmployerQuestionUncheckedUpdateWithoutJobInputObjectSchema)])
 }).strict();

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { EmployerQuestionWhereInputObjectSchema } from './EmployerQuestionWhereInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   is: z.lazy(() => EmployerQuestionWhereInputObjectSchema).optional(),
   isNot: z.lazy(() => EmployerQuestionWhereInputObjectSchema).optional()
 }).strict();

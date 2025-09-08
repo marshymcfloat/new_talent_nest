@@ -6,7 +6,7 @@ import { CareerHistoryCreateOrConnectWithoutUserInputObjectSchema } from './Care
 import { CareerHistoryCreateManyUserInputEnvelopeObjectSchema } from './CareerHistoryCreateManyUserInputEnvelope.schema';
 import { CareerHistoryWhereUniqueInputObjectSchema } from './CareerHistoryWhereUniqueInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => CareerHistoryCreateWithoutUserInputObjectSchema), z.lazy(() => CareerHistoryCreateWithoutUserInputObjectSchema).array(), z.lazy(() => CareerHistoryUncheckedCreateWithoutUserInputObjectSchema), z.lazy(() => CareerHistoryUncheckedCreateWithoutUserInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => CareerHistoryCreateOrConnectWithoutUserInputObjectSchema), z.lazy(() => CareerHistoryCreateOrConnectWithoutUserInputObjectSchema).array()]).optional(),
   createMany: z.lazy(() => CareerHistoryCreateManyUserInputEnvelopeObjectSchema).optional(),

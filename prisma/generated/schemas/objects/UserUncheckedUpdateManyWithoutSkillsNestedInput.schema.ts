@@ -9,7 +9,7 @@ import { UserUpdateWithWhereUniqueWithoutSkillsInputObjectSchema } from './UserU
 import { UserUpdateManyWithWhereWithoutSkillsInputObjectSchema } from './UserUpdateManyWithWhereWithoutSkillsInput.schema';
 import { UserScalarWhereInputObjectSchema } from './UserScalarWhereInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => UserCreateWithoutSkillsInputObjectSchema), z.lazy(() => UserCreateWithoutSkillsInputObjectSchema).array(), z.lazy(() => UserUncheckedCreateWithoutSkillsInputObjectSchema), z.lazy(() => UserUncheckedCreateWithoutSkillsInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => UserCreateOrConnectWithoutSkillsInputObjectSchema), z.lazy(() => UserCreateOrConnectWithoutSkillsInputObjectSchema).array()]).optional(),
   upsert: z.union([z.lazy(() => UserUpsertWithWhereUniqueWithoutSkillsInputObjectSchema), z.lazy(() => UserUpsertWithWhereUniqueWithoutSkillsInputObjectSchema).array()]).optional(),

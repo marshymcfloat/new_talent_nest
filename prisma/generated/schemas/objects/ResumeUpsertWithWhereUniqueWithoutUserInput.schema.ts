@@ -6,7 +6,7 @@ import { ResumeUncheckedUpdateWithoutUserInputObjectSchema } from './ResumeUnche
 import { ResumeCreateWithoutUserInputObjectSchema } from './ResumeCreateWithoutUserInput.schema';
 import { ResumeUncheckedCreateWithoutUserInputObjectSchema } from './ResumeUncheckedCreateWithoutUserInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => ResumeWhereUniqueInputObjectSchema),
   update: z.union([z.lazy(() => ResumeUpdateWithoutUserInputObjectSchema), z.lazy(() => ResumeUncheckedUpdateWithoutUserInputObjectSchema)]),
   create: z.union([z.lazy(() => ResumeCreateWithoutUserInputObjectSchema), z.lazy(() => ResumeUncheckedCreateWithoutUserInputObjectSchema)])

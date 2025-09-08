@@ -4,7 +4,7 @@ import { JobWhereUniqueInputObjectSchema } from './JobWhereUniqueInput.schema';
 import { JobCreateWithoutEmployerQuestionsInputObjectSchema } from './JobCreateWithoutEmployerQuestionsInput.schema';
 import { JobUncheckedCreateWithoutEmployerQuestionsInputObjectSchema } from './JobUncheckedCreateWithoutEmployerQuestionsInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => JobWhereUniqueInputObjectSchema),
   create: z.union([z.lazy(() => JobCreateWithoutEmployerQuestionsInputObjectSchema), z.lazy(() => JobUncheckedCreateWithoutEmployerQuestionsInputObjectSchema)])
 }).strict();

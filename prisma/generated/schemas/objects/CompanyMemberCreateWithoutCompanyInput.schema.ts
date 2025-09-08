@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { CompanyRoleSchema } from '../enums/CompanyRole.schema';
 import { UserCreateNestedOneWithoutCompaniesInputObjectSchema } from './UserCreateNestedOneWithoutCompaniesInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   role: CompanyRoleSchema.optional(),
   user: z.lazy(() => UserCreateNestedOneWithoutCompaniesInputObjectSchema)
 }).strict();

@@ -4,14 +4,14 @@ import { UserAvailabilityTypeSchema } from '../enums/UserAvailabilityType.schema
 import { NestedIntNullableFilterObjectSchema } from './NestedIntNullableFilter.schema';
 import { NestedEnumUserAvailabilityTypeNullableFilterObjectSchema } from './NestedEnumUserAvailabilityTypeNullableFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
-  equals: UserAvailabilityTypeSchema.nullish(),
-  in: UserAvailabilityTypeSchema.array().nullish(),
-  notIn: UserAvailabilityTypeSchema.array().nullish(),
-  not: z.union([UserAvailabilityTypeSchema, z.lazy(makeSchema)]).nullish(),
+const schema = z.object({
+  equals: UserAvailabilityTypeSchema.optional().nullable(),
+  in: UserAvailabilityTypeSchema.array().optional().nullable(),
+  notIn: UserAvailabilityTypeSchema.array().optional().nullable(),
+  not: z.union([UserAvailabilityTypeSchema, z.lazy(() => NestedEnumUserAvailabilityTypeNullableWithAggregatesFilterObjectSchema)]).optional().nullable(),
   _count: z.lazy(() => NestedIntNullableFilterObjectSchema).optional(),
   _min: z.lazy(() => NestedEnumUserAvailabilityTypeNullableFilterObjectSchema).optional(),
   _max: z.lazy(() => NestedEnumUserAvailabilityTypeNullableFilterObjectSchema).optional()
 }).strict();
-export const NestedEnumUserAvailabilityTypeNullableWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedEnumUserAvailabilityTypeNullableWithAggregatesFilter> = makeSchema() as unknown as z.ZodType<Prisma.NestedEnumUserAvailabilityTypeNullableWithAggregatesFilter>;
-export const NestedEnumUserAvailabilityTypeNullableWithAggregatesFilterObjectZodSchema = makeSchema();
+export const NestedEnumUserAvailabilityTypeNullableWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedEnumUserAvailabilityTypeNullableWithAggregatesFilter> = schema as unknown as z.ZodType<Prisma.NestedEnumUserAvailabilityTypeNullableWithAggregatesFilter>;
+export const NestedEnumUserAvailabilityTypeNullableWithAggregatesFilterObjectZodSchema = schema;

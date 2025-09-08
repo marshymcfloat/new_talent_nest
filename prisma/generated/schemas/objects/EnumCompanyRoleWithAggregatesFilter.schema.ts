@@ -5,7 +5,7 @@ import { NestedEnumCompanyRoleWithAggregatesFilterObjectSchema } from './NestedE
 import { NestedIntFilterObjectSchema } from './NestedIntFilter.schema';
 import { NestedEnumCompanyRoleFilterObjectSchema } from './NestedEnumCompanyRoleFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   equals: CompanyRoleSchema.optional(),
   in: CompanyRoleSchema.array().optional(),
   notIn: CompanyRoleSchema.array().optional(),

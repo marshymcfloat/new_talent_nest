@@ -6,7 +6,7 @@ import { ResumeCountOrderByAggregateInputObjectSchema } from './ResumeCountOrder
 import { ResumeMaxOrderByAggregateInputObjectSchema } from './ResumeMaxOrderByAggregateInput.schema';
 import { ResumeMinOrderByAggregateInputObjectSchema } from './ResumeMinOrderByAggregateInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   title: SortOrderSchema.optional(),
   url: SortOrderSchema.optional(),

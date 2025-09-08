@@ -6,7 +6,7 @@ import { UserArgsObjectSchema } from './UserArgs.schema';
 import { AnswerFindManySchema } from '../findManyAnswer.schema';
 import { JobApplicationCountOutputTypeArgsObjectSchema } from './JobApplicationCountOutputTypeArgs.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   resume: z.union([z.boolean(), z.lazy(() => ResumeArgsObjectSchema)]).optional(),
   Job: z.union([z.boolean(), z.lazy(() => JobArgsObjectSchema)]).optional(),
   User: z.union([z.boolean(), z.lazy(() => UserArgsObjectSchema)]).optional(),

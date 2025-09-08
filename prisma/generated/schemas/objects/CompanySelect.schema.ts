@@ -4,7 +4,7 @@ import { JobFindManySchema } from '../findManyJob.schema';
 import { CompanyMemberFindManySchema } from '../findManyCompanyMember.schema';
 import { CompanyCountOutputTypeArgsObjectSchema } from './CompanyCountOutputTypeArgs.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.boolean().optional(),
   name: z.boolean().optional(),
   description: z.boolean().optional(),

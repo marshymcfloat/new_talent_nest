@@ -6,7 +6,7 @@ import { JobApplicationCountOrderByAggregateInputObjectSchema } from './JobAppli
 import { JobApplicationMaxOrderByAggregateInputObjectSchema } from './JobApplicationMaxOrderByAggregateInput.schema';
 import { JobApplicationMinOrderByAggregateInputObjectSchema } from './JobApplicationMinOrderByAggregateInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   userId: SortOrderSchema.optional(),
   jobId: SortOrderSchema.optional(),

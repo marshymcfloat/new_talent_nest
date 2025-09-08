@@ -9,10 +9,10 @@ import { JobScalarRelationFilterObjectSchema } from './JobScalarRelationFilter.s
 import { JobWhereInputObjectSchema } from './JobWhereInput.schema';
 import { AnswerListRelationFilterObjectSchema } from './AnswerListRelationFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
-  AND: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
-  OR: z.lazy(makeSchema).array().optional(),
-  NOT: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
+const schema = z.object({
+  AND: z.union([z.lazy(() => EmployerQuestionWhereInputObjectSchema), z.lazy(() => EmployerQuestionWhereInputObjectSchema).array()]).optional(),
+  OR: z.lazy(() => EmployerQuestionWhereInputObjectSchema).array().optional(),
+  NOT: z.union([z.lazy(() => EmployerQuestionWhereInputObjectSchema), z.lazy(() => EmployerQuestionWhereInputObjectSchema).array()]).optional(),
   id: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   text: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   type: z.union([z.lazy(() => EnumQuestionTypeFilterObjectSchema), QuestionTypeSchema]).optional(),
@@ -22,5 +22,5 @@ const makeSchema = (): z.ZodObject<any> => z.object({
   Job: z.union([z.lazy(() => JobScalarRelationFilterObjectSchema), z.lazy(() => JobWhereInputObjectSchema)]).optional(),
   answers: z.lazy(() => AnswerListRelationFilterObjectSchema).optional()
 }).strict();
-export const EmployerQuestionWhereInputObjectSchema: z.ZodType<Prisma.EmployerQuestionWhereInput> = makeSchema() as unknown as z.ZodType<Prisma.EmployerQuestionWhereInput>;
-export const EmployerQuestionWhereInputObjectZodSchema = makeSchema();
+export const EmployerQuestionWhereInputObjectSchema: z.ZodType<Prisma.EmployerQuestionWhereInput> = schema as unknown as z.ZodType<Prisma.EmployerQuestionWhereInput>;
+export const EmployerQuestionWhereInputObjectZodSchema = schema;

@@ -5,7 +5,7 @@ import { NestedEnumJobStatusWithAggregatesFilterObjectSchema } from './NestedEnu
 import { NestedIntFilterObjectSchema } from './NestedIntFilter.schema';
 import { NestedEnumJobStatusFilterObjectSchema } from './NestedEnumJobStatusFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   equals: JobStatusSchema.optional(),
   in: JobStatusSchema.array().optional(),
   notIn: JobStatusSchema.array().optional(),

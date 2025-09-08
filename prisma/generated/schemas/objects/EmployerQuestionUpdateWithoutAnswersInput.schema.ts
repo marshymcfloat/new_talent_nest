@@ -7,7 +7,7 @@ import { BoolFieldUpdateOperationsInputObjectSchema } from './BoolFieldUpdateOpe
 import { EmployerQuestionUpdateoptionsInputObjectSchema } from './EmployerQuestionUpdateoptionsInput.schema';
 import { JobUpdateOneRequiredWithoutEmployerQuestionsNestedInputObjectSchema } from './JobUpdateOneRequiredWithoutEmployerQuestionsNestedInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   text: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   type: z.union([QuestionTypeSchema, z.lazy(() => EnumQuestionTypeFieldUpdateOperationsInputObjectSchema)]).optional(),

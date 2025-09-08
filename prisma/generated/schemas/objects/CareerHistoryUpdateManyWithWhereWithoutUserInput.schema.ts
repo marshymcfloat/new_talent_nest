@@ -4,7 +4,7 @@ import { CareerHistoryScalarWhereInputObjectSchema } from './CareerHistoryScalar
 import { CareerHistoryUpdateManyMutationInputObjectSchema } from './CareerHistoryUpdateManyMutationInput.schema';
 import { CareerHistoryUncheckedUpdateManyWithoutUserInputObjectSchema } from './CareerHistoryUncheckedUpdateManyWithoutUserInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => CareerHistoryScalarWhereInputObjectSchema),
   data: z.union([z.lazy(() => CareerHistoryUpdateManyMutationInputObjectSchema), z.lazy(() => CareerHistoryUncheckedUpdateManyWithoutUserInputObjectSchema)])
 }).strict();

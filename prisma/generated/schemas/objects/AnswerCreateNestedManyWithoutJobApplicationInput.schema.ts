@@ -6,7 +6,7 @@ import { AnswerCreateOrConnectWithoutJobApplicationInputObjectSchema } from './A
 import { AnswerCreateManyJobApplicationInputEnvelopeObjectSchema } from './AnswerCreateManyJobApplicationInputEnvelope.schema';
 import { AnswerWhereUniqueInputObjectSchema } from './AnswerWhereUniqueInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => AnswerCreateWithoutJobApplicationInputObjectSchema), z.lazy(() => AnswerCreateWithoutJobApplicationInputObjectSchema).array(), z.lazy(() => AnswerUncheckedCreateWithoutJobApplicationInputObjectSchema), z.lazy(() => AnswerUncheckedCreateWithoutJobApplicationInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => AnswerCreateOrConnectWithoutJobApplicationInputObjectSchema), z.lazy(() => AnswerCreateOrConnectWithoutJobApplicationInputObjectSchema).array()]).optional(),
   createMany: z.lazy(() => AnswerCreateManyJobApplicationInputEnvelopeObjectSchema).optional(),

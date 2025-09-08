@@ -6,7 +6,7 @@ import { CompanyMemberUncheckedUpdateWithoutCompanyInputObjectSchema } from './C
 import { CompanyMemberCreateWithoutCompanyInputObjectSchema } from './CompanyMemberCreateWithoutCompanyInput.schema';
 import { CompanyMemberUncheckedCreateWithoutCompanyInputObjectSchema } from './CompanyMemberUncheckedCreateWithoutCompanyInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => CompanyMemberWhereUniqueInputObjectSchema),
   update: z.union([z.lazy(() => CompanyMemberUpdateWithoutCompanyInputObjectSchema), z.lazy(() => CompanyMemberUncheckedUpdateWithoutCompanyInputObjectSchema)]),
   create: z.union([z.lazy(() => CompanyMemberCreateWithoutCompanyInputObjectSchema), z.lazy(() => CompanyMemberUncheckedCreateWithoutCompanyInputObjectSchema)])

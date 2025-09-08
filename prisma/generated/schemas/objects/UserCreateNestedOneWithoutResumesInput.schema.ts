@@ -5,7 +5,7 @@ import { UserUncheckedCreateWithoutResumesInputObjectSchema } from './UserUnchec
 import { UserCreateOrConnectWithoutResumesInputObjectSchema } from './UserCreateOrConnectWithoutResumesInput.schema';
 import { UserWhereUniqueInputObjectSchema } from './UserWhereUniqueInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => UserCreateWithoutResumesInputObjectSchema), z.lazy(() => UserUncheckedCreateWithoutResumesInputObjectSchema)]).optional(),
   connectOrCreate: z.lazy(() => UserCreateOrConnectWithoutResumesInputObjectSchema).optional(),
   connect: z.lazy(() => UserWhereUniqueInputObjectSchema).optional()

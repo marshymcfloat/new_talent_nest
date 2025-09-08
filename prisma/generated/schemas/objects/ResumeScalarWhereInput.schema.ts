@@ -5,18 +5,18 @@ import { BoolFilterObjectSchema } from './BoolFilter.schema';
 import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
 import { DateTimeNullableFilterObjectSchema } from './DateTimeNullableFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
-  AND: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
-  OR: z.lazy(makeSchema).array().optional(),
-  NOT: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
+const schema = z.object({
+  AND: z.union([z.lazy(() => ResumeScalarWhereInputObjectSchema), z.lazy(() => ResumeScalarWhereInputObjectSchema).array()]).optional(),
+  OR: z.lazy(() => ResumeScalarWhereInputObjectSchema).array().optional(),
+  NOT: z.union([z.lazy(() => ResumeScalarWhereInputObjectSchema), z.lazy(() => ResumeScalarWhereInputObjectSchema).array()]).optional(),
   id: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   title: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   url: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   isPrimary: z.union([z.lazy(() => BoolFilterObjectSchema), z.boolean()]).optional(),
   userId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
-  createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional(),
-  updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional(),
-  deletedAt: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.date()]).nullish()
+  createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
+  updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
+  deletedAt: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()]).optional().nullable()
 }).strict();
-export const ResumeScalarWhereInputObjectSchema: z.ZodType<Prisma.ResumeScalarWhereInput> = makeSchema() as unknown as z.ZodType<Prisma.ResumeScalarWhereInput>;
-export const ResumeScalarWhereInputObjectZodSchema = makeSchema();
+export const ResumeScalarWhereInputObjectSchema: z.ZodType<Prisma.ResumeScalarWhereInput> = schema as unknown as z.ZodType<Prisma.ResumeScalarWhereInput>;
+export const ResumeScalarWhereInputObjectZodSchema = schema;

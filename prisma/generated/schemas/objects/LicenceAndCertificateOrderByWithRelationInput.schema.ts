@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
 import { SortOrderInputObjectSchema } from './SortOrderInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   name: SortOrderSchema.optional(),
   organization: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),

@@ -6,7 +6,7 @@ import { AnswerUncheckedUpdateWithoutQuestionInputObjectSchema } from './AnswerU
 import { AnswerCreateWithoutQuestionInputObjectSchema } from './AnswerCreateWithoutQuestionInput.schema';
 import { AnswerUncheckedCreateWithoutQuestionInputObjectSchema } from './AnswerUncheckedCreateWithoutQuestionInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => AnswerWhereUniqueInputObjectSchema),
   update: z.union([z.lazy(() => AnswerUpdateWithoutQuestionInputObjectSchema), z.lazy(() => AnswerUncheckedUpdateWithoutQuestionInputObjectSchema)]),
   create: z.union([z.lazy(() => AnswerCreateWithoutQuestionInputObjectSchema), z.lazy(() => AnswerUncheckedCreateWithoutQuestionInputObjectSchema)])

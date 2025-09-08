@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { SkillSelectObjectSchema } from './SkillSelect.schema';
 import { SkillIncludeObjectSchema } from './SkillInclude.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   select: z.lazy(() => SkillSelectObjectSchema).optional(),
   include: z.lazy(() => SkillIncludeObjectSchema).optional()
 }).strict();

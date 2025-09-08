@@ -6,7 +6,7 @@ import { JobCreateOrConnectWithoutCompanyInputObjectSchema } from './JobCreateOr
 import { JobCreateManyCompanyInputEnvelopeObjectSchema } from './JobCreateManyCompanyInputEnvelope.schema';
 import { JobWhereUniqueInputObjectSchema } from './JobWhereUniqueInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => JobCreateWithoutCompanyInputObjectSchema), z.lazy(() => JobCreateWithoutCompanyInputObjectSchema).array(), z.lazy(() => JobUncheckedCreateWithoutCompanyInputObjectSchema), z.lazy(() => JobUncheckedCreateWithoutCompanyInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => JobCreateOrConnectWithoutCompanyInputObjectSchema), z.lazy(() => JobCreateOrConnectWithoutCompanyInputObjectSchema).array()]).optional(),
   createMany: z.lazy(() => JobCreateManyCompanyInputEnvelopeObjectSchema).optional(),

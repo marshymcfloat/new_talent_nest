@@ -7,7 +7,7 @@ import { LanguageMaxOrderByAggregateInputObjectSchema } from './LanguageMaxOrder
 import { LanguageMinOrderByAggregateInputObjectSchema } from './LanguageMinOrderByAggregateInput.schema';
 import { LanguageSumOrderByAggregateInputObjectSchema } from './LanguageSumOrderByAggregateInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   name: SortOrderSchema.optional(),
   _count: z.lazy(() => LanguageCountOrderByAggregateInputObjectSchema).optional(),

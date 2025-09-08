@@ -5,14 +5,17 @@ import { EmployerQuestionFindManySchema } from '../findManyEmployerQuestion.sche
 import { JobApplicationFindManySchema } from '../findManyJobApplication.schema';
 import { JobCountOutputTypeArgsObjectSchema } from './JobCountOutputTypeArgs.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.boolean().optional(),
   companyId: z.boolean().optional(),
   company: z.union([z.boolean(), z.lazy(() => CompanyArgsObjectSchema)]).optional(),
   title: z.boolean().optional(),
   location: z.boolean().optional(),
   type: z.boolean().optional(),
-  salary: z.boolean().optional(),
+  minSalary: z.boolean().optional(),
+  maxSalary: z.boolean().optional(),
+  currency: z.boolean().optional(),
+  payPeriod: z.boolean().optional(),
   jobClass: z.boolean().optional(),
   status: z.boolean().optional(),
   summary: z.boolean().optional(),

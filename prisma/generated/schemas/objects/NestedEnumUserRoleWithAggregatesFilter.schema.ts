@@ -4,14 +4,14 @@ import { UserRoleSchema } from '../enums/UserRole.schema';
 import { NestedIntFilterObjectSchema } from './NestedIntFilter.schema';
 import { NestedEnumUserRoleFilterObjectSchema } from './NestedEnumUserRoleFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const schema = z.object({
   equals: UserRoleSchema.optional(),
   in: UserRoleSchema.array().optional(),
   notIn: UserRoleSchema.array().optional(),
-  not: z.union([UserRoleSchema, z.lazy(makeSchema)]).optional(),
+  not: z.union([UserRoleSchema, z.lazy(() => NestedEnumUserRoleWithAggregatesFilterObjectSchema)]).optional(),
   _count: z.lazy(() => NestedIntFilterObjectSchema).optional(),
   _min: z.lazy(() => NestedEnumUserRoleFilterObjectSchema).optional(),
   _max: z.lazy(() => NestedEnumUserRoleFilterObjectSchema).optional()
 }).strict();
-export const NestedEnumUserRoleWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedEnumUserRoleWithAggregatesFilter> = makeSchema() as unknown as z.ZodType<Prisma.NestedEnumUserRoleWithAggregatesFilter>;
-export const NestedEnumUserRoleWithAggregatesFilterObjectZodSchema = makeSchema();
+export const NestedEnumUserRoleWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedEnumUserRoleWithAggregatesFilter> = schema as unknown as z.ZodType<Prisma.NestedEnumUserRoleWithAggregatesFilter>;
+export const NestedEnumUserRoleWithAggregatesFilterObjectZodSchema = schema;

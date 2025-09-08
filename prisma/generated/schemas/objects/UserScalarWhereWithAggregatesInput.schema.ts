@@ -12,25 +12,25 @@ import { JobTypeSchema } from '../enums/JobType.schema';
 import { StringNullableListFilterObjectSchema } from './StringNullableListFilter.schema';
 import { EnumJobClassNullableListFilterObjectSchema } from './EnumJobClassNullableListFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
-  AND: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
-  OR: z.lazy(makeSchema).array().optional(),
-  NOT: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
+const schema = z.object({
+  AND: z.union([z.lazy(() => UserScalarWhereWithAggregatesInputObjectSchema), z.lazy(() => UserScalarWhereWithAggregatesInputObjectSchema).array()]).optional(),
+  OR: z.lazy(() => UserScalarWhereWithAggregatesInputObjectSchema).array().optional(),
+  NOT: z.union([z.lazy(() => UserScalarWhereWithAggregatesInputObjectSchema), z.lazy(() => UserScalarWhereWithAggregatesInputObjectSchema).array()]).optional(),
   id: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
-  name: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
-  email: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
-  emailVerified: z.union([z.lazy(() => DateTimeNullableWithAggregatesFilterObjectSchema), z.date()]).nullish(),
-  image: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
-  username: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
-  password: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
+  name: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).optional().nullable(),
+  email: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).optional().nullable(),
+  emailVerified: z.union([z.lazy(() => DateTimeNullableWithAggregatesFilterObjectSchema), z.coerce.date()]).optional().nullable(),
+  image: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).optional().nullable(),
+  username: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).optional().nullable(),
+  password: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).optional().nullable(),
   role: z.union([z.lazy(() => EnumUserRoleWithAggregatesFilterObjectSchema), UserRoleSchema]).optional(),
-  summary: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
-  availability: z.union([z.lazy(() => EnumUserAvailabilityTypeNullableWithAggregatesFilterObjectSchema), UserAvailabilityTypeSchema]).nullish(),
-  preferredWorkType: z.union([z.lazy(() => EnumJobTypeNullableWithAggregatesFilterObjectSchema), JobTypeSchema]).nullish(),
+  summary: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).optional().nullable(),
+  availability: z.union([z.lazy(() => EnumUserAvailabilityTypeNullableWithAggregatesFilterObjectSchema), UserAvailabilityTypeSchema]).optional().nullable(),
+  preferredWorkType: z.union([z.lazy(() => EnumJobTypeNullableWithAggregatesFilterObjectSchema), JobTypeSchema]).optional().nullable(),
   preferredLocation: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
   rightToWork: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
-  expectedSalary: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
+  expectedSalary: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).optional().nullable(),
   jobClassification: z.lazy(() => EnumJobClassNullableListFilterObjectSchema).optional()
 }).strict();
-export const UserScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.UserScalarWhereWithAggregatesInput> = makeSchema() as unknown as z.ZodType<Prisma.UserScalarWhereWithAggregatesInput>;
-export const UserScalarWhereWithAggregatesInputObjectZodSchema = makeSchema();
+export const UserScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.UserScalarWhereWithAggregatesInput> = schema as unknown as z.ZodType<Prisma.UserScalarWhereWithAggregatesInput>;
+export const UserScalarWhereWithAggregatesInputObjectZodSchema = schema;

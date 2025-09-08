@@ -7,20 +7,20 @@ import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
 import { JobListRelationFilterObjectSchema } from './JobListRelationFilter.schema';
 import { CompanyMemberListRelationFilterObjectSchema } from './CompanyMemberListRelationFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
-  AND: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
-  OR: z.lazy(makeSchema).array().optional(),
-  NOT: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
+const schema = z.object({
+  AND: z.union([z.lazy(() => CompanyWhereInputObjectSchema), z.lazy(() => CompanyWhereInputObjectSchema).array()]).optional(),
+  OR: z.lazy(() => CompanyWhereInputObjectSchema).array().optional(),
+  NOT: z.union([z.lazy(() => CompanyWhereInputObjectSchema), z.lazy(() => CompanyWhereInputObjectSchema).array()]).optional(),
   id: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   name: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
-  description: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
-  websiteUrl: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
-  logoUrl: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
+  description: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
+  websiteUrl: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
+  logoUrl: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
   verifiedDomains: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
-  createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional(),
-  updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional(),
+  createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
+  updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
   jobs: z.lazy(() => JobListRelationFilterObjectSchema).optional(),
   members: z.lazy(() => CompanyMemberListRelationFilterObjectSchema).optional()
 }).strict();
-export const CompanyWhereInputObjectSchema: z.ZodType<Prisma.CompanyWhereInput> = makeSchema() as unknown as z.ZodType<Prisma.CompanyWhereInput>;
-export const CompanyWhereInputObjectZodSchema = makeSchema();
+export const CompanyWhereInputObjectSchema: z.ZodType<Prisma.CompanyWhereInput> = schema as unknown as z.ZodType<Prisma.CompanyWhereInput>;
+export const CompanyWhereInputObjectZodSchema = schema;

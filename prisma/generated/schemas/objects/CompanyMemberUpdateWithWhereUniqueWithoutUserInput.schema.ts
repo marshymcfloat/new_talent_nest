@@ -4,7 +4,7 @@ import { CompanyMemberWhereUniqueInputObjectSchema } from './CompanyMemberWhereU
 import { CompanyMemberUpdateWithoutUserInputObjectSchema } from './CompanyMemberUpdateWithoutUserInput.schema';
 import { CompanyMemberUncheckedUpdateWithoutUserInputObjectSchema } from './CompanyMemberUncheckedUpdateWithoutUserInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => CompanyMemberWhereUniqueInputObjectSchema),
   data: z.union([z.lazy(() => CompanyMemberUpdateWithoutUserInputObjectSchema), z.lazy(() => CompanyMemberUncheckedUpdateWithoutUserInputObjectSchema)])
 }).strict();

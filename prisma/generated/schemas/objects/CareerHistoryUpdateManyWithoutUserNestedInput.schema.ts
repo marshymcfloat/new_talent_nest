@@ -10,7 +10,7 @@ import { CareerHistoryUpdateWithWhereUniqueWithoutUserInputObjectSchema } from '
 import { CareerHistoryUpdateManyWithWhereWithoutUserInputObjectSchema } from './CareerHistoryUpdateManyWithWhereWithoutUserInput.schema';
 import { CareerHistoryScalarWhereInputObjectSchema } from './CareerHistoryScalarWhereInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => CareerHistoryCreateWithoutUserInputObjectSchema), z.lazy(() => CareerHistoryCreateWithoutUserInputObjectSchema).array(), z.lazy(() => CareerHistoryUncheckedCreateWithoutUserInputObjectSchema), z.lazy(() => CareerHistoryUncheckedCreateWithoutUserInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => CareerHistoryCreateOrConnectWithoutUserInputObjectSchema), z.lazy(() => CareerHistoryCreateOrConnectWithoutUserInputObjectSchema).array()]).optional(),
   upsert: z.union([z.lazy(() => CareerHistoryUpsertWithWhereUniqueWithoutUserInputObjectSchema), z.lazy(() => CareerHistoryUpsertWithWhereUniqueWithoutUserInputObjectSchema).array()]).optional(),

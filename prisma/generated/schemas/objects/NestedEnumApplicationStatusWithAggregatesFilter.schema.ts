@@ -4,14 +4,14 @@ import { ApplicationStatusSchema } from '../enums/ApplicationStatus.schema';
 import { NestedIntFilterObjectSchema } from './NestedIntFilter.schema';
 import { NestedEnumApplicationStatusFilterObjectSchema } from './NestedEnumApplicationStatusFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const schema = z.object({
   equals: ApplicationStatusSchema.optional(),
   in: ApplicationStatusSchema.array().optional(),
   notIn: ApplicationStatusSchema.array().optional(),
-  not: z.union([ApplicationStatusSchema, z.lazy(makeSchema)]).optional(),
+  not: z.union([ApplicationStatusSchema, z.lazy(() => NestedEnumApplicationStatusWithAggregatesFilterObjectSchema)]).optional(),
   _count: z.lazy(() => NestedIntFilterObjectSchema).optional(),
   _min: z.lazy(() => NestedEnumApplicationStatusFilterObjectSchema).optional(),
   _max: z.lazy(() => NestedEnumApplicationStatusFilterObjectSchema).optional()
 }).strict();
-export const NestedEnumApplicationStatusWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedEnumApplicationStatusWithAggregatesFilter> = makeSchema() as unknown as z.ZodType<Prisma.NestedEnumApplicationStatusWithAggregatesFilter>;
-export const NestedEnumApplicationStatusWithAggregatesFilterObjectZodSchema = makeSchema();
+export const NestedEnumApplicationStatusWithAggregatesFilterObjectSchema: z.ZodType<Prisma.NestedEnumApplicationStatusWithAggregatesFilter> = schema as unknown as z.ZodType<Prisma.NestedEnumApplicationStatusWithAggregatesFilter>;
+export const NestedEnumApplicationStatusWithAggregatesFilterObjectZodSchema = schema;

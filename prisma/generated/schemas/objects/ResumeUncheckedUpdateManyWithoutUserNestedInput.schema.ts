@@ -10,7 +10,7 @@ import { ResumeUpdateWithWhereUniqueWithoutUserInputObjectSchema } from './Resum
 import { ResumeUpdateManyWithWhereWithoutUserInputObjectSchema } from './ResumeUpdateManyWithWhereWithoutUserInput.schema';
 import { ResumeScalarWhereInputObjectSchema } from './ResumeScalarWhereInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => ResumeCreateWithoutUserInputObjectSchema), z.lazy(() => ResumeCreateWithoutUserInputObjectSchema).array(), z.lazy(() => ResumeUncheckedCreateWithoutUserInputObjectSchema), z.lazy(() => ResumeUncheckedCreateWithoutUserInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => ResumeCreateOrConnectWithoutUserInputObjectSchema), z.lazy(() => ResumeCreateOrConnectWithoutUserInputObjectSchema).array()]).optional(),
   upsert: z.union([z.lazy(() => ResumeUpsertWithWhereUniqueWithoutUserInputObjectSchema), z.lazy(() => ResumeUpsertWithWhereUniqueWithoutUserInputObjectSchema).array()]).optional(),

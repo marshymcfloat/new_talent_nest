@@ -14,23 +14,23 @@ import { UserScalarRelationFilterObjectSchema } from './UserScalarRelationFilter
 import { UserWhereInputObjectSchema } from './UserWhereInput.schema';
 import { AnswerListRelationFilterObjectSchema } from './AnswerListRelationFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
-  AND: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
-  OR: z.lazy(makeSchema).array().optional(),
-  NOT: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
+const schema = z.object({
+  AND: z.union([z.lazy(() => JobApplicationWhereInputObjectSchema), z.lazy(() => JobApplicationWhereInputObjectSchema).array()]).optional(),
+  OR: z.lazy(() => JobApplicationWhereInputObjectSchema).array().optional(),
+  NOT: z.union([z.lazy(() => JobApplicationWhereInputObjectSchema), z.lazy(() => JobApplicationWhereInputObjectSchema).array()]).optional(),
   id: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   userId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   jobId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   resumeId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   status: z.union([z.lazy(() => EnumApplicationStatusFilterObjectSchema), ApplicationStatusSchema]).optional(),
-  notes: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).nullish(),
+  notes: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
   isArchived: z.union([z.lazy(() => BoolFilterObjectSchema), z.boolean()]).optional(),
-  createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional(),
-  updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional(),
+  createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
+  updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
   resume: z.union([z.lazy(() => ResumeScalarRelationFilterObjectSchema), z.lazy(() => ResumeWhereInputObjectSchema)]).optional(),
   Job: z.union([z.lazy(() => JobScalarRelationFilterObjectSchema), z.lazy(() => JobWhereInputObjectSchema)]).optional(),
   User: z.union([z.lazy(() => UserScalarRelationFilterObjectSchema), z.lazy(() => UserWhereInputObjectSchema)]).optional(),
   answers: z.lazy(() => AnswerListRelationFilterObjectSchema).optional()
 }).strict();
-export const JobApplicationWhereInputObjectSchema: z.ZodType<Prisma.JobApplicationWhereInput> = makeSchema() as unknown as z.ZodType<Prisma.JobApplicationWhereInput>;
-export const JobApplicationWhereInputObjectZodSchema = makeSchema();
+export const JobApplicationWhereInputObjectSchema: z.ZodType<Prisma.JobApplicationWhereInput> = schema as unknown as z.ZodType<Prisma.JobApplicationWhereInput>;
+export const JobApplicationWhereInputObjectZodSchema = schema;

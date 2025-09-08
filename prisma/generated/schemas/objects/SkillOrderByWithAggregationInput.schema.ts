@@ -7,7 +7,7 @@ import { SkillMaxOrderByAggregateInputObjectSchema } from './SkillMaxOrderByAggr
 import { SkillMinOrderByAggregateInputObjectSchema } from './SkillMinOrderByAggregateInput.schema';
 import { SkillSumOrderByAggregateInputObjectSchema } from './SkillSumOrderByAggregateInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   name: SortOrderSchema.optional(),
   _count: z.lazy(() => SkillCountOrderByAggregateInputObjectSchema).optional(),

@@ -10,7 +10,7 @@ import { JobUpdateWithWhereUniqueWithoutCompanyInputObjectSchema } from './JobUp
 import { JobUpdateManyWithWhereWithoutCompanyInputObjectSchema } from './JobUpdateManyWithWhereWithoutCompanyInput.schema';
 import { JobScalarWhereInputObjectSchema } from './JobScalarWhereInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => JobCreateWithoutCompanyInputObjectSchema), z.lazy(() => JobCreateWithoutCompanyInputObjectSchema).array(), z.lazy(() => JobUncheckedCreateWithoutCompanyInputObjectSchema), z.lazy(() => JobUncheckedCreateWithoutCompanyInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => JobCreateOrConnectWithoutCompanyInputObjectSchema), z.lazy(() => JobCreateOrConnectWithoutCompanyInputObjectSchema).array()]).optional(),
   upsert: z.union([z.lazy(() => JobUpsertWithWhereUniqueWithoutCompanyInputObjectSchema), z.lazy(() => JobUpsertWithWhereUniqueWithoutCompanyInputObjectSchema).array()]).optional(),

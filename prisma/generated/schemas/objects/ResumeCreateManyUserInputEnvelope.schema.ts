@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { ResumeCreateManyUserInputObjectSchema } from './ResumeCreateManyUserInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   data: z.union([z.lazy(() => ResumeCreateManyUserInputObjectSchema), z.lazy(() => ResumeCreateManyUserInputObjectSchema).array()]),
   skipDuplicates: z.boolean().optional()
 }).strict();

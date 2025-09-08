@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { JobTypeSchema } from '../../enums/JobType.schema';
+import { SalaryPeriodSchema } from '../../enums/SalaryPeriod.schema';
 import { JobClassSchema } from '../../enums/JobClass.schema';
 import { JobStatusSchema } from '../../enums/JobStatus.schema';
 // prettier-ignore
@@ -11,7 +12,10 @@ export const JobInputSchema = z.object({
     title: z.string(),
     location: z.string(),
     type: JobTypeSchema,
-    salary: z.string(),
+    minSalary: z.number().int().optional().nullable(),
+    maxSalary: z.number().int().optional().nullable(),
+    currency: z.string(),
+    payPeriod: SalaryPeriodSchema.optional().nullable(),
     jobClass: JobClassSchema,
     status: JobStatusSchema,
     summary: z.string(),

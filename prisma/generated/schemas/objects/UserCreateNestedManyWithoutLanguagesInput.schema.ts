@@ -5,7 +5,7 @@ import { UserUncheckedCreateWithoutLanguagesInputObjectSchema } from './UserUnch
 import { UserCreateOrConnectWithoutLanguagesInputObjectSchema } from './UserCreateOrConnectWithoutLanguagesInput.schema';
 import { UserWhereUniqueInputObjectSchema } from './UserWhereUniqueInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => UserCreateWithoutLanguagesInputObjectSchema), z.lazy(() => UserCreateWithoutLanguagesInputObjectSchema).array(), z.lazy(() => UserUncheckedCreateWithoutLanguagesInputObjectSchema), z.lazy(() => UserUncheckedCreateWithoutLanguagesInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => UserCreateOrConnectWithoutLanguagesInputObjectSchema), z.lazy(() => UserCreateOrConnectWithoutLanguagesInputObjectSchema).array()]).optional(),
   connect: z.union([z.lazy(() => UserWhereUniqueInputObjectSchema), z.lazy(() => UserWhereUniqueInputObjectSchema).array()]).optional()

@@ -6,7 +6,7 @@ import { CareerHistoryCountOrderByAggregateInputObjectSchema } from './CareerHis
 import { CareerHistoryMaxOrderByAggregateInputObjectSchema } from './CareerHistoryMaxOrderByAggregateInput.schema';
 import { CareerHistoryMinOrderByAggregateInputObjectSchema } from './CareerHistoryMinOrderByAggregateInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   title: SortOrderSchema.optional(),
   company: SortOrderSchema.optional(),

@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { JobApplicationArgsObjectSchema } from './JobApplicationArgs.schema';
 import { EmployerQuestionArgsObjectSchema } from './EmployerQuestionArgs.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.boolean().optional(),
   text: z.boolean().optional(),
   jobApplicationId: z.boolean().optional(),

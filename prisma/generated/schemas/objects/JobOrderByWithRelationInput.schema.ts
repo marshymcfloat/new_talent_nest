@@ -6,13 +6,16 @@ import { CompanyOrderByWithRelationInputObjectSchema } from './CompanyOrderByWit
 import { EmployerQuestionOrderByRelationAggregateInputObjectSchema } from './EmployerQuestionOrderByRelationAggregateInput.schema';
 import { JobApplicationOrderByRelationAggregateInputObjectSchema } from './JobApplicationOrderByRelationAggregateInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   companyId: SortOrderSchema.optional(),
   title: SortOrderSchema.optional(),
   location: SortOrderSchema.optional(),
   type: SortOrderSchema.optional(),
-  salary: SortOrderSchema.optional(),
+  minSalary: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  maxSalary: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  currency: SortOrderSchema.optional(),
+  payPeriod: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   jobClass: SortOrderSchema.optional(),
   status: SortOrderSchema.optional(),
   summary: SortOrderSchema.optional(),

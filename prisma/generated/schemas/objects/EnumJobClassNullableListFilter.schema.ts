@@ -2,9 +2,9 @@ import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { JobClassSchema } from '../enums/JobClass.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
-  equals: JobClassSchema.array().nullish(),
-  has: JobClassSchema.nullish(),
+const makeSchema = () => z.object({
+  equals: JobClassSchema.array().optional().nullable(),
+  has: JobClassSchema.optional().nullable(),
   hasEvery: JobClassSchema.array().optional(),
   hasSome: JobClassSchema.array().optional(),
   isEmpty: z.boolean().optional()

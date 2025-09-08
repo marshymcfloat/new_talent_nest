@@ -4,7 +4,7 @@ import { EducationScalarWhereInputObjectSchema } from './EducationScalarWhereInp
 import { EducationUpdateManyMutationInputObjectSchema } from './EducationUpdateManyMutationInput.schema';
 import { EducationUncheckedUpdateManyWithoutUserInputObjectSchema } from './EducationUncheckedUpdateManyWithoutUserInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => EducationScalarWhereInputObjectSchema),
   data: z.union([z.lazy(() => EducationUpdateManyMutationInputObjectSchema), z.lazy(() => EducationUncheckedUpdateManyWithoutUserInputObjectSchema)])
 }).strict();

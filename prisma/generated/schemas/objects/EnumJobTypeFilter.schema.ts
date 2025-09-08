@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { JobTypeSchema } from '../enums/JobType.schema';
 import { NestedEnumJobTypeFilterObjectSchema } from './NestedEnumJobTypeFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   equals: JobTypeSchema.optional(),
   in: JobTypeSchema.array().optional(),
   notIn: JobTypeSchema.array().optional(),

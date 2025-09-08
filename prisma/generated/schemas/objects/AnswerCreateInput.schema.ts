@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { JobApplicationCreateNestedOneWithoutAnswersInputObjectSchema } from './JobApplicationCreateNestedOneWithoutAnswersInput.schema';
 import { EmployerQuestionCreateNestedOneWithoutAnswersInputObjectSchema } from './EmployerQuestionCreateNestedOneWithoutAnswersInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.string().optional(),
   text: z.string(),
   JobApplication: z.lazy(() => JobApplicationCreateNestedOneWithoutAnswersInputObjectSchema),

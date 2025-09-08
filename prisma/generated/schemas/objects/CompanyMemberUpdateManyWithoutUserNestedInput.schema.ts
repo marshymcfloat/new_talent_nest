@@ -10,7 +10,7 @@ import { CompanyMemberUpdateWithWhereUniqueWithoutUserInputObjectSchema } from '
 import { CompanyMemberUpdateManyWithWhereWithoutUserInputObjectSchema } from './CompanyMemberUpdateManyWithWhereWithoutUserInput.schema';
 import { CompanyMemberScalarWhereInputObjectSchema } from './CompanyMemberScalarWhereInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => CompanyMemberCreateWithoutUserInputObjectSchema), z.lazy(() => CompanyMemberCreateWithoutUserInputObjectSchema).array(), z.lazy(() => CompanyMemberUncheckedCreateWithoutUserInputObjectSchema), z.lazy(() => CompanyMemberUncheckedCreateWithoutUserInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => CompanyMemberCreateOrConnectWithoutUserInputObjectSchema), z.lazy(() => CompanyMemberCreateOrConnectWithoutUserInputObjectSchema).array()]).optional(),
   upsert: z.union([z.lazy(() => CompanyMemberUpsertWithWhereUniqueWithoutUserInputObjectSchema), z.lazy(() => CompanyMemberUpsertWithWhereUniqueWithoutUserInputObjectSchema).array()]).optional(),

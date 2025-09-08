@@ -4,7 +4,7 @@ import { EmployerQuestionScalarWhereInputObjectSchema } from './EmployerQuestion
 import { EmployerQuestionUpdateManyMutationInputObjectSchema } from './EmployerQuestionUpdateManyMutationInput.schema';
 import { EmployerQuestionUncheckedUpdateManyWithoutJobInputObjectSchema } from './EmployerQuestionUncheckedUpdateManyWithoutJobInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => EmployerQuestionScalarWhereInputObjectSchema),
   data: z.union([z.lazy(() => EmployerQuestionUpdateManyMutationInputObjectSchema), z.lazy(() => EmployerQuestionUncheckedUpdateManyWithoutJobInputObjectSchema)])
 }).strict();

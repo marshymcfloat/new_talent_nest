@@ -4,7 +4,7 @@ import { CareerHistoryWhereUniqueInputObjectSchema } from './CareerHistoryWhereU
 import { CareerHistoryUpdateWithoutUserInputObjectSchema } from './CareerHistoryUpdateWithoutUserInput.schema';
 import { CareerHistoryUncheckedUpdateWithoutUserInputObjectSchema } from './CareerHistoryUncheckedUpdateWithoutUserInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => CareerHistoryWhereUniqueInputObjectSchema),
   data: z.union([z.lazy(() => CareerHistoryUpdateWithoutUserInputObjectSchema), z.lazy(() => CareerHistoryUncheckedUpdateWithoutUserInputObjectSchema)])
 }).strict();

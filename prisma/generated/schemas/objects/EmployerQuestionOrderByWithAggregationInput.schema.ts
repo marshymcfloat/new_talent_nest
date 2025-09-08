@@ -5,7 +5,7 @@ import { EmployerQuestionCountOrderByAggregateInputObjectSchema } from './Employ
 import { EmployerQuestionMaxOrderByAggregateInputObjectSchema } from './EmployerQuestionMaxOrderByAggregateInput.schema';
 import { EmployerQuestionMinOrderByAggregateInputObjectSchema } from './EmployerQuestionMinOrderByAggregateInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   text: SortOrderSchema.optional(),
   type: SortOrderSchema.optional(),

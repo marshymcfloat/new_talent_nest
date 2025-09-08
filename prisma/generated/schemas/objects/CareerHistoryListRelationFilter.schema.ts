@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { CareerHistoryWhereInputObjectSchema } from './CareerHistoryWhereInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   every: z.lazy(() => CareerHistoryWhereInputObjectSchema).optional(),
   some: z.lazy(() => CareerHistoryWhereInputObjectSchema).optional(),
   none: z.lazy(() => CareerHistoryWhereInputObjectSchema).optional()

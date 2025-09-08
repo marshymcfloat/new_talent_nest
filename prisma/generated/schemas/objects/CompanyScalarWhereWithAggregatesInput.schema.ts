@@ -5,18 +5,18 @@ import { StringNullableWithAggregatesFilterObjectSchema } from './StringNullable
 import { StringNullableListFilterObjectSchema } from './StringNullableListFilter.schema';
 import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
-  AND: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
-  OR: z.lazy(makeSchema).array().optional(),
-  NOT: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
+const schema = z.object({
+  AND: z.union([z.lazy(() => CompanyScalarWhereWithAggregatesInputObjectSchema), z.lazy(() => CompanyScalarWhereWithAggregatesInputObjectSchema).array()]).optional(),
+  OR: z.lazy(() => CompanyScalarWhereWithAggregatesInputObjectSchema).array().optional(),
+  NOT: z.union([z.lazy(() => CompanyScalarWhereWithAggregatesInputObjectSchema), z.lazy(() => CompanyScalarWhereWithAggregatesInputObjectSchema).array()]).optional(),
   id: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   name: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
-  description: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
-  websiteUrl: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
-  logoUrl: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).nullish(),
+  description: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).optional().nullable(),
+  websiteUrl: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).optional().nullable(),
+  logoUrl: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).optional().nullable(),
   verifiedDomains: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
-  createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional(),
-  updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional()
+  createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.date()]).optional(),
+  updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.date()]).optional()
 }).strict();
-export const CompanyScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.CompanyScalarWhereWithAggregatesInput> = makeSchema() as unknown as z.ZodType<Prisma.CompanyScalarWhereWithAggregatesInput>;
-export const CompanyScalarWhereWithAggregatesInputObjectZodSchema = makeSchema();
+export const CompanyScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.CompanyScalarWhereWithAggregatesInput> = schema as unknown as z.ZodType<Prisma.CompanyScalarWhereWithAggregatesInput>;
+export const CompanyScalarWhereWithAggregatesInputObjectZodSchema = schema;

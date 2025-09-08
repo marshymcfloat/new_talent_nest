@@ -5,13 +5,13 @@ import { JobCreateNestedOneWithoutJobApplicationInputObjectSchema } from './JobC
 import { UserCreateNestedOneWithoutJobApplicationInputObjectSchema } from './UserCreateNestedOneWithoutJobApplicationInput.schema';
 import { AnswerCreateNestedManyWithoutJobApplicationInputObjectSchema } from './AnswerCreateNestedManyWithoutJobApplicationInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.string().optional(),
   status: ApplicationStatusSchema.optional(),
-  notes: z.string().nullish(),
+  notes: z.string().optional().nullable(),
   isArchived: z.boolean().optional(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional(),
   Job: z.lazy(() => JobCreateNestedOneWithoutJobApplicationInputObjectSchema),
   User: z.lazy(() => UserCreateNestedOneWithoutJobApplicationInputObjectSchema),
   answers: z.lazy(() => AnswerCreateNestedManyWithoutJobApplicationInputObjectSchema).optional()

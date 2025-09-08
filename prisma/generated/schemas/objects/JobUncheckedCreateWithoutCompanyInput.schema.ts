@@ -1,27 +1,31 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { JobTypeSchema } from '../enums/JobType.schema';
+import { SalaryPeriodSchema } from '../enums/SalaryPeriod.schema';
 import { JobClassSchema } from '../enums/JobClass.schema';
 import { JobStatusSchema } from '../enums/JobStatus.schema';
 import { JobCreatetagsInputObjectSchema } from './JobCreatetagsInput.schema';
 import { EmployerQuestionUncheckedCreateNestedManyWithoutJobInputObjectSchema } from './EmployerQuestionUncheckedCreateNestedManyWithoutJobInput.schema';
 import { JobApplicationUncheckedCreateNestedManyWithoutJobInputObjectSchema } from './JobApplicationUncheckedCreateNestedManyWithoutJobInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.string().optional(),
   title: z.string(),
   location: z.string(),
   type: JobTypeSchema,
-  salary: z.string(),
+  minSalary: z.number().int().optional().nullable(),
+  maxSalary: z.number().int().optional().nullable(),
+  currency: z.string().optional(),
+  payPeriod: SalaryPeriodSchema.optional().nullable(),
   jobClass: JobClassSchema,
   status: JobStatusSchema.optional(),
   summary: z.string().optional(),
   qualifications: z.string().optional(),
   responsibilities: z.string().optional(),
-  benefits: z.string().nullish(),
+  benefits: z.string().optional().nullable(),
   tags: z.union([z.lazy(() => JobCreatetagsInputObjectSchema), z.string().array()]).optional(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional(),
   employerQuestions: z.lazy(() => EmployerQuestionUncheckedCreateNestedManyWithoutJobInputObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationUncheckedCreateNestedManyWithoutJobInputObjectSchema).optional()
 }).strict();

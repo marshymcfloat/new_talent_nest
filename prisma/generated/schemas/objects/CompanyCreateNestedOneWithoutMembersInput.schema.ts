@@ -5,7 +5,7 @@ import { CompanyUncheckedCreateWithoutMembersInputObjectSchema } from './Company
 import { CompanyCreateOrConnectWithoutMembersInputObjectSchema } from './CompanyCreateOrConnectWithoutMembersInput.schema';
 import { CompanyWhereUniqueInputObjectSchema } from './CompanyWhereUniqueInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => CompanyCreateWithoutMembersInputObjectSchema), z.lazy(() => CompanyUncheckedCreateWithoutMembersInputObjectSchema)]).optional(),
   connectOrCreate: z.lazy(() => CompanyCreateOrConnectWithoutMembersInputObjectSchema).optional(),
   connect: z.lazy(() => CompanyWhereUniqueInputObjectSchema).optional()

@@ -4,7 +4,7 @@ import { ResumeWhereUniqueInputObjectSchema } from './ResumeWhereUniqueInput.sch
 import { ResumeCreateWithoutJobApplicationsInputObjectSchema } from './ResumeCreateWithoutJobApplicationsInput.schema';
 import { ResumeUncheckedCreateWithoutJobApplicationsInputObjectSchema } from './ResumeUncheckedCreateWithoutJobApplicationsInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => ResumeWhereUniqueInputObjectSchema),
   create: z.union([z.lazy(() => ResumeCreateWithoutJobApplicationsInputObjectSchema), z.lazy(() => ResumeUncheckedCreateWithoutJobApplicationsInputObjectSchema)])
 }).strict();

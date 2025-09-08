@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { UserArgsObjectSchema } from './UserArgs.schema';
 import { CompanyArgsObjectSchema } from './CompanyArgs.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   userId: z.boolean().optional(),
   companyId: z.boolean().optional(),
   user: z.union([z.boolean(), z.lazy(() => UserArgsObjectSchema)]).optional(),

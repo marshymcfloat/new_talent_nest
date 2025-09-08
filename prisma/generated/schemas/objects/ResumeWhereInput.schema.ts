@@ -8,20 +8,20 @@ import { UserScalarRelationFilterObjectSchema } from './UserScalarRelationFilter
 import { UserWhereInputObjectSchema } from './UserWhereInput.schema';
 import { JobApplicationListRelationFilterObjectSchema } from './JobApplicationListRelationFilter.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
-  AND: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
-  OR: z.lazy(makeSchema).array().optional(),
-  NOT: z.union([z.lazy(makeSchema), z.lazy(makeSchema).array()]).optional(),
+const schema = z.object({
+  AND: z.union([z.lazy(() => ResumeWhereInputObjectSchema), z.lazy(() => ResumeWhereInputObjectSchema).array()]).optional(),
+  OR: z.lazy(() => ResumeWhereInputObjectSchema).array().optional(),
+  NOT: z.union([z.lazy(() => ResumeWhereInputObjectSchema), z.lazy(() => ResumeWhereInputObjectSchema).array()]).optional(),
   id: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   title: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   url: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   isPrimary: z.union([z.lazy(() => BoolFilterObjectSchema), z.boolean()]).optional(),
   userId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
-  createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional(),
-  updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.date()]).optional(),
-  deletedAt: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.date()]).nullish(),
+  createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
+  updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
+  deletedAt: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()]).optional().nullable(),
   User: z.union([z.lazy(() => UserScalarRelationFilterObjectSchema), z.lazy(() => UserWhereInputObjectSchema)]).optional(),
   JobApplications: z.lazy(() => JobApplicationListRelationFilterObjectSchema).optional()
 }).strict();
-export const ResumeWhereInputObjectSchema: z.ZodType<Prisma.ResumeWhereInput> = makeSchema() as unknown as z.ZodType<Prisma.ResumeWhereInput>;
-export const ResumeWhereInputObjectZodSchema = makeSchema();
+export const ResumeWhereInputObjectSchema: z.ZodType<Prisma.ResumeWhereInput> = schema as unknown as z.ZodType<Prisma.ResumeWhereInput>;
+export const ResumeWhereInputObjectZodSchema = schema;

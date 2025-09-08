@@ -5,7 +5,7 @@ import { EnumCompanyRoleFieldUpdateOperationsInputObjectSchema } from './EnumCom
 import { UserUpdateOneRequiredWithoutCompaniesNestedInputObjectSchema } from './UserUpdateOneRequiredWithoutCompaniesNestedInput.schema';
 import { CompanyUpdateOneRequiredWithoutMembersNestedInputObjectSchema } from './CompanyUpdateOneRequiredWithoutMembersNestedInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   role: z.union([CompanyRoleSchema, z.lazy(() => EnumCompanyRoleFieldUpdateOperationsInputObjectSchema)]).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutCompaniesNestedInputObjectSchema).optional(),
   company: z.lazy(() => CompanyUpdateOneRequiredWithoutMembersNestedInputObjectSchema).optional()

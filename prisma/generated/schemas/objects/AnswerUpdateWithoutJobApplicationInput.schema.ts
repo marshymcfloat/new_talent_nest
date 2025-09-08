@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 import { EmployerQuestionUpdateOneRequiredWithoutAnswersNestedInputObjectSchema } from './EmployerQuestionUpdateOneRequiredWithoutAnswersNestedInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   text: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   Question: z.lazy(() => EmployerQuestionUpdateOneRequiredWithoutAnswersNestedInputObjectSchema).optional()

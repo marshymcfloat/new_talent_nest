@@ -9,7 +9,7 @@ import { UserUpdateToOneWithWhereWithoutResumesInputObjectSchema } from './UserU
 import { UserUpdateWithoutResumesInputObjectSchema } from './UserUpdateWithoutResumesInput.schema';
 import { UserUncheckedUpdateWithoutResumesInputObjectSchema } from './UserUncheckedUpdateWithoutResumesInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => UserCreateWithoutResumesInputObjectSchema), z.lazy(() => UserUncheckedCreateWithoutResumesInputObjectSchema)]).optional(),
   connectOrCreate: z.lazy(() => UserCreateOrConnectWithoutResumesInputObjectSchema).optional(),
   upsert: z.lazy(() => UserUpsertWithoutResumesInputObjectSchema).optional(),

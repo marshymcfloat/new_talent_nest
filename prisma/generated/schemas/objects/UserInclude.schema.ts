@@ -11,7 +11,7 @@ import { AccountFindManySchema } from '../findManyAccount.schema';
 import { SessionFindManySchema } from '../findManySession.schema';
 import { UserCountOutputTypeArgsObjectSchema } from './UserCountOutputTypeArgs.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   companies: z.union([z.boolean(), z.lazy(() => CompanyMemberFindManySchema)]).optional(),
   resumes: z.union([z.boolean(), z.lazy(() => ResumeFindManySchema)]).optional(),
   JobApplication: z.union([z.boolean(), z.lazy(() => JobApplicationFindManySchema)]).optional(),

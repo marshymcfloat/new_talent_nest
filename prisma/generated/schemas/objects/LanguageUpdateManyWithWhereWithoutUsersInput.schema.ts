@@ -4,7 +4,7 @@ import { LanguageScalarWhereInputObjectSchema } from './LanguageScalarWhereInput
 import { LanguageUpdateManyMutationInputObjectSchema } from './LanguageUpdateManyMutationInput.schema';
 import { LanguageUncheckedUpdateManyWithoutUsersInputObjectSchema } from './LanguageUncheckedUpdateManyWithoutUsersInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   where: z.lazy(() => LanguageScalarWhereInputObjectSchema),
   data: z.union([z.lazy(() => LanguageUpdateManyMutationInputObjectSchema), z.lazy(() => LanguageUncheckedUpdateManyWithoutUsersInputObjectSchema)])
 }).strict();

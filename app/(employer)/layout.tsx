@@ -15,7 +15,7 @@ const EmployersLayout = async ({ children }: { children: React.ReactNode }) => {
     <SidebarProvider>
       <EmployerSidebar />
 
-      <main className="min-h-screen bg-muted/30 w-screen p-4 transition-all duration-300">
+      <main className="min-h-screen antialiased bg-gradient-to-br to-purple-300 from-slate-100 w-screen p-4 transition-all duration-300">
         <SidebarTrigger />
 
         {children}

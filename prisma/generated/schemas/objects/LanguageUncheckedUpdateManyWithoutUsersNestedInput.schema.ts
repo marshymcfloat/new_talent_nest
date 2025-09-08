@@ -9,7 +9,7 @@ import { LanguageUpdateWithWhereUniqueWithoutUsersInputObjectSchema } from './La
 import { LanguageUpdateManyWithWhereWithoutUsersInputObjectSchema } from './LanguageUpdateManyWithWhereWithoutUsersInput.schema';
 import { LanguageScalarWhereInputObjectSchema } from './LanguageScalarWhereInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => LanguageCreateWithoutUsersInputObjectSchema), z.lazy(() => LanguageCreateWithoutUsersInputObjectSchema).array(), z.lazy(() => LanguageUncheckedCreateWithoutUsersInputObjectSchema), z.lazy(() => LanguageUncheckedCreateWithoutUsersInputObjectSchema).array()]).optional(),
   connectOrCreate: z.union([z.lazy(() => LanguageCreateOrConnectWithoutUsersInputObjectSchema), z.lazy(() => LanguageCreateOrConnectWithoutUsersInputObjectSchema).array()]).optional(),
   upsert: z.union([z.lazy(() => LanguageUpsertWithWhereUniqueWithoutUsersInputObjectSchema), z.lazy(() => LanguageUpsertWithWhereUniqueWithoutUsersInputObjectSchema).array()]).optional(),

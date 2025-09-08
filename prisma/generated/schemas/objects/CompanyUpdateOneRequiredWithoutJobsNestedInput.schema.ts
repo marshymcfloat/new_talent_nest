@@ -9,7 +9,7 @@ import { CompanyUpdateToOneWithWhereWithoutJobsInputObjectSchema } from './Compa
 import { CompanyUpdateWithoutJobsInputObjectSchema } from './CompanyUpdateWithoutJobsInput.schema';
 import { CompanyUncheckedUpdateWithoutJobsInputObjectSchema } from './CompanyUncheckedUpdateWithoutJobsInput.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   create: z.union([z.lazy(() => CompanyCreateWithoutJobsInputObjectSchema), z.lazy(() => CompanyUncheckedCreateWithoutJobsInputObjectSchema)]).optional(),
   connectOrCreate: z.lazy(() => CompanyCreateOrConnectWithoutJobsInputObjectSchema).optional(),
   upsert: z.lazy(() => CompanyUpsertWithoutJobsInputObjectSchema).optional(),

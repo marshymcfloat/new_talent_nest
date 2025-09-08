@@ -6,7 +6,10 @@ export const JobAggregateResultSchema = z.object({  _count: z.object({
     title: z.number(),
     location: z.number(),
     type: z.number(),
-    salary: z.number(),
+    minSalary: z.number(),
+    maxSalary: z.number(),
+    currency: z.number(),
+    payPeriod: z.number(),
     jobClass: z.number(),
     status: z.number(),
     summary: z.number(),
@@ -19,12 +22,22 @@ export const JobAggregateResultSchema = z.object({  _count: z.object({
     createdAt: z.number(),
     updatedAt: z.number()
   }).optional(),
+  _sum: z.object({
+    minSalary: z.number().nullable(),
+    maxSalary: z.number().nullable()
+  }).nullable().optional(),
+  _avg: z.object({
+    minSalary: z.number().nullable(),
+    maxSalary: z.number().nullable()
+  }).nullable().optional(),
   _min: z.object({
     id: z.string().nullable(),
     companyId: z.string().nullable(),
     title: z.string().nullable(),
     location: z.string().nullable(),
-    salary: z.string().nullable(),
+    minSalary: z.number().int().nullable(),
+    maxSalary: z.number().int().nullable(),
+    currency: z.string().nullable(),
     summary: z.string().nullable(),
     qualifications: z.string().nullable(),
     responsibilities: z.string().nullable(),
@@ -38,7 +51,9 @@ export const JobAggregateResultSchema = z.object({  _count: z.object({
     companyId: z.string().nullable(),
     title: z.string().nullable(),
     location: z.string().nullable(),
-    salary: z.string().nullable(),
+    minSalary: z.number().int().nullable(),
+    maxSalary: z.number().int().nullable(),
+    currency: z.string().nullable(),
     summary: z.string().nullable(),
     qualifications: z.string().nullable(),
     responsibilities: z.string().nullable(),

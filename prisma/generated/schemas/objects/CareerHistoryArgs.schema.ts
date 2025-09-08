@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { CareerHistorySelectObjectSchema } from './CareerHistorySelect.schema';
 import { CareerHistoryIncludeObjectSchema } from './CareerHistoryInclude.schema'
 
-const makeSchema = (): z.ZodObject<any> => z.object({
+const makeSchema = () => z.object({
   select: z.lazy(() => CareerHistorySelectObjectSchema).optional(),
   include: z.lazy(() => CareerHistoryIncludeObjectSchema).optional()
 }).strict();
