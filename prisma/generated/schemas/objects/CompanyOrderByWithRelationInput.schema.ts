@@ -3,6 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
 import { SortOrderInputObjectSchema } from './SortOrderInput.schema';
 import { JobOrderByRelationAggregateInputObjectSchema } from './JobOrderByRelationAggregateInput.schema';
+import { CompanyQuestionOrderByRelationAggregateInputObjectSchema } from './CompanyQuestionOrderByRelationAggregateInput.schema';
 import { CompanyMemberOrderByRelationAggregateInputObjectSchema } from './CompanyMemberOrderByRelationAggregateInput.schema'
 
 const makeSchema = () => z.object({
@@ -15,6 +16,7 @@ const makeSchema = () => z.object({
   createdAt: SortOrderSchema.optional(),
   updatedAt: SortOrderSchema.optional(),
   jobs: z.lazy(() => JobOrderByRelationAggregateInputObjectSchema).optional(),
+  questions: z.lazy(() => CompanyQuestionOrderByRelationAggregateInputObjectSchema).optional(),
   members: z.lazy(() => CompanyMemberOrderByRelationAggregateInputObjectSchema).optional()
 }).strict();
 export const CompanyOrderByWithRelationInputObjectSchema: z.ZodType<Prisma.CompanyOrderByWithRelationInput> = makeSchema() as unknown as z.ZodType<Prisma.CompanyOrderByWithRelationInput>;

@@ -5,7 +5,7 @@ import { SalaryPeriodSchema } from '../enums/SalaryPeriod.schema';
 import { JobClassSchema } from '../enums/JobClass.schema';
 import { JobStatusSchema } from '../enums/JobStatus.schema';
 import { JobCreatetagsInputObjectSchema } from './JobCreatetagsInput.schema';
-import { EmployerQuestionUncheckedCreateNestedManyWithoutJobInputObjectSchema } from './EmployerQuestionUncheckedCreateNestedManyWithoutJobInput.schema';
+import { QuestionsOnJobsUncheckedCreateNestedManyWithoutJobInputObjectSchema } from './QuestionsOnJobsUncheckedCreateNestedManyWithoutJobInput.schema';
 import { JobApplicationUncheckedCreateNestedManyWithoutJobInputObjectSchema } from './JobApplicationUncheckedCreateNestedManyWithoutJobInput.schema'
 
 const makeSchema = () => z.object({
@@ -26,7 +26,7 @@ const makeSchema = () => z.object({
   benefits: z.string().optional().nullable(),
   tags: z.union([z.lazy(() => JobCreatetagsInputObjectSchema), z.string().array()]).optional(),
   createdAt: z.coerce.date().optional(),
-  employerQuestions: z.lazy(() => EmployerQuestionUncheckedCreateNestedManyWithoutJobInputObjectSchema),
+  questions: z.lazy(() => QuestionsOnJobsUncheckedCreateNestedManyWithoutJobInputObjectSchema),
   JobApplication: z.lazy(() => JobApplicationUncheckedCreateNestedManyWithoutJobInputObjectSchema)
 }).strict();
 export const JobUncheckedCreateInputObjectSchema: z.ZodType<Prisma.JobUncheckedCreateInput> = makeSchema() as unknown as z.ZodType<Prisma.JobUncheckedCreateInput>;

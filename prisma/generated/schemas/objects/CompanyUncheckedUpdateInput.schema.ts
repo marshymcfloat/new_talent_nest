@@ -5,6 +5,7 @@ import { NullableStringFieldUpdateOperationsInputObjectSchema } from './Nullable
 import { CompanyUpdateverifiedDomainsInputObjectSchema } from './CompanyUpdateverifiedDomainsInput.schema';
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
 import { JobUncheckedUpdateManyWithoutCompanyNestedInputObjectSchema } from './JobUncheckedUpdateManyWithoutCompanyNestedInput.schema';
+import { CompanyQuestionUncheckedUpdateManyWithoutCompanyNestedInputObjectSchema } from './CompanyQuestionUncheckedUpdateManyWithoutCompanyNestedInput.schema';
 import { CompanyMemberUncheckedUpdateManyWithoutCompanyNestedInputObjectSchema } from './CompanyMemberUncheckedUpdateManyWithoutCompanyNestedInput.schema'
 
 const makeSchema = () => z.object({
@@ -17,6 +18,7 @@ const makeSchema = () => z.object({
   createdAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
   updatedAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
   jobs: z.lazy(() => JobUncheckedUpdateManyWithoutCompanyNestedInputObjectSchema).optional(),
+  questions: z.lazy(() => CompanyQuestionUncheckedUpdateManyWithoutCompanyNestedInputObjectSchema).optional(),
   members: z.lazy(() => CompanyMemberUncheckedUpdateManyWithoutCompanyNestedInputObjectSchema).optional()
 }).strict();
 export const CompanyUncheckedUpdateInputObjectSchema: z.ZodType<Prisma.CompanyUncheckedUpdateInput> = makeSchema() as unknown as z.ZodType<Prisma.CompanyUncheckedUpdateInput>;

@@ -16,6 +16,7 @@ export const CompanyGroupByResultSchema = z.array(z.object({
     logoUrl: z.number(),
     verifiedDomains: z.number(),
     jobs: z.number(),
+    questions: z.number(),
     members: z.number(),
     createdAt: z.number(),
     updatedAt: z.number()

@@ -4,7 +4,8 @@ import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdat
 import { NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
 import { CompanyUpdateverifiedDomainsInputObjectSchema } from './CompanyUpdateverifiedDomainsInput.schema';
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
-import { JobUncheckedUpdateManyWithoutCompanyNestedInputObjectSchema } from './JobUncheckedUpdateManyWithoutCompanyNestedInput.schema'
+import { JobUncheckedUpdateManyWithoutCompanyNestedInputObjectSchema } from './JobUncheckedUpdateManyWithoutCompanyNestedInput.schema';
+import { CompanyQuestionUncheckedUpdateManyWithoutCompanyNestedInputObjectSchema } from './CompanyQuestionUncheckedUpdateManyWithoutCompanyNestedInput.schema'
 
 const makeSchema = () => z.object({
   id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
@@ -15,7 +16,8 @@ const makeSchema = () => z.object({
   verifiedDomains: z.union([z.lazy(() => CompanyUpdateverifiedDomainsInputObjectSchema), z.string().array()]).optional(),
   createdAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
   updatedAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
-  jobs: z.lazy(() => JobUncheckedUpdateManyWithoutCompanyNestedInputObjectSchema).optional()
+  jobs: z.lazy(() => JobUncheckedUpdateManyWithoutCompanyNestedInputObjectSchema).optional(),
+  questions: z.lazy(() => CompanyQuestionUncheckedUpdateManyWithoutCompanyNestedInputObjectSchema).optional()
 }).strict();
 export const CompanyUncheckedUpdateWithoutMembersInputObjectSchema: z.ZodType<Prisma.CompanyUncheckedUpdateWithoutMembersInput> = makeSchema() as unknown as z.ZodType<Prisma.CompanyUncheckedUpdateWithoutMembersInput>;
 export const CompanyUncheckedUpdateWithoutMembersInputObjectZodSchema = makeSchema();

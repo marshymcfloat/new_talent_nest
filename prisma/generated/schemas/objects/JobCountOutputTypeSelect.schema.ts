@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 
 
 const makeSchema = () => z.object({
-  employerQuestions: z.boolean().optional(),
+  questions: z.boolean().optional(),
   JobApplication: z.boolean().optional()
 }).strict();
 export const JobCountOutputTypeSelectObjectSchema: z.ZodType<Prisma.JobCountOutputTypeSelect> = makeSchema() as unknown as z.ZodType<Prisma.JobCountOutputTypeSelect>;

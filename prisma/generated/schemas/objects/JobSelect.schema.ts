@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { CompanyArgsObjectSchema } from './CompanyArgs.schema';
-import { EmployerQuestionFindManySchema } from '../findManyEmployerQuestion.schema';
+import { QuestionsOnJobsFindManySchema } from '../findManyQuestionsOnJobs.schema';
 import { JobApplicationFindManySchema } from '../findManyJobApplication.schema';
 import { JobCountOutputTypeArgsObjectSchema } from './JobCountOutputTypeArgs.schema'
 
@@ -22,7 +22,7 @@ const makeSchema = () => z.object({
   qualifications: z.boolean().optional(),
   responsibilities: z.boolean().optional(),
   benefits: z.boolean().optional(),
-  employerQuestions: z.union([z.boolean(), z.lazy(() => EmployerQuestionFindManySchema)]).optional(),
+  questions: z.union([z.boolean(), z.lazy(() => QuestionsOnJobsFindManySchema)]).optional(),
   tags: z.boolean().optional(),
   JobApplication: z.union([z.boolean(), z.lazy(() => JobApplicationFindManySchema)]).optional(),
   createdAt: z.boolean().optional(),

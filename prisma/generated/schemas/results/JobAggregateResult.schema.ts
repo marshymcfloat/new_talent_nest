@@ -16,7 +16,7 @@ export const JobAggregateResultSchema = z.object({  _count: z.object({
     qualifications: z.number(),
     responsibilities: z.number(),
     benefits: z.number(),
-    employerQuestions: z.number(),
+    questions: z.number(),
     tags: z.number(),
     JobApplication: z.number(),
     createdAt: z.number(),

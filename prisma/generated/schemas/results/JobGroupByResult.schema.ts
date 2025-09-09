@@ -31,7 +31,7 @@ export const JobGroupByResultSchema = z.array(z.object({
     qualifications: z.number(),
     responsibilities: z.number(),
     benefits: z.number(),
-    employerQuestions: z.number(),
+    questions: z.number(),
     tags: z.number(),
     JobApplication: z.number(),
     createdAt: z.number(),

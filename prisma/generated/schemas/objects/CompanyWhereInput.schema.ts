@@ -5,6 +5,7 @@ import { StringNullableFilterObjectSchema } from './StringNullableFilter.schema'
 import { StringNullableListFilterObjectSchema } from './StringNullableListFilter.schema';
 import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
 import { JobListRelationFilterObjectSchema } from './JobListRelationFilter.schema';
+import { CompanyQuestionListRelationFilterObjectSchema } from './CompanyQuestionListRelationFilter.schema';
 import { CompanyMemberListRelationFilterObjectSchema } from './CompanyMemberListRelationFilter.schema'
 
 const schema = z.object({
@@ -20,6 +21,7 @@ const schema = z.object({
   createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
   jobs: z.lazy(() => JobListRelationFilterObjectSchema).optional(),
+  questions: z.lazy(() => CompanyQuestionListRelationFilterObjectSchema).optional(),
   members: z.lazy(() => CompanyMemberListRelationFilterObjectSchema).optional()
 }).strict();
 export const CompanyWhereInputObjectSchema: z.ZodType<Prisma.CompanyWhereInput> = schema as unknown as z.ZodType<Prisma.CompanyWhereInput>;

@@ -4,6 +4,7 @@ import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdat
 import { NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
 import { CompanyUpdateverifiedDomainsInputObjectSchema } from './CompanyUpdateverifiedDomainsInput.schema';
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
+import { CompanyQuestionUpdateManyWithoutCompanyNestedInputObjectSchema } from './CompanyQuestionUpdateManyWithoutCompanyNestedInput.schema';
 import { CompanyMemberUpdateManyWithoutCompanyNestedInputObjectSchema } from './CompanyMemberUpdateManyWithoutCompanyNestedInput.schema'
 
 const makeSchema = () => z.object({
@@ -15,6 +16,7 @@ const makeSchema = () => z.object({
   verifiedDomains: z.union([z.lazy(() => CompanyUpdateverifiedDomainsInputObjectSchema), z.string().array()]).optional(),
   createdAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
   updatedAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
+  questions: z.lazy(() => CompanyQuestionUpdateManyWithoutCompanyNestedInputObjectSchema).optional(),
   members: z.lazy(() => CompanyMemberUpdateManyWithoutCompanyNestedInputObjectSchema).optional()
 }).strict();
 export const CompanyUpdateWithoutJobsInputObjectSchema: z.ZodType<Prisma.CompanyUpdateWithoutJobsInput> = makeSchema() as unknown as z.ZodType<Prisma.CompanyUpdateWithoutJobsInput>;

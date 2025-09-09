@@ -7,6 +7,7 @@ export const CompanyUpdateResultSchema = z.nullable(z.object({
   logoUrl: z.string().optional(),
   verifiedDomains: z.array(z.string()),
   jobs: z.array(z.unknown()),
+  questions: z.array(z.unknown()),
   members: z.array(z.unknown()),
   createdAt: z.date(),
   updatedAt: z.date()

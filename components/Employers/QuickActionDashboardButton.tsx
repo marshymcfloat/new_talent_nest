@@ -4,8 +4,8 @@ import { Plus } from "lucide-react";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CreateJobDialog from "./CreateJobButton";
+import CreateQuestionButton from "./CreateQuestionButton";
 
-// --- VARIANTS DEFINITIONS ---
 const containerVariants = {
   closed: {
     width: "3rem",
@@ -69,15 +69,21 @@ const itemVariants = {
   },
 } as const;
 
-// --- COMPONENT DEFINITION ---
 const QuickActionnDashboardButton = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isJobDialogOpen, setIsJobDialogOpen] = useState(false);
+  const [isQuestionDialogOpen, setIsQuestionDialogOpen] = useState(false);
 
   const handleCreateJobClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsOpen(false);
-    setIsDialogOpen(true);
+    setIsJobDialogOpen(true);
+  };
+
+  const handleCreateQuestionsClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsOpen(false);
+    setIsQuestionDialogOpen(true);
   };
 
   const handleMenuClick = (e: React.MouseEvent, action: string) => {
@@ -88,7 +94,6 @@ const QuickActionnDashboardButton = () => {
 
   return (
     <>
-      {/* Element 1: The Floating Action Button and its animated menu */}
       <motion.div
         variants={containerVariants}
         initial="closed"
@@ -128,18 +133,24 @@ const QuickActionnDashboardButton = () => {
 
               <motion.button
                 variants={itemVariants}
-                onClick={(e) => handleMenuClick(e, "Create Questions")}
-                className="text-white text-lg font-medium py-1 w-full text-left hover:bg-white/10 rounded-md px-2 transition-colors"
+                onClick={handleCreateQuestionsClick}
+                className="text-white text-lg font-medium py-1 w-full text-left hover:bg-white/10 rounded-md px-2 transition-colors capitalize"
               >
-                Create Questions
+                Create Question
               </motion.button>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.div>
 
-      {/* Element 2: The Dialog, rendered outside the menu */}
-      <CreateJobDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} />
+      <CreateJobDialog
+        open={isJobDialogOpen}
+        onOpenChange={setIsJobDialogOpen}
+      />
+      <CreateQuestionButton
+        open={isQuestionDialogOpen}
+        onOpenChange={setIsQuestionDialogOpen}
+      />
     </>
   );
 };

@@ -14,8 +14,9 @@ export { LicenceAndCertificateResultSchema } from './LicenceAndCertificate.resul
 export { SkillResultSchema } from './Skill.result';
 export { LanguageResultSchema } from './Language.result';
 export { ResumeResultSchema } from './Resume.result';
-export { EmployerQuestionResultSchema } from './EmployerQuestion.result';
 export { AnswerResultSchema } from './Answer.result';
+export { CompanyQuestionResultSchema } from './CompanyQuestion.result';
+export { QuestionsOnJobsResultSchema } from './QuestionsOnJobs.result';
 export { AccountResultSchema } from './Account.result';
 export { SessionResultSchema } from './Session.result';
 export { VerificationTokenResultSchema } from './VerificationToken.result';

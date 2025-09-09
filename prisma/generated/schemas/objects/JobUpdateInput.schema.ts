@@ -14,7 +14,7 @@ import { NullableStringFieldUpdateOperationsInputObjectSchema } from './Nullable
 import { JobUpdatetagsInputObjectSchema } from './JobUpdatetagsInput.schema';
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
 import { CompanyUpdateOneRequiredWithoutJobsNestedInputObjectSchema } from './CompanyUpdateOneRequiredWithoutJobsNestedInput.schema';
-import { EmployerQuestionUpdateManyWithoutJobNestedInputObjectSchema } from './EmployerQuestionUpdateManyWithoutJobNestedInput.schema';
+import { QuestionsOnJobsUpdateManyWithoutJobNestedInputObjectSchema } from './QuestionsOnJobsUpdateManyWithoutJobNestedInput.schema';
 import { JobApplicationUpdateManyWithoutJobNestedInputObjectSchema } from './JobApplicationUpdateManyWithoutJobNestedInput.schema'
 
 const makeSchema = () => z.object({
@@ -36,7 +36,7 @@ const makeSchema = () => z.object({
   createdAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
   updatedAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
   company: z.lazy(() => CompanyUpdateOneRequiredWithoutJobsNestedInputObjectSchema).optional(),
-  employerQuestions: z.lazy(() => EmployerQuestionUpdateManyWithoutJobNestedInputObjectSchema).optional(),
+  questions: z.lazy(() => QuestionsOnJobsUpdateManyWithoutJobNestedInputObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationUpdateManyWithoutJobNestedInputObjectSchema).optional()
 }).strict();
 export const JobUpdateInputObjectSchema: z.ZodType<Prisma.JobUpdateInput> = makeSchema() as unknown as z.ZodType<Prisma.JobUpdateInput>;

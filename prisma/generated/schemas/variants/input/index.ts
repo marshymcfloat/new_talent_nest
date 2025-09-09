@@ -14,8 +14,9 @@ export { LicenceAndCertificateInputSchema } from './LicenceAndCertificate.input'
 export { SkillInputSchema } from './Skill.input';
 export { LanguageInputSchema } from './Language.input';
 export { ResumeInputSchema } from './Resume.input';
-export { EmployerQuestionInputSchema } from './EmployerQuestion.input';
 export { AnswerInputSchema } from './Answer.input';
+export { CompanyQuestionInputSchema } from './CompanyQuestion.input';
+export { QuestionsOnJobsInputSchema } from './QuestionsOnJobs.input';
 export { AccountInputSchema } from './Account.input';
 export { SessionInputSchema } from './Session.input';
 export { VerificationTokenInputSchema } from './VerificationToken.input';

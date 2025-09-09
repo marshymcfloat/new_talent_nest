@@ -15,7 +15,7 @@ import { StringNullableListFilterObjectSchema } from './StringNullableListFilter
 import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
 import { CompanyScalarRelationFilterObjectSchema } from './CompanyScalarRelationFilter.schema';
 import { CompanyWhereInputObjectSchema } from './CompanyWhereInput.schema';
-import { EmployerQuestionListRelationFilterObjectSchema } from './EmployerQuestionListRelationFilter.schema';
+import { QuestionsOnJobsListRelationFilterObjectSchema } from './QuestionsOnJobsListRelationFilter.schema';
 import { JobApplicationListRelationFilterObjectSchema } from './JobApplicationListRelationFilter.schema'
 
 const schema = z.object({
@@ -41,7 +41,7 @@ const schema = z.object({
   createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
   company: z.union([z.lazy(() => CompanyScalarRelationFilterObjectSchema), z.lazy(() => CompanyWhereInputObjectSchema)]).optional(),
-  employerQuestions: z.lazy(() => EmployerQuestionListRelationFilterObjectSchema).optional(),
+  questions: z.lazy(() => QuestionsOnJobsListRelationFilterObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationListRelationFilterObjectSchema).optional()
 }).strict();
 export const JobWhereInputObjectSchema: z.ZodType<Prisma.JobWhereInput> = schema as unknown as z.ZodType<Prisma.JobWhereInput>;

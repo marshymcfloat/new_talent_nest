@@ -1,7 +1,8 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { CompanyCreateverifiedDomainsInputObjectSchema } from './CompanyCreateverifiedDomainsInput.schema';
-import { JobCreateNestedManyWithoutCompanyInputObjectSchema } from './JobCreateNestedManyWithoutCompanyInput.schema'
+import { JobCreateNestedManyWithoutCompanyInputObjectSchema } from './JobCreateNestedManyWithoutCompanyInput.schema';
+import { CompanyQuestionCreateNestedManyWithoutCompanyInputObjectSchema } from './CompanyQuestionCreateNestedManyWithoutCompanyInput.schema'
 
 const makeSchema = () => z.object({
   id: z.string().optional(),
@@ -12,7 +13,8 @@ const makeSchema = () => z.object({
   verifiedDomains: z.union([z.lazy(() => CompanyCreateverifiedDomainsInputObjectSchema), z.string().array()]).optional(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  jobs: z.lazy(() => JobCreateNestedManyWithoutCompanyInputObjectSchema).optional()
+  jobs: z.lazy(() => JobCreateNestedManyWithoutCompanyInputObjectSchema).optional(),
+  questions: z.lazy(() => CompanyQuestionCreateNestedManyWithoutCompanyInputObjectSchema).optional()
 }).strict();
 export const CompanyCreateWithoutMembersInputObjectSchema: z.ZodType<Prisma.CompanyCreateWithoutMembersInput> = makeSchema() as unknown as z.ZodType<Prisma.CompanyCreateWithoutMembersInput>;
 export const CompanyCreateWithoutMembersInputObjectZodSchema = makeSchema();

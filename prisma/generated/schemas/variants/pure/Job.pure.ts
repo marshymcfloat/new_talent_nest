@@ -22,7 +22,7 @@ export const JobModelSchema = z.object({
     qualifications: z.string(),
     responsibilities: z.string(),
     benefits: z.string().nullable(),
-    employerQuestions: z.array(z.unknown()),
+    questions: z.array(z.unknown()),
     tags: z.array(z.string()),
     JobApplication: z.array(z.unknown()),
     createdAt: z.date(),

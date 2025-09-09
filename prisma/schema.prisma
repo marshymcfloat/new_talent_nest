@@ -19,6 +19,7 @@ model Company {
   logoUrl         String?
   verifiedDomains String[]        @default([])
   jobs            Job[]
+   questions CompanyQuestion[]
   members         CompanyMember[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
@@ -53,7 +54,7 @@ model Job {
   qualifications   String           @default("no qualifications provided")
   responsibilities String           @default("no responsibilities provided")
   benefits         String?
-  employerQuestions EmployerQuestion[]
+ questions QuestionsOnJobs[]
   tags             String[]         @default([])
   JobApplication   JobApplication[]
   createdAt        DateTime         @default(now())
@@ -174,28 +175,56 @@ model Resume {
   @@unique([userId, title])
 }
 
-model EmployerQuestion {
-  id         String       @id @default(cuid())
-  text       String
-  type       QuestionType
-  isRequired Boolean      @default(true)
-  options    String[]
-  jobId      String
-  Job        Job          @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  answers    Answer[]
-}
 
 model Answer {
   id               String         @id @default(cuid())
   text             String
   jobApplicationId String
   JobApplication   JobApplication @relation(fields: [jobApplicationId], references: [id], onDelete: Cascade)
+  
+  // Update this relationship
   questionId       String
-  Question         EmployerQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  Question         CompanyQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@unique([jobApplicationId, questionId])
 }
 
+
+
+
+
+model CompanyQuestion {
+  id         String       @id @default(cuid())
+  text       String
+  type       QuestionType
+  options    String[]
+
+  // This is the new, crucial relationship
+  companyId  String
+  company    Company      @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  
+  // This question can now be linked to many jobs through the join table
+  jobs       QuestionsOnJobs[]
+  answers    Answer[]
+  
+  // You might want this to hide old questions without deleting them
+  isArchived Boolean      @default(false) 
+}
+
+
+model QuestionsOnJobs {
+  jobId           String
+  questionId      String
+  job             Job              @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  question        CompanyQuestion  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  
+  // You can store properties specific to the question's use on THIS job
+  isRequired      Boolean          @default(true)
+  // You could even add a sort order for questions on a specific job
+  sortOrder       Int?
+
+  @@id([jobId, questionId])
+}
 model Account {
   id                String  @id @default(cuid())
   userId            String
