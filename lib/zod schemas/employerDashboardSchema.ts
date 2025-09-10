@@ -33,7 +33,7 @@ export const createJobSchema = z
       )
       .optional(),
 
-    tags: z.array(z.string()).optional(), // Assuming tags might be added later
+    tags: z.array(z.string()).optional(),
   })
   .refine(
     (data) => {
@@ -44,7 +44,7 @@ export const createJobSchema = z
     },
     {
       message: "Minimum salary cannot be greater than maximum salary.",
-      path: ["minSalary"], // Assign the error to the minSalary field
+      path: ["minSalary"],
     }
   );
 

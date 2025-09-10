@@ -164,7 +164,6 @@ export const FormJobQuestions = () => {
         </CardContent>
       </Card>
 
-      {/* FIX 6: Render the correct dialog component */}
       <CreateJobButton
         open={isCreateDialogOpen}
         onOpenChange={setCreateDialogOpen}

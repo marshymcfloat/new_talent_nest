@@ -3,11 +3,14 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createValidatedAuthedAction } from "../sessionUtils";
-import { createQuestionSchema } from "../zod schemas/employerDashboardSchema";
+import {
+  createJobSchema,
+  createQuestionSchema,
+} from "../zod schemas/employerDashboardSchema";
 import { prisma } from "@/lib/prisma";
 
 export const getCompanyQuestions = createValidatedAuthedAction(
-  z.void(), // No input needed for this action
+  z.void(),
   async (_, session) => {
     try {
       const { user } = session;
@@ -79,5 +82,32 @@ export const createEmployerQuestion = createValidatedAuthedAction(
         error: "An unexpected error occurred while creating the question.",
       };
     }
+  }
+);
+
+export const createNewJob = createValidatedAuthedAction(
+  createJobSchema,
+  async (validatedData, session) => {
+    try {
+      const {
+        currency,
+        location,
+        qualifications,
+        responsibilities,
+        summary,
+        title,
+        type,
+        benefits,
+        maxSalary,
+        minSalary,
+        payPeriod,
+        questions,
+        tags,
+      } = validatedData;
+
+      console.log(validatedData);
+
+      return { success: true };
+    } catch (err) {}
   }
 );

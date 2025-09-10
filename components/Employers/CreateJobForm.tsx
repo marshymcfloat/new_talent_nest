@@ -28,7 +28,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { FormJobQuestions } from "./FormJobQuestions";
-// --- CONSTANTS ---
+import { useMutation } from "@tanstack/react-query";
+import { createNewJob } from "@/lib/actions/employerDashboardActions";
+import Spinner from "../Spinner";
+
 const jobClassArray = Object.values(JobClass);
 const jobTypeArray = Object.values(JobType);
 const jobSalaryPeriodArray = Object.values(SalaryPeriod);
@@ -49,13 +52,10 @@ const textAreaFields = [
     label: "Qualifications",
     placeholder: "Specify the required skills...",
   },
+  { name: "benefits", label: "Benefits", placeholder: "13th month pay" },
 ] as const;
 
-interface CreateJobFormProps {
-  onSuccess: () => void;
-}
-
-export const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
+export const CreateJobForm = () => {
   const form: UseFormReturn<CreateJobValues> = useForm<CreateJobValues>({
     resolver: zodResolver(createJobSchema),
     defaultValues: {
@@ -76,10 +76,12 @@ export const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
     },
   });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: createNewJob,
+  });
+
   const onSubmit = (values: CreateJobValues) => {
-    console.log("Submitting Job Data:", values);
-    toast.success("Job posting created successfully! (Simulation)");
-    onSuccess();
+    mutate(values);
   };
 
   return (
@@ -97,6 +99,7 @@ export const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
                     <Input
                       placeholder="e.g., Senior Software Engineer"
                       {...field}
+                      className="capitalize"
                     />
                   </FormControl>
                   <FormMessage />
@@ -280,7 +283,11 @@ export const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
           </div>
         </div>
         <div className="flex justify-end">
-          <Button type="submit">Create Job Posting</Button>
+          <Button type="submit" disabled={isPending}>
+            {" "}
+            {isPending && <Spinner className="animate-spin" />}Create Job
+            Posting
+          </Button>
         </div>
       </form>
     </FormProvider>

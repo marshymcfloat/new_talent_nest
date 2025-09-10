@@ -9,7 +9,6 @@ import { CreateJobForm } from "./CreateJobForm"; // Import our new, powerful for
 interface CreateJobDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSuccess: () => void;
 }
 
 const CreateJobButton = ({ open, onOpenChange }: CreateJobDialogProps) => {
@@ -23,7 +22,7 @@ const CreateJobButton = ({ open, onOpenChange }: CreateJobDialogProps) => {
         </DialogHeader>
 
         <div className="px-1 py-4">
-          <CreateJobForm onSuccess={() => onOpenChange(false)} />
+          <CreateJobForm />
         </div>
       </DialogContent>
     </Dialog>

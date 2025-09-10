@@ -3,8 +3,8 @@
 import { Plus } from "lucide-react";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import CreateJobDialog from "./CreateJobButton";
 import CreateQuestionButton from "./CreateQuestionButton";
+import CreateJobButton from "./CreateJobButton";
 
 const containerVariants = {
   closed: {
@@ -143,7 +143,7 @@ const QuickActionnDashboardButton = () => {
         </AnimatePresence>
       </motion.div>
 
-      <CreateJobDialog
+      <CreateJobButton
         open={isJobDialogOpen}
         onOpenChange={setIsJobDialogOpen}
       />
