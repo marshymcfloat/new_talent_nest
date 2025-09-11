@@ -12,11 +12,9 @@ const CreateQuestionButton = ({
 }: CreateQuestionDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl md:max-w-3xl">
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle className="text-center capitalize">
-            Add a New Question to Your Library
-          </DialogTitle>
+          <DialogTitle>Add a New Question to Your Library</DialogTitle>
         </DialogHeader>
 
         <CreateQuestionForm onSuccess={() => onOpenChange(false)} />

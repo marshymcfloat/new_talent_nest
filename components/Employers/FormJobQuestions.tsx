@@ -67,7 +67,7 @@ export const FormJobQuestions = () => {
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className="">
         <CardHeader>
           <CardTitle>Questions for this Job</CardTitle>
         </CardHeader>

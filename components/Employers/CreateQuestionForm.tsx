@@ -85,106 +85,105 @@ export const CreateQuestionForm = ({ onSuccess }: CreateQuestionFormProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {/* Main grid for the 2-column layout on medium screens and up */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {/* --- LEFT COLUMN --- */}
-          <div className="space-y-6">
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Question Type</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a question type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {questionTypesArray.map((type) => (
-                        <SelectItem key={type.value} value={type.value}>
-                          {type.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="text"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Question Text</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="e.g. What is your expected salary?"
-                      {...field}
-                      rows={5}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* --- RIGHT COLUMN --- */}
-          <div>
-            {questionType === "MULTIPLE_CHOICE" && (
-              <div className="space-y-4 rounded-md border p-4">
-                <FormLabel>Options</FormLabel>
-                <FormDescription>Add at least two options.</FormDescription>
-                {fields.map((field, index) => (
-                  <FormField
-                    key={field.id}
-                    control={form.control}
-                    name={`options.${index}`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="flex items-center gap-2">
-                          <FormControl>
-                            <Input
-                              {...field}
-                              placeholder={`Option ${index + 1}`}
-                            />
-                          </FormControl>
-                          <Button
-                            type="button"
-                            variant="destructive"
-                            size="icon"
-                            onClick={() => remove(index)}
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                ))}
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => append("")}
+        {/* We remove the grid layout and just use a simple div with vertical spacing */}
+        <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Question Type</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
                 >
-                  Add Option
-                </Button>
-                {form.formState.errors.options &&
-                  !form.formState.errors.options.root && (
-                    <p className="text-sm font-medium text-destructive">
-                      {form.formState.errors.options.message}
-                    </p>
-                  )}
-              </div>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a question type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {questionTypesArray.map((type) => (
+                      <SelectItem key={type.value} value={type.value}>
+                        {type.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
             )}
-          </div>
+          />
+
+          <FormField
+            control={form.control}
+            name="text"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Question Text</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="e.g. Tell me about your most successful campaign."
+                    {...field}
+                    rows={5}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* The conditional options now appear below the other fields */}
+          {questionType === "MULTIPLE_CHOICE" && (
+            <div className="space-y-4 rounded-md border p-4">
+              <FormLabel>Options</FormLabel>
+              <FormDescription>
+                Add at least two options for the applicant to choose from.
+              </FormDescription>
+              {fields.map((field, index) => (
+                <FormField
+                  key={field.id}
+                  control={form.control}
+                  name={`options.${index}`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center gap-2">
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder={`Option ${index + 1}`}
+                          />
+                        </FormControl>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          onClick={() => remove(index)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => append("")}
+              >
+                Add Option
+              </Button>
+              {form.formState.errors.options &&
+                !form.formState.errors.options.root && (
+                  <p className="text-sm font-medium text-destructive">
+                    {form.formState.errors.options.message}
+                  </p>
+                )}
+            </div>
+          )}
         </div>
 
         <Button type="submit" className="w-full" disabled={isPending}>

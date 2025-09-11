@@ -31,10 +31,43 @@ import { FormJobQuestions } from "./FormJobQuestions";
 import { useMutation } from "@tanstack/react-query";
 import { createNewJob } from "@/lib/actions/employerDashboardActions";
 import Spinner from "../Spinner";
+const jobClassArray = [
+  { title: "Accounting", value: JobClass.ACCOUNTING },
+  { title: "Administration", value: JobClass.ADMINISTRATION },
+  { title: "Construction", value: JobClass.CONSTRUCTION },
+  { title: "Education", value: JobClass.EDUCATION },
+  { title: "Engineering", value: JobClass.ENGINEERING },
+  { title: "Finance", value: JobClass.FINANCE },
+  { title: "Healthcare", value: JobClass.HEALTHCARE },
+  { title: "Hospitality", value: JobClass.HOSPITALITY },
+  { title: "Human Resources", value: JobClass.HUMAN_RESOURCES },
+  { title: "IT", value: JobClass.IT },
+  { title: "Legal", value: JobClass.LEGAL },
+  { title: "Logistics", value: JobClass.LOGISTICS },
+  { title: "Manufacturing", value: JobClass.MANUFACTURING },
+  { title: "Marketing", value: JobClass.MARKETING },
+  { title: "Media", value: JobClass.MEDIA },
+  { title: "Operations", value: JobClass.OPERATIONS },
+  { title: "Sales", value: JobClass.SALES },
+  { title: "Science", value: JobClass.SCIENCE },
+  { title: "Support", value: JobClass.SUPPORT },
+  { title: "Telecommunications", value: JobClass.TELECOMMUNICATIONS },
+  { title: "Transportation", value: JobClass.TRANSPORTATION },
+  { title: "Other", value: JobClass.OTHER },
+];
 
-const jobClassArray = Object.values(JobClass);
-const jobTypeArray = Object.values(JobType);
-const jobSalaryPeriodArray = Object.values(SalaryPeriod);
+const jobTypeArray = [
+  { title: "Full-time", value: JobType.FULL_TIME },
+  { title: "Contractual", value: JobType.CONTRACT },
+  { title: "Internship", value: JobType.INTERNSHIP },
+  { title: "Part-time", value: JobType.PART_TIME },
+];
+
+const jobSalaryPeriodArray = [
+  { title: "Monthly", value: SalaryPeriod.MONTHLY },
+  { title: "Hourly", value: SalaryPeriod.HOURLY },
+  { title: "Annually", value: SalaryPeriod.ANNUAL },
+];
 const availableCurrencies = ["PHP", "USD", "EUR"];
 const textAreaFields = [
   {
@@ -52,10 +85,10 @@ const textAreaFields = [
     label: "Qualifications",
     placeholder: "Specify the required skills...",
   },
-  { name: "benefits", label: "Benefits", placeholder: "13th month pay" },
+  { name: "benefits", label: "Benefits", placeholder: "e.g; 13th month pay" },
 ] as const;
 
-export const CreateJobForm = () => {
+export const CreateJobForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const form: UseFormReturn<CreateJobValues> = useForm<CreateJobValues>({
     resolver: zodResolver(createJobSchema),
     defaultValues: {
@@ -67,8 +100,8 @@ export const CreateJobForm = () => {
       qualifications: "",
       responsibilities: "",
       benefits: "",
-      minSalary: undefined,
-      maxSalary: undefined,
+      minSalary: 0,
+      maxSalary: 0, // Use empty string instead of undefined
       currency: "PHP",
       payPeriod: SalaryPeriod.MONTHLY,
       questions: [],
@@ -78,6 +111,18 @@ export const CreateJobForm = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: createNewJob,
+    onSuccess: async (data) => {
+      if (data.success) {
+        toast(data.message || "Question created successfully!");
+        form.reset();
+        onSuccess();
+      } else {
+        toast.error(data?.error || "An unexpected error occurred.");
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to create question.");
+    },
   });
 
   const onSubmit = (values: CreateJobValues) => {
@@ -123,9 +168,12 @@ export const CreateJobForm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {jobClassArray.map((c) => (
-                          <SelectItem key={c} value={c}>
-                            {c}
+                        {jobClassArray.map((jobClass) => (
+                          <SelectItem
+                            key={jobClass.value}
+                            value={jobClass.value}
+                          >
+                            {jobClass.title}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -150,9 +198,9 @@ export const CreateJobForm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {jobTypeArray.map((t) => (
-                          <SelectItem key={t} value={t}>
-                            {t}
+                        {jobTypeArray.map((jobType) => (
+                          <SelectItem key={jobType.value} value={jobType.value}>
+                            {jobType.title}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -169,7 +217,11 @@ export const CreateJobForm = () => {
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Manila, Philippines" {...field} />
+                    <Input
+                      className="capitalize"
+                      placeholder="e.g., Manila, Philippines"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -263,9 +315,9 @@ export const CreateJobForm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {jobSalaryPeriodArray.map((p) => (
-                          <SelectItem key={p} value={p}>
-                            {p}
+                        {jobSalaryPeriodArray.map((period) => (
+                          <SelectItem key={period.value} value={period.value}>
+                            {period.title}
                           </SelectItem>
                         ))}
                       </SelectContent>

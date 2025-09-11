@@ -89,6 +89,16 @@ export const createNewJob = createValidatedAuthedAction(
   createJobSchema,
   async (validatedData, session) => {
     try {
+      const companyMember = await prisma.companyMember.findFirst({
+        where: {
+          userId: session.user.id,
+        },
+      });
+
+      if (!companyMember) {
+        return { error: "You are not associated with any company." };
+      }
+
       const {
         currency,
         location,
@@ -103,11 +113,49 @@ export const createNewJob = createValidatedAuthedAction(
         payPeriod,
         questions,
         tags,
+        class: jobClass,
       } = validatedData;
 
-      console.log(validatedData);
+      const newJob = await prisma.$transaction(async (tx) => {
+        const createdJob = await tx.job.create({
+          data: {
+            title,
+            location,
+            jobClass,
+            type,
+            summary,
+            qualifications,
+            responsibilities,
+            benefits,
+            minSalary,
+            maxSalary,
+            currency,
+            payPeriod,
+            tags,
+            companyId: companyMember.companyId,
+          },
+        });
 
-      return { success: true };
-    } catch (err) {}
+        if (questions && questions.length > 0) {
+          const questionsToLink = questions.map((q) => ({
+            jobId: createdJob.id,
+            questionId: q.questionId,
+            isRequired: q.isRequired,
+          }));
+
+          await tx.questionsOnJobs.createMany({
+            data: questionsToLink,
+          });
+        }
+
+        return createdJob;
+      });
+
+      revalidatePath(`/${session.user.id}/dashboard`);
+      return { success: true, data: { jobId: newJob.id } };
+    } catch (err) {
+      console.error("Failed to create new job:", err);
+      return { error: "An unexpected error occurred. Please try again." };
+    }
   }
 );

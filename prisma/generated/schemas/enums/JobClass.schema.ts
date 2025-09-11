@@ -1,5 +1,5 @@
 import { z } from 'zod';
 
-export const JobClassSchema = z.enum(['ACCOUNTING', 'CONSTRUCTION', 'SALES', 'SUPPORT', 'IT'])
+export const JobClassSchema = z.enum(['ACCOUNTING', 'ADMINISTRATION', 'CONSTRUCTION', 'EDUCATION', 'ENGINEERING', 'FINANCE', 'HEALTHCARE', 'HOSPITALITY', 'HUMAN_RESOURCES', 'IT', 'LEGAL', 'LOGISTICS', 'MANUFACTURING', 'MARKETING', 'MEDIA', 'OPERATIONS', 'SALES', 'SCIENCE', 'SUPPORT', 'TELECOMMUNICATIONS', 'TRANSPORTATION', 'OTHER'])
 
 export type JobClass = z.infer<typeof JobClassSchema>;

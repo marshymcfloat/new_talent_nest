@@ -199,15 +199,12 @@ model CompanyQuestion {
   type       QuestionType
   options    String[]
 
-  // This is the new, crucial relationship
   companyId  String
   company    Company      @relation(fields: [companyId], references: [id], onDelete: Cascade)
   
-  // This question can now be linked to many jobs through the join table
   jobs       QuestionsOnJobs[]
   answers    Answer[]
   
-  // You might want this to hide old questions without deleting them
   isArchived Boolean      @default(false) 
 }
 
@@ -218,9 +215,7 @@ model QuestionsOnJobs {
   job             Job              @relation(fields: [jobId], references: [id], onDelete: Cascade)
   question        CompanyQuestion  @relation(fields: [questionId], references: [id], onDelete: Cascade)
   
-  // You can store properties specific to the question's use on THIS job
   isRequired      Boolean          @default(true)
-  // You could even add a sort order for questions on a specific job
   sortOrder       Int?
 
   @@id([jobId, questionId])
@@ -261,10 +256,27 @@ model VerificationToken {
 
 enum JobClass {
   ACCOUNTING
+  ADMINISTRATION
   CONSTRUCTION
-  SALES
-  SUPPORT
+  EDUCATION
+  ENGINEERING
+  FINANCE
+  HEALTHCARE
+  HOSPITALITY
+  HUMAN_RESOURCES
   IT
+  LEGAL
+  LOGISTICS
+  MANUFACTURING
+  MARKETING
+  MEDIA
+  OPERATIONS
+  SALES
+  SCIENCE
+  SUPPORT
+  TELECOMMUNICATIONS
+  TRANSPORTATION
+  OTHER
 }
 
 enum JobType {

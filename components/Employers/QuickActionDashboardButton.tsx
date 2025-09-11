@@ -146,6 +146,7 @@ const QuickActionnDashboardButton = () => {
       <CreateJobButton
         open={isJobDialogOpen}
         onOpenChange={setIsJobDialogOpen}
+        onSuccess={() => setIsJobDialogOpen(false)}
       />
       <CreateQuestionButton
         open={isQuestionDialogOpen}
