@@ -5,7 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function objectToFormData(obj: Record<string, any>): FormData {
+export function objectToFormData(
+  obj: Record<
+    string,
+    string | number | boolean | File | FileList | null | undefined
+  >
+): FormData {
   const formData = new FormData();
 
   Object.entries(obj).forEach(([key, value]) => {
@@ -16,7 +21,7 @@ export function objectToFormData(obj: Record<string, any>): FormData {
     if (value instanceof FileList && value.length > 0) {
       formData.append(key, value[0]);
     } else {
-      formData.append(key, value);
+      formData.append(key, value.toString());
     }
   });
 
