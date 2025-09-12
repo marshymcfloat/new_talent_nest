@@ -45,15 +45,14 @@ const DeleteButton = ({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure to delete "{title}"?</AlertDialogTitle>{" "}
+          <AlertDialogTitle>Are you sure to delete {title}?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete this item
             and it cannot be recovered.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>{" "}
-          {/* Disable cancel if pending */}
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={onDelete} disabled={isPending}>
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Continue

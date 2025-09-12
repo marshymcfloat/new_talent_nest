@@ -9,21 +9,14 @@ import {
   addEducationSchema,
   addResumeSchema,
   summarySchema,
-} from "../zod schemas/profileSchema"; // Assuming these schemas are well-defined
+} from "../zod schemas/profileSchema";
 import { revalidatePath } from "next/cache";
 import { Language, Prisma } from "@prisma/client";
 import { put } from "@vercel/blob";
 
-// Helper function to extract and parse form data
-function getFormDataValue<T extends z.ZodTypeAny>(
-  formData: FormData,
-  key: string,
-  schema: T
-): z.infer<T> | undefined {
-  const value = formData.get(key);
-  const parsed = schema.safeParse(value);
-  return parsed.success ? parsed.data : undefined;
-}
+// FIX 1: Removed the unused helper function. If you plan to use it later, you can keep it,
+// but for now, removing it resolves the ESLint warning.
+// function getFormDataValue<T extends z.ZodTypeAny>( ... )
 
 const monthNameToNumber: { [key: string]: number } = {
   Jan: 1,
@@ -40,10 +33,9 @@ const monthNameToNumber: { [key: string]: number } = {
   Dec: 12,
 };
 
-type AddEducationValue = z.infer<typeof addEducationSchema>; // Keep this type for clarity
+type AddEducationValue = z.infer<typeof addEducationSchema>;
 
 // --- Centralized Error Handling Helper ---
-// This function helps in creating consistent error responses.
 const handleError = (
   err: unknown,
   functionName: string = "An action"
@@ -58,7 +50,6 @@ const handleError = (
     }
     if (Object.keys(fieldErrors).length > 0) {
       const firstFieldKey = Object.keys(fieldErrors)[0];
-      // Asserting the key type to fix TS7053 error
       const specificErrors =
         fieldErrors[firstFieldKey as keyof typeof fieldErrors];
       return { error: specificErrors?.[0] || "Invalid input." };
@@ -68,7 +59,6 @@ const handleError = (
     if (err.code === "P2025") {
       return { error: "Record not found or you don't have permission." };
     }
-    // You can add more Prisma error codes here if needed
     return { error: `Database error: ${err.message}` };
   }
   if (err instanceof Error) {
@@ -91,15 +81,11 @@ const getSessionUserId = async () => {
 export const addUserSummary = async (formData: FormData) => {
   try {
     const userId = await getSessionUserId();
-
-    const rawData = {
-      summary: formData.get("summary"),
-    };
-
+    const rawData = { summary: formData.get("summary") };
     const validationResult = summarySchema.safeParse(rawData);
 
     if (!validationResult.success) {
-      throw validationResult.error; // Throw ZodError for consistent handling
+      throw validationResult.error;
     }
 
     const updatedUser = await prisma.user.update({
@@ -117,7 +103,6 @@ export const addUserSummary = async (formData: FormData) => {
 export const AddUserCareerHistory = async (formData: FormData) => {
   try {
     const userId = await getSessionUserId();
-
     const rawData = {
       title: formData.get("title"),
       company: formData.get("company"),
@@ -126,12 +111,7 @@ export const AddUserCareerHistory = async (formData: FormData) => {
       description: formData.get("description"),
     };
 
-    // Re-use addCareerSchema directly, assuming it's robust enough
-    // and handles date parsing/transformation appropriately.
-    // If not, you might need a separate server-side schema or refine the client one.
-    // For now, I'll assume addCareerSchema handles date objects or strings that can be converted.
     const validationResult = addCareerSchema.safeParse(rawData);
-
     if (!validationResult.success) {
       throw validationResult.error;
     }
@@ -142,9 +122,6 @@ export const AddUserCareerHistory = async (formData: FormData) => {
     const newCareer = await prisma.careerHistory.create({
       data: {
         company,
-        // Ensure dateStarted and dateEnded are Date objects if they're not already
-        // This depends on how addCareerSchema is defined.
-        // If addCareerSchema.shape.dateStarted uses z.date(), then it's already a Date object.
         dateStarted: new Date(dateStarted),
         title,
         dateEnded: dateEnded ? new Date(dateEnded) : null,
@@ -163,13 +140,14 @@ export const AddUserCareerHistory = async (formData: FormData) => {
 export const addUserEducation = async (values: AddEducationValue) => {
   try {
     const userId = await getSessionUserId();
-
     const validationResult = addEducationSchema.safeParse(values);
     if (!validationResult.success) {
       throw validationResult.error;
     }
 
-    let {
+    // FIX 2: Changed `let` to `const` for all destructured variables
+    // because their values are not reassigned.
+    const {
       course,
       institution,
       isComplete,
@@ -179,10 +157,6 @@ export const addUserEducation = async (values: AddEducationValue) => {
       finishedYear,
     } = validationResult.data;
 
-    // Ensure finishedYear and expectedFinishYear are number strings if coming from select/input
-    // and then convert to actual numbers for Prisma.
-    // If your addEducationSchema already transforms these to numbers, this parseInt is redundant.
-    // Assuming schema gives string or number.
     const finalFinishedYear =
       isComplete && finishedYear ? Number(finishedYear) : null;
     const finalExpectedFinishYear =
@@ -196,16 +170,14 @@ export const addUserEducation = async (values: AddEducationValue) => {
       userId,
       course,
       institution,
-      highlight: highlights || null, // Ensure highlight is null if empty string
+      highlight: highlights || null,
       isComplete,
       finishedYear: finalFinishedYear,
       expectedFinishYear: finalExpectedFinishYear,
       expectedFinishMonth: finalExpectedFinishMonth,
     };
 
-    const newEducation = await prisma.education.create({
-      data: dataForPrisma,
-    });
+    const newEducation = await prisma.education.create({ data: dataForPrisma });
 
     revalidatePath("/profile");
     return { success: true, data: newEducation };
@@ -217,8 +189,8 @@ export const addUserEducation = async (values: AddEducationValue) => {
 export const updateUserLanguages = async (languages: Language[]) => {
   try {
     const userId = await getSessionUserId();
-
-    // Basic validation for array type and structure
+    // FIX: Changed id validation from z.string() to z.number() to align with
+    // the database schema type inferred from the TypeScript error message.
     const languageSchema = z.array(
       z.object({ id: z.number(), name: z.string() })
     );
@@ -232,16 +204,13 @@ export const updateUserLanguages = async (languages: Language[]) => {
       id: lang.id,
     }));
 
+    // FIX: Changed 'include' to 'select' to fetch only the languages relation.
+    // This provides a correctly typed result, resolving the issue where
+    // the 'languages' property was not found on the returned user object.
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: {
-        languages: {
-          set: languagesToConnect, // Disconnect all existing and connect new ones
-        },
-      },
-      include: {
-        languages: true,
-      },
+      data: { languages: { set: languagesToConnect } },
+      select: { languages: true },
     });
 
     revalidatePath("/profile");
@@ -254,14 +223,11 @@ export const updateUserLanguages = async (languages: Language[]) => {
 export const addUserResume = async (formData: FormData) => {
   try {
     const userId = await getSessionUserId();
-
     const rawData = {
       name: formData.get("name"),
       resume: formData.get("resume"),
     };
-
     const validationResult = addResumeSchema.safeParse(rawData);
-
     if (!validationResult.success) {
       throw validationResult.error;
     }
@@ -269,17 +235,13 @@ export const addUserResume = async (formData: FormData) => {
     const { name, resume } = validationResult.data;
 
     if (resume instanceof File) {
-      // Ensure file name is not empty or null
-      const fileName = resume.name || `untitled_resume_${Date.now()}.pdf`; // Fallback name
+      const fileName = resume.name || `untitled_resume_${Date.now()}.pdf`;
       const uniqueFilename = `resumes/${userId}-${Date.now()}-${fileName.replace(/\s+/g, "_")}`;
-
-      const blob = await put(uniqueFilename, resume, {
-        access: "public",
-      });
+      const blob = await put(uniqueFilename, resume, { access: "public" });
 
       const newResume = await prisma.resume.create({
         data: {
-          title: name || fileName, // Use provided name or file name as fallback
+          title: name || fileName,
           url: blob.url,
           isPrimary: false,
           userId: userId,
@@ -289,8 +251,6 @@ export const addUserResume = async (formData: FormData) => {
       revalidatePath("/profile");
       return { success: true, data: newResume };
     } else {
-      // This case should ideally be caught by addResumeSchema if 'resume' is required to be a File.
-      // If the schema allows 'resume' to be undefined in some cases, handle it explicitly.
       throw new Error("Resume file is missing or invalid.");
     }
   } catch (err) {
@@ -301,12 +261,10 @@ export const addUserResume = async (formData: FormData) => {
 export const deleteUserCareer = async (id: string) => {
   try {
     const userId = await getSessionUserId();
-
     const softDeletedCareer = await prisma.careerHistory.update({
-      where: { id, userId }, // Ensure the user owns the record
+      where: { id, userId },
       data: { deletedAt: new Date() },
     });
-
     revalidatePath("/profile");
     return { success: true, data: softDeletedCareer };
   } catch (err) {
@@ -323,7 +281,6 @@ export const updateUserCareerHistory = async ({
 }) => {
   try {
     const userId = await getSessionUserId();
-
     const rawData = {
       title: formData.get("title"),
       company: formData.get("company"),
@@ -331,13 +288,11 @@ export const updateUserCareerHistory = async ({
       dateEnded: formData.get("dateEnded"),
       description: formData.get("description"),
     };
-
-    // Re-use addCareerSchema as it should have all necessary fields
     const validationResult = addCareerSchema.safeParse(rawData);
-
     if (!validationResult.success) {
       throw validationResult.error;
     }
+
     const { company, dateStarted, title, dateEnded, description } =
       validationResult.data;
 
@@ -345,11 +300,11 @@ export const updateUserCareerHistory = async ({
       data: {
         title,
         company,
-        dateStarted: new Date(dateStarted), // Ensure Date object
-        dateEnded: dateEnded ? new Date(dateEnded) : null, // Ensure Date object or null
+        dateStarted: new Date(dateStarted),
+        dateEnded: dateEnded ? new Date(dateEnded) : null,
         description,
       },
-      where: { id, userId }, // Ensure the user owns the record
+      where: { id, userId },
     });
 
     revalidatePath("/profile");
@@ -368,13 +323,13 @@ export const updateUserEducation = async ({
 }) => {
   try {
     const userId = await getSessionUserId();
-
     const validationResult = addEducationSchema.safeParse(values);
     if (!validationResult.success) {
       throw validationResult.error;
     }
 
-    let {
+    // FIX 3: Changed `let` to `const` for all destructured variables.
+    const {
       course,
       institution,
       isComplete,
@@ -404,7 +359,7 @@ export const updateUserEducation = async ({
     };
 
     const updatedEducation = await prisma.education.update({
-      where: { id, userId }, // Ensure the user owns the record
+      where: { id, userId },
       data: dataForPrisma,
     });
 
@@ -418,12 +373,10 @@ export const updateUserEducation = async ({
 export const deleteUserEducation = async (id: string) => {
   try {
     const userId = await getSessionUserId();
-
     const softDeletedEducation = await prisma.education.update({
-      where: { id, userId }, // Ensure the user owns the record
+      where: { id, userId },
       data: { deletedAt: new Date() },
     });
-
     revalidatePath("/profile");
     return { success: true, data: softDeletedEducation };
   } catch (err) {
@@ -434,9 +387,8 @@ export const deleteUserEducation = async (id: string) => {
 export const deleteUserResume = async (id: string) => {
   try {
     const userId = await getSessionUserId();
-
     const applicationExists = await prisma.jobApplication.findFirst({
-      where: { resumeId: id, User: { id: userId } }, // Add userId check here too
+      where: { resumeId: id, User: { id: userId } },
     });
 
     if (applicationExists) {
@@ -446,7 +398,7 @@ export const deleteUserResume = async (id: string) => {
     }
 
     const softDeletedResume = await prisma.resume.update({
-      where: { id, userId }, // Ensure the user owns the record
+      where: { id, userId },
       data: { deletedAt: new Date() },
     });
 
