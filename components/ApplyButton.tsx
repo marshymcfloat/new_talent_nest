@@ -8,7 +8,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { signIn, useSession } from "next-auth/react";
@@ -27,7 +27,7 @@ import {
 } from "./ui/form";
 import { createApplicationSchema } from "@/lib/zod schemas/applicationSchema";
 import { submitApplication } from "@/lib/actions/applicationActions";
-import { EmployerQuestion, Resume, User } from "@prisma/client";
+import { CompanyQuestion, QuestionsOnJobs, Resume, User } from "@prisma/client";
 import { toast } from "sonner";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
@@ -43,6 +43,10 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 type UserWithResume = User & {
   resumes: Resume[];
   lastUsedResumeId: string | null;
+};
+
+type QuestionRelation = QuestionsOnJobs & {
+  question: CompanyQuestion;
 };
 
 const fetchProfileData = async (): Promise<UserWithResume> => {
@@ -66,7 +70,7 @@ const ApplyButton = ({
   jobId: string;
   title: string;
   summary: string;
-  questions: EmployerQuestion[];
+  questions: QuestionRelation[];
   className: string;
 }) => {
   const { status } = useSession();
@@ -87,16 +91,24 @@ const ApplyButton = ({
   const inputStyles =
     "bg-zinc-800/50 border-purple-600/50 focus-visible:ring-purple-500 text-white/90 placeholder:text-zinc-400";
 
-  const applicationSchema = createApplicationSchema(questions);
+  const applicationSchema = useMemo(
+    () => createApplicationSchema(questions || []),
+    [questions]
+  );
   type ApplicationFormValues = z.infer<typeof applicationSchema>;
 
   const form = useForm<ApplicationFormValues>({
     resolver: zodResolver(applicationSchema),
     defaultValues: {
       resume: undefined,
-      answers: questions.reduce((acc, q) => ({ ...acc, [q.id]: "" }), {}),
+      answers:
+        questions?.reduce(
+          (acc, relation) => ({ ...acc, [relation.question.id]: "" }),
+          {}
+        ) || {},
     },
-    mode: "onChange",
+
+    mode: "onTouched",
   });
 
   const { mutate: applyToJob, isPending: isSubmitting } = useMutation({
@@ -176,7 +188,7 @@ const ApplyButton = ({
 
         <SheetContent className="bg-zinc-900 border-l-purple-700/50 text-white/90 p-4 sm:p-6 overflow-y-auto w-[90vw] sm:max-w-xl">
           <SheetHeader>
-            <SheetTitle className="text-white text-2xl">
+            <SheetTitle className="text-white text-2xl capitalize">
               Apply for {title}
             </SheetTitle>
             <SheetDescription className="text-zinc-400">
@@ -299,22 +311,22 @@ const ApplyButton = ({
                 )}
               />
 
-              {questions.map((question) => (
+              {questions.map((relation) => (
                 <FormField
-                  key={question.id}
+                  key={relation.question.id}
                   control={form.control}
-                  name={`answers.${question.id}`}
+                  name={`answers.${relation.question.id}`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-white/80">
-                        {question.text}
-                        {question.isRequired && (
+                        {relation.question.text}
+                        {relation.isRequired && (
                           <span className="text-red-500 ml-1">*</span>
                         )}
                       </FormLabel>
                       <FormControl>
                         {(() => {
-                          switch (question.type) {
+                          switch (relation.question.type) {
                             case "TEXT":
                               return (
                                 <Textarea
@@ -375,7 +387,7 @@ const ApplyButton = ({
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent className="bg-zinc-800 text-white border-zinc-700">
-                                    {question.options.map((option) => (
+                                    {relation.question.options.map((option) => (
                                       <SelectItem key={option} value={option}>
                                         {option}
                                       </SelectItem>

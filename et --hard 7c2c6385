@@ -1,0 +1,263 @@
+[33mcommit 7c2c6385dc0496ef5e4abdd22114812b835b785d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/implemented-creation-of-new-job[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/feature/implemented-creation-of-new-job[m[33m, [m[1;32mmain[m[33m)[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Thu Sep 11 16:34:37 2025 +0800
+
+    done implementing creation of new jobs and new question
+
+[33mcommit 65400ce59f99d5b4971e2bdced15e555b0f10c64[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Sep 10 21:28:28 2025 +0800
+
+    creating new job form
+
+[33mcommit a4796bb9f783fbbe5e11766b9220c6a829407e88[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Tue Sep 9 23:33:28 2025 +0800
+
+    adding add question and jobs form
+
+[33mcommit 55ce17532a31bfdfe6767fd99f96dfba0fe83dd8[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Mon Sep 8 21:56:59 2025 +0800
+
+    adding quick action button in dashboard
+
+[33mcommit 671a7f9d0dc5301eddd24a3c338de10a3fd3680d[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Sun Sep 7 21:49:11 2025 +0800
+
+    adding employer dashboard
+
+[33mcommit 3b121e2108ab14a80fcf74ee2a302c1ab5007ab2[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Sat Sep 6 16:34:52 2025 +0800
+
+    implemented auth for employers
+
+[33mcommit 418fa93e5f6083b6293125d09decb3499e4391cc[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Sat Sep 6 00:36:16 2025 +0800
+
+    75% register emplpoyer
+
+[33mcommit 715785f525c0fa024416dc3f8a145287d01c0fae[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Fri Sep 5 03:45:10 2025 +0800
+
+    implementing multi step employee sign up
+
+[33mcommit 4172d1d656645f801d0a8e8951412e7232e915a9[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Sep 3 23:35:04 2025 +0800
+
+    configuring next to allow images from google and github
+
+[33mcommit 76b444e72fd0d01eb207544b4904eac61df6da3a[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Sep 3 23:17:32 2025 +0800
+
+    adding custom login page
+
+[33mcommit 45fb2865691dc72edbf8d5ffea1efd7ed44b3112[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Sep 3 23:07:42 2025 +0800
+
+    adding google provider
+
+[33mcommit 64e85092b6281bf3f1fca3a151af03e3acc2a475[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Sep 3 19:53:05 2025 +0800
+
+    fixing visual issues
+
+[33mcommit 0a5913b81ecfc6702df5d7f78f4a1ee1a229b968[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Sep 3 17:17:10 2025 +0800
+
+    adding favicon
+
+[33mcommit c642cd1dd9577a873e110e8c172442545dc3f0cf[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Sep 3 16:46:24 2025 +0800
+
+    adding terms page for legal
+
+[33mcommit 3ecea39423d0d46f3cdd585a0cce8a7488683958[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Sep 3 16:44:38 2025 +0800
+
+    adding legal pages
+
+[33mcommit 78639906972cad3984a111487e1258e5bebdc5c4[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Sep 3 16:19:43 2025 +0800
+
+    refactoring profile actions for vercel deployment
+
+[33mcommit 34d456963dfbe9080eb0b77136de01d3dad2319b[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Sep 3 16:02:44 2025 +0800
+
+    implemented soft deletion
+
+[33mcommit 3c1fbf11d6bbe93fddb11e622ff0186a8426a288[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Sep 3 15:14:04 2025 +0800
+
+    implemented updating education
+
+[33mcommit 1c18b4baf09ac0138b05e78f19aa50525979d5ca[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Sep 3 13:51:36 2025 +0800
+
+    implemented education deletion
+
+[33mcommit 6714e202296b58fc36cb53c0fb411e00b54e649d[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Sep 3 05:15:47 2025 +0800
+
+    updated colors
+
+[33mcommit 1eb26bd312fdc23c21339df42e1c6f6f4b8edfa2[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Sep 3 04:08:21 2025 +0800
+
+    implemented editing and optimistic updates for career history
+
+[33mcommit 68737c86d79a896b28f243a5846abd87384a0d34[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Tue Sep 2 23:28:32 2025 +0800
+
+    implemented deletion career history
+
+[33mcommit a175d18bce88969142c432a244d24370bad068e4[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Mon Sep 1 21:25:06 2025 +0800
+
+    improving ui/uix for profiles page
+
+[33mcommit 78fe69fac70dbc642f748c400d27e7c84a26e67d[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Mon Sep 1 16:12:56 2025 +0800
+
+    implemented adding language and editing summary
+
+[33mcommit fc555dcddb8cdd0e13a952b89bd9a342c830b4ea[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Mon Sep 1 00:24:11 2025 +0800
+
+    fixing for vercel deployment
+
+[33mcommit a1bd92cf3e6bac4908ea8f8e62116b2a76459d4f[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Mon Sep 1 00:19:32 2025 +0800
+
+    fixing for vercel deployment
+
+[33mcommit e21a95b6e0ac7f56e056da3f4777dffcb526c0d3[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Mon Sep 1 00:11:25 2025 +0800
+
+    fixing for vercel deployment
+
+[33mcommit adfb9943ca4f91497fb96d372615c4583121117c[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Sun Aug 31 17:11:52 2025 +0800
+
+    implemented adding education
+
+[33mcommit c2ab27fbccdd7595640b1c4710761ba02260a6b4[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Sun Aug 31 14:06:14 2025 +0800
+
+    implemented adding profile summary
+
+[33mcommit 78b54ab1015613b8136d4e204c386835db20831d[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Sat Aug 30 21:29:41 2025 +0800
+
+    fixing visual bugs
+
+[33mcommit a1a996652fe2d3f5807a0de178e431d72eb3fcef[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Sat Aug 30 21:11:44 2025 +0800
+
+    implementing optimistic update in adding career history
+
+[33mcommit b8751542c532b216557ee77206d09aade35ddf1a[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Sat Aug 30 16:40:26 2025 +0800
+
+    implemented adding career
+
+[33mcommit 9b2ca05b6ec0114684236158eb2ce8b815cceb8d[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Sat Aug 30 04:24:53 2025 +0800
+
+    implementing system responsiveness
+
+[33mcommit ac87c52a0373309c71c1a07ba2244a6f24d81829[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Sat Aug 30 01:08:11 2025 +0800
+
+    implementing default resume and uploaded resumes
+
+[33mcommit fd02b1bd9840f973d86c9881136ce7078c323310[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Fri Aug 29 03:27:46 2025 +0800
+
+    fixing environment naming
+
+[33mcommit 3470c550268634f32aebfa88cf34dd86ab5c9a51[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Fri Aug 29 03:07:32 2025 +0800
+
+    adding dyanmic fetching url
+
+[33mcommit dca3e8fcbf32267da83a996b4214b68fa7fc9aea[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Fri Aug 29 03:01:05 2025 +0800
+
+    adding new script
+
+[33mcommit fdd1c4423ced9932cdfbf0875e8eacb1e128a4bd[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Fri Aug 29 02:55:39 2025 +0800
+
+    implemented application submission
+
+[33mcommit eaae953aecf109ef54559cfd419e5fab56d80cb9[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Thu Aug 28 23:59:22 2025 +0800
+
+    implementing application submission
+
+[33mcommit af41be8faee0a68ed77b95a1dcf1e8df6d070954[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Wed Aug 27 23:26:10 2025 +0800
+
+    changing color palette
+
+[33mcommit 9f3252d2a7d69c2821aa2862aa0e8011a4574f2f[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Tue Aug 26 23:22:34 2025 +0800
+
+    adding update profile button
+
+[33mcommit df36d49b20e16c341a090aca7d193d309294c8f9[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Mon Aug 25 21:56:40 2025 +0800
+
+    implemented job lists
+
+[33mcommit 51edc10a27dfe69648e15e6496dbf8a4def76d3c[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Sun Aug 24 23:26:23 2025 +0800
+
+    initial commit
+
+[33mcommit 0a686bd852245230bdda12f0666d9155c2f4275a[m
+Author: Daniel Canoy <canoydaniel06@gmail.com>
+Date:   Sun Aug 24 13:39:08 2025 +0800
+
+    Initial commit from Create Next App

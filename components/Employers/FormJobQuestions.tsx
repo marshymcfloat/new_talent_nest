@@ -8,9 +8,9 @@ import { CompanyQuestion } from "@prisma/client";
 import { toast } from "sonner";
 
 import { getCompanyQuestions } from "@/lib/actions/employerDashboardActions";
-// FIX 1: Import the correct dialog component
+
 import CreateJobButton from "./CreateJobButton";
-// FIX 2: Import the form's type definition
+
 import { CreateJobValues } from "@/lib/zod schemas/employerDashboardSchema";
 
 import { Button } from "../ui/button";
@@ -24,7 +24,6 @@ export const FormJobQuestions = () => {
   const [isCreateDialogOpen, setCreateDialogOpen] = useState(false);
   const queryClient = useQueryClient();
 
-  // FIX 3: Provide the type to useFormContext
   const { control } = useFormContext<CreateJobValues>();
 
   const { fields, append, remove } = useFieldArray({
@@ -45,14 +44,12 @@ export const FormJobQuestions = () => {
     },
   });
 
-  // FIX 4: No need to cast `field`. Its type is now correctly inferred.
   const selectedQuestionIds = new Set(fields.map((field) => field.questionId));
 
   const handleAddQuestion = (question: CompanyQuestion) => {
     append({
       questionId: question.id,
-      // We don't need to store text/type in the form state,
-      // as it's defined by the questionId. The Zod schema should reflect this.
+
       isRequired: true,
     });
   };
@@ -62,7 +59,6 @@ export const FormJobQuestions = () => {
     setCreateDialogOpen(false);
   };
 
-  // Create a map for quick text lookup
   const questionBankMap = new Map(questionBank?.map((q) => [q.id, q.text]));
 
   return (
@@ -79,7 +75,7 @@ export const FormJobQuestions = () => {
                   key={field.customId}
                   className="flex items-center justify-between rounded-md border p-3"
                 >
-                  {/* FIX 5: Look up the text from our map instead of storing it in the form state */}
+                  {}
                   <p className="flex-1 text-sm font-medium">
                     {questionBankMap.get(field.questionId) ||
                       "Loading question..."}

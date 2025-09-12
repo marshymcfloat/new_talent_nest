@@ -2,17 +2,21 @@ import React, { ComponentProps } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Bookmark } from "lucide-react";
 import { Prisma } from "@prisma/client";
-import { cn } from "@/lib/utils";
+import { cn, formatSalary } from "@/lib/utils";
 
-type JobWithQuestions = Prisma.JobGetPayload<{
+type JobWithRelations = Prisma.JobGetPayload<{
   include: {
-    employerQuestions: true;
     company: true;
+    questions: {
+      include: {
+        question: true;
+      };
+    };
   };
 }>;
 
 interface JobCardProps
-  extends JobWithQuestions,
+  extends JobWithRelations,
     Omit<ComponentProps<"div">, "id" | "title"> {
   selected: boolean;
 }
@@ -22,19 +26,18 @@ const JobCard = ({
   summary,
   title,
   selected,
-  id,
+  benefits,
+  currency,
   jobClass,
   location,
-  type,
-  salary,
+  payPeriod,
   qualifications,
-  responsibilities,
-  benefits,
-  employerQuestions,
-  tags,
+  companyId,
   createdAt,
   updatedAt,
-
+  id,
+  minSalary,
+  maxSalary,
   ...rest
 }: JobCardProps) => {
   return (
@@ -42,9 +45,7 @@ const JobCard = ({
       className={cn(
         "cursor-pointer bg-card text-card-foreground border-2 border-transparent",
         "transition-all duration-300 group",
-
         "hover:border-purple-500/30",
-
         {
           "border-purple-500 shadow-lg ring-2 ring-purple-500/20": selected,
         }
@@ -53,10 +54,15 @@ const JobCard = ({
     >
       <CardHeader className="flex flex-row items-start justify-between pb-2">
         <div className="flex flex-col gap-1">
-          <CardTitle className="text-lg font-semibold leading-tight text-foreground">
+          <CardTitle className="text-lg font-semibold leading-tight capitalize text-foreground">
             {title}
           </CardTitle>
           <p className="text-sm text-muted-foreground">{company.name}</p>
+          <span>
+            {minSalary && formatSalary(minSalary)}{" "}
+            {minSalary && maxSalary && "-"}{" "}
+            {maxSalary && formatSalary(maxSalary)}
+          </span>
         </div>
         <button
           className={cn(

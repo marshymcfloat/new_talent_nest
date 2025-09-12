@@ -9,10 +9,21 @@ import {
   addEducationSchema,
   addResumeSchema,
   summarySchema,
-} from "../zod schemas/profileSchema";
+} from "../zod schemas/profileSchema"; // Assuming these schemas are well-defined
 import { revalidatePath } from "next/cache";
 import { Language, Prisma } from "@prisma/client";
 import { put } from "@vercel/blob";
+
+// Helper function to extract and parse form data
+function getFormDataValue<T extends z.ZodTypeAny>(
+  formData: FormData,
+  key: string,
+  schema: T
+): z.infer<T> | undefined {
+  const value = formData.get(key);
+  const parsed = schema.safeParse(value);
+  return parsed.success ? parsed.data : undefined;
+}
 
 const monthNameToNumber: { [key: string]: number } = {
   Jan: 1,
@@ -29,50 +40,83 @@ const monthNameToNumber: { [key: string]: number } = {
   Dec: 12,
 };
 
-type AddEducationValue = z.infer<typeof addEducationSchema>;
+type AddEducationValue = z.infer<typeof addEducationSchema>; // Keep this type for clarity
+
+// --- Centralized Error Handling Helper ---
+// This function helps in creating consistent error responses.
+const handleError = (
+  err: unknown,
+  functionName: string = "An action"
+): { error: string } => {
+  console.error(`Error in ${functionName}:`, err);
+  if (err instanceof z.ZodError) {
+    const fieldErrors = err.flatten().fieldErrors;
+    const formErrors = err.flatten().formErrors;
+
+    if (formErrors.length > 0) {
+      return { error: formErrors.join(", ") };
+    }
+    if (Object.keys(fieldErrors).length > 0) {
+      const firstFieldKey = Object.keys(fieldErrors)[0];
+      // Asserting the key type to fix TS7053 error
+      const specificErrors =
+        fieldErrors[firstFieldKey as keyof typeof fieldErrors];
+      return { error: specificErrors?.[0] || "Invalid input." };
+    }
+  }
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    if (err.code === "P2025") {
+      return { error: "Record not found or you don't have permission." };
+    }
+    // You can add more Prisma error codes here if needed
+    return { error: `Database error: ${err.message}` };
+  }
+  if (err instanceof Error) {
+    return { error: err.message };
+  }
+  return { error: "An unexpected error occurred." };
+};
+
+// --- Helper for Session Check ---
+const getSessionUserId = async () => {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    throw new Error("You must be logged in to perform this action.");
+  }
+  return session.user.id;
+};
+
+// --- Refactored Functions ---
 
 export const addUserSummary = async (formData: FormData) => {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user.id) throw new Error("You must log in first");
+    const userId = await getSessionUserId();
 
     const rawData = {
       summary: formData.get("summary"),
     };
 
-    const validationResult = await summarySchema.safeParse(rawData);
+    const validationResult = summarySchema.safeParse(rawData);
 
     if (!validationResult.success) {
-      throw new Error(
-        validationResult.error.flatten().fieldErrors.summary?.[0] ||
-          "Invalid input"
-      );
+      throw validationResult.error; // Throw ZodError for consistent handling
     }
 
     const updatedUser = await prisma.user.update({
-      where: { id: session.user.id },
+      where: { id: userId },
       data: { summary: validationResult.data.summary },
     });
 
     revalidatePath("/profile");
-    return updatedUser;
+    return { success: true, data: updatedUser };
   } catch (err) {
-    console.error(err);
-    if (err instanceof Error) {
-      return { error: err.message };
-    }
-    return { error: "Unexpected error occured" };
+    return handleError(err, "addUserSummary");
   }
 };
 
 export const AddUserCareerHistory = async (formData: FormData) => {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user?.id) {
-      throw new Error("You must log in.");
-    }
+    const userId = await getSessionUserId();
 
     const rawData = {
       title: formData.get("title"),
@@ -82,41 +126,14 @@ export const AddUserCareerHistory = async (formData: FormData) => {
       description: formData.get("description"),
     };
 
-    const serverSchema = z.object({
-      title: addCareerSchema.shape.title,
-      company: addCareerSchema.shape.company,
-
-      dateStarted: z
-        .preprocess(
-          (val) => (val ? new Date(val as string) : undefined),
-          z.date().optional()
-        )
-        .transform((val, ctx): Date => {
-          if (!val) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: "Start date is required.",
-            });
-            return z.NEVER;
-          }
-          return val;
-        }),
-
-      dateEnded: z.preprocess(
-        (val) => (val ? new Date(val as string) : undefined),
-        z.date().optional().nullable()
-      ),
-      description: z.string().optional().nullable(),
-    });
-
-    const validationResult = serverSchema.safeParse(rawData);
+    // Re-use addCareerSchema directly, assuming it's robust enough
+    // and handles date parsing/transformation appropriately.
+    // If not, you might need a separate server-side schema or refine the client one.
+    // For now, I'll assume addCareerSchema handles date objects or strings that can be converted.
+    const validationResult = addCareerSchema.safeParse(rawData);
 
     if (!validationResult.success) {
-      console.error(
-        "Server validation failed:",
-        validationResult.error.flatten()
-      );
-      throw new Error("Invalid data provided. Please check your input.");
+      throw validationResult.error;
     }
 
     const { company, dateStarted, title, dateEnded, description } =
@@ -125,65 +142,65 @@ export const AddUserCareerHistory = async (formData: FormData) => {
     const newCareer = await prisma.careerHistory.create({
       data: {
         company,
-        dateStarted,
+        // Ensure dateStarted and dateEnded are Date objects if they're not already
+        // This depends on how addCareerSchema is defined.
+        // If addCareerSchema.shape.dateStarted uses z.date(), then it's already a Date object.
+        dateStarted: new Date(dateStarted),
         title,
-        dateEnded: dateEnded,
+        dateEnded: dateEnded ? new Date(dateEnded) : null,
         description: description,
-        userId: session.user.id,
+        userId: userId,
       },
     });
 
     revalidatePath("/profile");
     return { success: true, data: newCareer };
   } catch (err) {
-    console.error("Error in AddUserCareerHistory action:", err);
-    if (err instanceof Error) {
-      return { success: false, error: err.message };
-    }
-    return { success: false, error: "An unexpected error occurred." };
+    return handleError(err, "AddUserCareerHistory");
   }
 };
 
 export const addUserEducation = async (values: AddEducationValue) => {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      throw new Error("You must be logged in to add education history.");
-    }
-    const userId = session.user.id;
+    const userId = await getSessionUserId();
 
     const validationResult = addEducationSchema.safeParse(values);
     if (!validationResult.success) {
-      console.error(validationResult.error.flatten());
-      throw new Error("Invalid input data.");
+      throw validationResult.error;
     }
 
-    const { course, institution, isComplete, highlights } =
-      validationResult.data;
+    let {
+      course,
+      institution,
+      isComplete,
+      highlights,
+      expectedFinishMonth,
+      expectedFinishYear,
+      finishedYear,
+    } = validationResult.data;
 
-    let { expectedFinishMonth, expectedFinishYear, finishedYear } =
-      validationResult.data;
-
-    if (isComplete) {
-      expectedFinishMonth = undefined;
-      expectedFinishYear = undefined;
-    } else {
-      finishedYear = undefined;
-    }
+    // Ensure finishedYear and expectedFinishYear are number strings if coming from select/input
+    // and then convert to actual numbers for Prisma.
+    // If your addEducationSchema already transforms these to numbers, this parseInt is redundant.
+    // Assuming schema gives string or number.
+    const finalFinishedYear =
+      isComplete && finishedYear ? Number(finishedYear) : null;
+    const finalExpectedFinishYear =
+      !isComplete && expectedFinishYear ? Number(expectedFinishYear) : null;
+    const finalExpectedFinishMonth =
+      !isComplete && expectedFinishMonth
+        ? monthNameToNumber[expectedFinishMonth]
+        : null;
 
     const dataForPrisma = {
       userId,
       course,
       institution,
-      highlight: highlights || null,
+      highlight: highlights || null, // Ensure highlight is null if empty string
       isComplete,
-      finishedYear: finishedYear ? parseInt(finishedYear, 10) : null,
-      expectedFinishYear: expectedFinishYear
-        ? parseInt(expectedFinishYear, 10)
-        : null,
-      expectedFinishMonth: expectedFinishMonth
-        ? monthNameToNumber[expectedFinishMonth]
-        : null,
+      finishedYear: finalFinishedYear,
+      expectedFinishYear: finalExpectedFinishYear,
+      expectedFinishMonth: finalExpectedFinishMonth,
     };
 
     const newEducation = await prisma.education.create({
@@ -193,32 +210,33 @@ export const addUserEducation = async (values: AddEducationValue) => {
     revalidatePath("/profile");
     return { success: true, data: newEducation };
   } catch (err) {
-    if (err instanceof Error) {
-      return { error: err.message };
-    }
-    return { error: "An unexpected error occurred." };
+    return handleError(err, "addUserEducation");
   }
 };
 
 export const updateUserLanguages = async (languages: Language[]) => {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      throw new Error("You must be logged in to update languages.");
-    }
-    const userId = session.user.id;
+    const userId = await getSessionUserId();
 
-    if (!Array.isArray(languages)) {
-      throw new Error("Invalid input: Expected an array of languages.");
+    // Basic validation for array type and structure
+    const languageSchema = z.array(
+      z.object({ id: z.number(), name: z.string() })
+    );
+    const validationResult = languageSchema.safeParse(languages);
+
+    if (!validationResult.success) {
+      throw validationResult.error;
     }
 
-    const languagesToConnect = languages.map((lang) => ({ id: lang.id }));
+    const languagesToConnect = validationResult.data.map((lang) => ({
+      id: lang.id,
+    }));
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
         languages: {
-          set: languagesToConnect,
+          set: languagesToConnect, // Disconnect all existing and connect new ones
         },
       },
       include: {
@@ -229,38 +247,31 @@ export const updateUserLanguages = async (languages: Language[]) => {
     revalidatePath("/profile");
     return { success: true, data: updatedUser.languages };
   } catch (err) {
-    if (err instanceof Error) {
-      console.error("Error in updateUserLanguages action:", err);
-      return { error: err.message };
-    }
-    return { error: "An unexpected error occurred." };
+    return handleError(err, "updateUserLanguages");
   }
 };
 
-export const addUserResume = async (value: FormData) => {
+export const addUserResume = async (formData: FormData) => {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      throw new Error("You must log in first");
-    }
+    const userId = await getSessionUserId();
 
     const rawData = {
-      name: value.get("name"),
-      resume: value.get("resume"),
+      name: formData.get("name"),
+      resume: formData.get("resume"),
     };
 
     const validationResult = addResumeSchema.safeParse(rawData);
 
-    console.log(validationResult);
     if (!validationResult.success) {
-      throw new Error("Invalid inputs");
+      throw validationResult.error;
     }
 
     const { name, resume } = validationResult.data;
 
     if (resume instanceof File) {
-      const uniqueFilename = `resumes/${session.user.id}-${Date.now()}-${resume?.name.replace(/\s+/g, "_")}`;
+      // Ensure file name is not empty or null
+      const fileName = resume.name || `untitled_resume_${Date.now()}.pdf`; // Fallback name
+      const uniqueFilename = `resumes/${userId}-${Date.now()}-${fileName.replace(/\s+/g, "_")}`;
 
       const blob = await put(uniqueFilename, resume, {
         access: "public",
@@ -268,52 +279,38 @@ export const addUserResume = async (value: FormData) => {
 
       const newResume = await prisma.resume.create({
         data: {
-          title: name ?? resume?.name,
+          title: name || fileName, // Use provided name or file name as fallback
           url: blob.url,
           isPrimary: false,
-          userId: session.user.id,
+          userId: userId,
         },
       });
 
       revalidatePath("/profile");
       return { success: true, data: newResume };
+    } else {
+      // This case should ideally be caught by addResumeSchema if 'resume' is required to be a File.
+      // If the schema allows 'resume' to be undefined in some cases, handle it explicitly.
+      throw new Error("Resume file is missing or invalid.");
     }
   } catch (err) {
-    if (err instanceof Error) {
-      return { error: err.message };
-    }
-    return { error: "There is an unexpected error occured" };
+    return handleError(err, "addUserResume");
   }
 };
 
 export const deleteUserCareer = async (id: string) => {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      throw new Error("You must be logged in to perform this action.");
-    }
-    const userId = session.user.id;
+    const userId = await getSessionUserId();
 
     const softDeletedCareer = await prisma.careerHistory.update({
-      where: { id, userId },
+      where: { id, userId }, // Ensure the user owns the record
       data: { deletedAt: new Date() },
     });
 
     revalidatePath("/profile");
     return { success: true, data: softDeletedCareer };
   } catch (err) {
-    if (
-      err instanceof Prisma.PrismaClientKnownRequestError &&
-      err.code === "P2025"
-    ) {
-      return {
-        error: "Career record not found or you don't have permission.",
-      };
-    }
-    if (err instanceof Error) {
-      return { error: err.message };
-    }
-    return { error: "An unexpected error occurred." };
+    return handleError(err, "deleteUserCareer");
   }
 };
 
@@ -325,11 +322,7 @@ export const updateUserCareerHistory = async ({
   id: string;
 }) => {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      throw new Error("You must log in first");
-    }
+    const userId = await getSessionUserId();
 
     const rawData = {
       title: formData.get("title"),
@@ -339,37 +332,11 @@ export const updateUserCareerHistory = async ({
       description: formData.get("description"),
     };
 
-    const serverSchema = z.object({
-      title: addCareerSchema.shape.title,
-      company: addCareerSchema.shape.company,
-
-      dateStarted: z
-        .preprocess(
-          (val) => (val ? new Date(val as string) : undefined),
-          z.date().optional()
-        )
-        .transform((val, ctx): Date => {
-          if (!val) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: "Start date is required.",
-            });
-            return z.NEVER;
-          }
-          return val;
-        }),
-
-      dateEnded: z.preprocess(
-        (val) => (val ? new Date(val as string) : undefined),
-        z.date().optional().nullable()
-      ),
-      description: z.string().optional().nullable(),
-    });
-
-    const validationResult = serverSchema.safeParse(rawData);
+    // Re-use addCareerSchema as it should have all necessary fields
+    const validationResult = addCareerSchema.safeParse(rawData);
 
     if (!validationResult.success) {
-      throw new Error("Invalid inputs");
+      throw validationResult.error;
     }
     const { company, dateStarted, title, dateEnded, description } =
       validationResult.data;
@@ -378,20 +345,17 @@ export const updateUserCareerHistory = async ({
       data: {
         title,
         company,
-        dateEnded,
-        dateStarted,
+        dateStarted: new Date(dateStarted), // Ensure Date object
+        dateEnded: dateEnded ? new Date(dateEnded) : null, // Ensure Date object or null
         description,
       },
-      where: { id, userId: session.user.id },
+      where: { id, userId }, // Ensure the user owns the record
     });
 
     revalidatePath("/profile");
     return { success: true, data: updatedCareer };
   } catch (err) {
-    if (err instanceof Error) {
-      return { error: err.message };
-    }
-    return { error: "an unexpected error occured" };
+    return handleError(err, "updateUserCareerHistory");
   }
 };
 
@@ -403,136 +367,92 @@ export const updateUserEducation = async ({
   id: string;
 }) => {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      throw new Error("You must be logged in to update education history.");
-    }
-    const userId = session.user.id;
+    const userId = await getSessionUserId();
 
     const validationResult = addEducationSchema.safeParse(values);
     if (!validationResult.success) {
-      console.error("Validation Error:", validationResult.error.flatten());
-      throw new Error("Invalid input data.");
+      throw validationResult.error;
     }
 
-    const { course, institution, isComplete, highlights } =
-      validationResult.data;
+    let {
+      course,
+      institution,
+      isComplete,
+      highlights,
+      expectedFinishMonth,
+      expectedFinishYear,
+      finishedYear,
+    } = validationResult.data;
 
-    let { expectedFinishMonth, expectedFinishYear, finishedYear } =
-      validationResult.data;
-
-    if (isComplete) {
-      expectedFinishMonth = undefined;
-      expectedFinishYear = undefined;
-    } else {
-      finishedYear = undefined;
-    }
+    const finalFinishedYear =
+      isComplete && finishedYear ? Number(finishedYear) : null;
+    const finalExpectedFinishYear =
+      !isComplete && expectedFinishYear ? Number(expectedFinishYear) : null;
+    const finalExpectedFinishMonth =
+      !isComplete && expectedFinishMonth
+        ? monthNameToNumber[expectedFinishMonth]
+        : null;
 
     const dataForPrisma = {
       course,
       institution,
       isComplete,
       highlight: highlights || null,
-      finishedYear: finishedYear ? parseInt(finishedYear, 10) : null,
-      expectedFinishYear: expectedFinishYear
-        ? parseInt(expectedFinishYear, 10)
-        : null,
-      expectedFinishMonth: expectedFinishMonth
-        ? monthNameToNumber[expectedFinishMonth]
-        : null,
+      finishedYear: finalFinishedYear,
+      expectedFinishYear: finalExpectedFinishYear,
+      expectedFinishMonth: finalExpectedFinishMonth,
     };
 
     const updatedEducation = await prisma.education.update({
-      where: { id, userId },
+      where: { id, userId }, // Ensure the user owns the record
       data: dataForPrisma,
     });
 
     revalidatePath("/profile");
     return { success: true, data: updatedEducation };
   } catch (err) {
-    if (
-      err instanceof Prisma.PrismaClientKnownRequestError &&
-      err.code === "P2025"
-    ) {
-      return {
-        error: "Record to update not found or you don't have permission.",
-      };
-    }
-    if (err instanceof Error) {
-      return { error: err.message };
-    }
-    return { error: "An unexpected error occurred." };
+    return handleError(err, "updateUserEducation");
   }
 };
 
 export const deleteUserEducation = async (id: string) => {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      throw new Error("You must be logged in to perform this action.");
-    }
-    const userId = session.user.id;
+    const userId = await getSessionUserId();
 
     const softDeletedEducation = await prisma.education.update({
-      where: { id, userId },
+      where: { id, userId }, // Ensure the user owns the record
       data: { deletedAt: new Date() },
     });
 
     revalidatePath("/profile");
     return { success: true, data: softDeletedEducation };
   } catch (err) {
-    if (
-      err instanceof Prisma.PrismaClientKnownRequestError &&
-      err.code === "P2025"
-    ) {
-      return {
-        error: "Education record not found or you don't have permission.",
-      };
-    }
-    if (err instanceof Error) {
-      return { error: err.message };
-    }
-    return { error: "An unexpected error occurred." };
+    return handleError(err, "deleteUserEducation");
   }
 };
 
 export const deleteUserResume = async (id: string) => {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      throw new Error("You must be logged in to delete a resume.");
-    }
-    const userId = session.user.id;
+    const userId = await getSessionUserId();
 
     const applicationExists = await prisma.jobApplication.findFirst({
-      where: { resumeId: id },
+      where: { resumeId: id, User: { id: userId } }, // Add userId check here too
     });
 
     if (applicationExists) {
       throw new Error(
-        "Cannot delete this resume as it is currently linked to one or more job applications."
+        "Cannot delete this resume as it is currently linked to one or more job applications. Please delete the applications first."
       );
     }
 
     const softDeletedResume = await prisma.resume.update({
-      where: { id, userId },
+      where: { id, userId }, // Ensure the user owns the record
       data: { deletedAt: new Date() },
     });
 
     revalidatePath("/profile");
     return { success: true, data: softDeletedResume };
   } catch (err) {
-    if (
-      err instanceof Prisma.PrismaClientKnownRequestError &&
-      err.code === "P2025"
-    ) {
-      return {
-        error: "Resume not found or you don't have permission to delete it.",
-      };
-    }
-    if (err instanceof Error) {
-      return { error: err.message };
-    }
-    return { error: "An unexpected error occurred." };
+    return handleError(err, "deleteUserResume");
   }
 };

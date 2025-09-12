@@ -1,7 +1,9 @@
+// components/AddRoleForm.tsx - THIS IS THE CORRECTED VERSION TO USE
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "./ui/form";
 import { toast } from "sonner";
 import {
@@ -12,24 +14,24 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { Popover, PopoverTrigger } from "./ui/popover";
+import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { CalendarIcon, Loader2 } from "lucide-react";
-import { PopoverContent } from "@radix-ui/react-popover";
 import { Calendar } from "./ui/calendar";
 import { Textarea } from "./ui/textarea";
 import { format } from "date-fns";
 import { z } from "zod";
-import { CareerHistory } from "@prisma/client";
+import { CareerHistory } from "@prisma/client"; // Import CareerHistory directly here
 import { addCareerSchema } from "@/lib/zod schemas/profileSchema";
 import {
   AddUserCareerHistory,
   updateUserCareerHistory,
 } from "@/lib/actions/profileActions";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CareerCardProps } from "./CareerCard";
 import { useEffect } from "react";
+
+// The `data` prop will now directly be of type `CareerHistory | null`.
+// No need for CareerCardPropsWithDates or any Omit-based type here anymore.
 
 type CareerFormValue = z.infer<typeof addCareerSchema>;
 
@@ -45,10 +47,10 @@ type UpdateCareerVariables = {
 
 const AddRoleForm = ({
   onCancel,
-  data,
+  data, // Now data is explicitly CareerHistory | null | undefined
 }: {
   onCancel: () => void;
-  data?: CareerCardProps | null;
+  data?: CareerHistory | null; // Use CareerHistory directly for the incoming data
 }) => {
   const queryClient = useQueryClient();
 
@@ -57,23 +59,36 @@ const AddRoleForm = ({
     defaultValues: {
       title: "",
       company: "",
-      dateStarted: undefined,
-      dateEnded: undefined,
+      dateStarted: undefined, // undefined for optional/initial empty state
+      dateEnded: undefined, // undefined for optional/initial empty state
       description: "",
     },
   });
 
+  // Effect to populate the form when 'data' is provided for editing
   useEffect(() => {
     if (data) {
+      // Data is now guaranteed to be a CareerHistory object (or null/undefined)
       form.reset({
         title: data.title,
         company: data.company,
         description: data.description || "",
-        dateStarted: new Date(data.dateStarted),
-        dateEnded: data.dateEnded ? new Date(data.dateEnded) : undefined,
+        // Dates from Prisma are Date objects, so no need for `new Date()`
+        dateStarted: data.dateStarted,
+        // Convert null to undefined for `selected` prop of Calendar / react-hook-form's optional Date
+        dateEnded: data.dateEnded ?? undefined,
+      });
+    } else {
+      // Clear form when no data is provided (e.g., for adding a new role)
+      form.reset({
+        title: "",
+        company: "",
+        dateStarted: undefined,
+        dateEnded: undefined,
+        description: "",
       });
     }
-  }, [data, form.reset]);
+  }, [data, form]); // `form` is stable, `data` is the dependency
 
   const { mutate: mutateAdd, isPending: pendingAdd } = useMutation({
     mutationFn: AddUserCareerHistory,
@@ -86,22 +101,23 @@ const AddRoleForm = ({
         "profile",
       ]);
 
+      const tempCareer: CareerHistory = {
+        id: `temp-${Date.now()}`,
+        userId: previousProfile?.id || "temp-user-id",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        title: newCareerFormData.get("title") as string,
+        company: newCareerFormData.get("company") as string,
+        dateStarted: new Date(newCareerFormData.get("dateStarted") as string),
+        dateEnded: newCareerFormData.get("dateEnded")
+          ? new Date(newCareerFormData.get("dateEnded") as string)
+          : null,
+        description: (newCareerFormData.get("description") as string) || null,
+        deletedAt: null,
+      };
+
       queryClient.setQueryData<ProfileData | undefined>(["profile"], (old) => {
         if (!old) return undefined;
-        const tempCareer: CareerHistory = {
-          id: `temp-${Date.now()}`,
-          userId: old.id,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          title: newCareerFormData.get("title") as string,
-          company: newCareerFormData.get("company") as string,
-          dateStarted: new Date(newCareerFormData.get("dateStarted") as string),
-          dateEnded: newCareerFormData.get("dateEnded")
-            ? new Date(newCareerFormData.get("dateEnded") as string)
-            : null,
-          description: (newCareerFormData.get("description") as string) || null,
-          deletedAt: null,
-        };
         return {
           ...old,
           previousCareers: [...old.previousCareers, tempCareer],
@@ -136,9 +152,8 @@ const AddRoleForm = ({
         "profile",
       ]);
 
-      queryClient.setQueryData<ProfileData | undefined>(["profile"], (old) => {
-        if (!old) return undefined;
-        const updatedCareers = old.previousCareers.map((career) => {
+      const updatedCareers =
+        previousProfile?.previousCareers.map((career) => {
           if (career.id === id) {
             return {
               ...career,
@@ -153,7 +168,10 @@ const AddRoleForm = ({
             };
           }
           return career;
-        });
+        }) || [];
+
+      queryClient.setQueryData<ProfileData | undefined>(["profile"], (old) => {
+        if (!old) return undefined;
         return {
           ...old,
           previousCareers: updatedCareers,
@@ -180,14 +198,20 @@ const AddRoleForm = ({
     const formData = new FormData();
     formData.append("title", values.title);
     formData.append("company", values.company);
+
     if (values.dateStarted) {
       formData.append("dateStarted", values.dateStarted.toISOString());
     }
     if (values.dateEnded) {
       formData.append("dateEnded", values.dateEnded.toISOString());
+    } else if (values.dateEnded === null) {
+      formData.append("dateEnded", "");
     }
+
     if (values.description) {
       formData.append("description", values.description);
+    } else if (values.description === null) {
+      formData.append("description", "");
     }
 
     if (data?.id) {
@@ -300,8 +324,8 @@ const AddRoleForm = ({
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                       mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
+                      selected={field.value ?? undefined}
+                      onSelect={(date) => field.onChange(date || null)}
                       disabled={(date) =>
                         date > new Date() || date < new Date("1900-01-01")
                       }
@@ -326,6 +350,7 @@ const AddRoleForm = ({
                   placeholder="Describe your role and accomplishments..."
                   className="resize-none"
                   {...field}
+                  value={field.value || ""} // Ensure controlled component if value can be null/undefined
                 />
               </FormControl>
               <FormMessage />

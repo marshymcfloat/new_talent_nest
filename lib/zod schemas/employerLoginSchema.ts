@@ -72,10 +72,12 @@ export const employerJoinCompanyServerSchema = employerRegister1BaseSchema
     path: ["confirmsignUpPassword"],
   });
 
-export const employerCreateCompanyServerSchema = employerRegister1Schema.merge(
-  employerRegister2Schema
-);
-
+export const employerCreateCompanyServerSchema = employerRegister1BaseSchema
+  .merge(employerRegister2Schema)
+  .refine((data) => data.signUpPassword === data.confirmsignUpPassword, {
+    message: "Passwords do not match",
+    path: ["confirmsignUpPassword"],
+  });
 export type EmployerSignInValues = z.infer<typeof employerLoginSchema>;
 export type EmployerSignUpValues1 = z.infer<typeof employerRegister1Schema>;
 export type EmployerSignUpValues2 = z.infer<typeof employerRegister2Schema>;

@@ -3,10 +3,14 @@ import JobCard from "./JobCard";
 import { Skeleton } from "./ui/skeleton";
 import { Prisma } from "@prisma/client";
 
-type JobWithQuestions = Prisma.JobGetPayload<{
+type JobWithRelations = Prisma.JobGetPayload<{
   include: {
-    employerQuestions: true;
     company: true;
+    questions: {
+      include: {
+        question: true;
+      };
+    };
   };
 }>;
 
@@ -16,10 +20,10 @@ const Jobslist = ({
   isLoading,
   onSelect,
 }: {
-  data: { data: JobWithQuestions[] };
+  data: { data: JobWithRelations[] };
   selectedJobId: string | undefined;
   isLoading: boolean;
-  onSelect: (job: JobWithQuestions) => void;
+  onSelect: (job: JobWithRelations) => void;
 }) => {
   if (isLoading)
     return (

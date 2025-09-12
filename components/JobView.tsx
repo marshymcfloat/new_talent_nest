@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Jobslist from "./Jobslist";
 import JobDescription from "./JobDescription";
 import { useQuery } from "@tanstack/react-query";
@@ -9,19 +9,22 @@ import { Prisma } from "@prisma/client";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
 import { useMediaQuery } from "@/app/hooks/UseMediaQuery";
 
-type JobWithQuestions = Prisma.JobGetPayload<{
+type JobWithRelations = Prisma.JobGetPayload<{
   include: {
-    employerQuestions: true;
     company: true;
+    questions: {
+      include: {
+        question: true;
+      };
+    };
   };
 }>;
 
 const JobView = () => {
-  const [selectedJob, setSelectedJob] = useState<JobWithQuestions | null>(null);
-
+  const [selectedJob, setSelectedJob] = useState<JobWithRelations | null>(null);
   const isMobile = useMediaQuery("(max-width: 767px)");
 
-  const { data, isLoading } = useQuery<{ data: JobWithQuestions[] }>({
+  const { data, isLoading } = useQuery<{ data: JobWithRelations[] }>({
     queryKey: ["jobs"],
     queryFn: async () => {
       const response = await fetch(

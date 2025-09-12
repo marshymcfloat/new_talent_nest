@@ -27,10 +27,10 @@ export const getCompanyQuestions = createValidatedAuthedAction(
       const questions = await prisma.companyQuestion.findMany({
         where: {
           companyId: member.companyId,
-          isArchived: false, // Good practice to hide archived questions
+          isArchived: false,
         },
         orderBy: {
-          text: "asc", // Order them alphabetically
+          text: "asc",
         },
       });
 

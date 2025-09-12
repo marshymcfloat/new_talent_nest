@@ -1,6 +1,7 @@
 "use client";
 
-import { useForm, useFieldArray } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -53,14 +54,34 @@ export const CreateQuestionForm = ({ onSuccess }: CreateQuestionFormProps) => {
       type: "TEXT",
       options: [],
     },
+    mode: "onTouched",
   });
 
   const questionType = form.watch("type");
 
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "options",
-  });
+  const [mcOptions, setMcOptions] = useState<string[]>(["", ""]);
+
+  useEffect(() => {
+    if (questionType === "MULTIPLE_CHOICE") {
+      form.setValue("options", mcOptions, { shouldValidate: true });
+    } else {
+      form.setValue("options", [], { shouldValidate: true });
+    }
+  }, [mcOptions, questionType, form]);
+
+  const handleOptionChange = (index: number, value: string) => {
+    const newOptions = [...mcOptions];
+    newOptions[index] = value;
+    setMcOptions(newOptions);
+  };
+
+  const handleAddOption = () => {
+    setMcOptions([...mcOptions, ""]);
+  };
+
+  const handleRemoveOption = (index: number) => {
+    setMcOptions(mcOptions.filter((_, i) => i !== index));
+  };
 
   const { mutate, isPending } = useMutation({
     mutationFn: createEmployerQuestion,
@@ -68,6 +89,8 @@ export const CreateQuestionForm = ({ onSuccess }: CreateQuestionFormProps) => {
       if (data?.success) {
         toast.success(data.message || "Question created successfully!");
         form.reset();
+
+        setMcOptions(["", ""]);
         onSuccess();
       } else {
         toast.error(data?.error || "An unexpected error occurred.");
@@ -85,7 +108,6 @@ export const CreateQuestionForm = ({ onSuccess }: CreateQuestionFormProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {/* We remove the grid layout and just use a simple div with vertical spacing */}
         <div className="space-y-4">
           <FormField
             control={form.control}
@@ -133,55 +155,44 @@ export const CreateQuestionForm = ({ onSuccess }: CreateQuestionFormProps) => {
             )}
           />
 
-          {/* The conditional options now appear below the other fields */}
           {questionType === "MULTIPLE_CHOICE" && (
             <div className="space-y-4 rounded-md border p-4">
               <FormLabel>Options</FormLabel>
               <FormDescription>
                 Add at least two options for the applicant to choose from.
               </FormDescription>
-              {fields.map((field, index) => (
-                <FormField
-                  key={field.id}
-                  control={form.control}
-                  name={`options.${index}`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex items-center gap-2">
-                        <FormControl>
-                          <Input
-                            {...field}
-                            placeholder={`Option ${index + 1}`}
-                          />
-                        </FormControl>
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="icon"
-                          onClick={() => remove(index)}
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              {mcOptions.map((option, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <Input
+                    value={option}
+                    onChange={(e) => handleOptionChange(index, e.target.value)}
+                    placeholder={`Option ${index + 1}`}
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    onClick={() => handleRemoveOption(index)}
+                    disabled={mcOptions.length <= 2}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
               ))}
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                onClick={() => append("")}
+                onClick={handleAddOption}
               >
                 Add Option
               </Button>
-              {form.formState.errors.options &&
-                !form.formState.errors.options.root && (
-                  <p className="text-sm font-medium text-destructive">
-                    {form.formState.errors.options.message}
-                  </p>
-                )}
+              {}
+              {form.formState.errors.options && (
+                <p className="text-sm font-medium text-destructive">
+                  {form.formState.errors.options.message}
+                </p>
+              )}
             </div>
           )}
         </div>

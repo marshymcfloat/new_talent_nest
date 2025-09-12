@@ -1,71 +1,50 @@
-import { JobClass, JobType, SalaryPeriod } from "@prisma/client";
+import { JobClass, JobType, QuestionType, SalaryPeriod } from "@prisma/client";
 import { z } from "zod";
 
-export const createJobSchema = z
-  .object({
-    title: z.string().min(3, "Job title must be at least 3 characters long."),
-    location: z.string().min(2, "Location is required."),
-    class: z.nativeEnum(JobClass),
-    type: z.nativeEnum(JobType),
-    summary: z.string().min(10, "Summary is required."),
-    qualifications: z.string().min(10, "Qualifications are required."),
-    responsibilities: z.string().min(10, "Responsibilities are required."),
-    benefits: z.string().optional(),
+export const createJobSchema = z.object({
+  title: z.string().min(5, "Title must be at least 5 characters."),
+  location: z.string().min(3, "Location is required."),
+  class: z.nativeEnum(JobClass),
+  type: z.nativeEnum(JobType),
+  summary: z.string().min(20, "Summary must be at least 20 characters."),
+  qualifications: z
+    .string()
+    .min(20, "Qualifications must be at least 20 characters."),
+  responsibilities: z
+    .string()
+    .min(20, "Responsibilities must be at least 20 characters."),
+  benefits: z.string().optional(),
+  minSalary: z.coerce.number().optional(),
+  maxSalary: z.coerce.number().optional(),
+  currency: z.string().min(3).max(3),
+  payPeriod: z.nativeEnum(SalaryPeriod).optional(),
+  questions: z
+    .array(
+      z.object({
+        questionId: z.string(),
+        isRequired: z.boolean(),
+      })
+    )
+    .optional(),
+  tags: z.array(z.string()).optional(),
+});
 
-    minSalary: z.coerce
-      .number()
-      .min(0, "Salary cannot be negative.")
-      .optional(),
-    maxSalary: z.coerce
-      .number()
-      .min(0, "Salary cannot be negative.")
-      .optional(),
+export type CreateJobValues = z.infer<typeof createJobSchema>;
 
-    currency: z.string().default("PHP"),
-    payPeriod: z.nativeEnum(SalaryPeriod).optional(),
+export const createQuestionSchema = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal(QuestionType.MULTIPLE_CHOICE),
+    text: z.string().min(10, "Question text must be at least 10 characters."),
+    options: z
+      .array(z.string().min(1, "Option cannot be empty."))
+      .min(2, "You must provide at least two options."),
+  }),
 
-    questions: z
-      .array(
-        z.object({
-          questionId: z.string(),
-          isRequired: z.boolean(),
-        })
-      )
-      .optional(),
-
-    tags: z.array(z.string()).optional(),
-  })
-  .refine(
-    (data) => {
-      if (data.minSalary && data.maxSalary) {
-        return data.minSalary <= data.maxSalary;
-      }
-      return true;
-    },
-    {
-      message: "Minimum salary cannot be greater than maximum salary.",
-      path: ["minSalary"],
-    }
-  );
-
-export const createQuestionSchema = z
-  .object({
-    type: z.enum(["TEXT", "YES_NO", "MULTIPLE_CHOICE", "NUMBER"]),
-    options: z.array(z.string().min(1, "Option cannot be empty.")).optional(),
-    text: z.string().min(3, "Question must be at least 3 characters long."),
-  })
-  .refine(
-    (data) => {
-      if (data.type === "MULTIPLE_CHOICE") {
-        return data.options && data.options.length >= 2;
-      }
-      return true;
-    },
-    {
-      message: "Multiple choice questions must have at least two options.",
-      path: ["options"],
-    }
-  );
+  z.object({
+    type: z.enum([QuestionType.TEXT, QuestionType.YES_NO, QuestionType.NUMBER]),
+    text: z.string().min(10, "Question text must be at least 10 characters."),
+    options: z.array(z.string()).optional(),
+  }),
+]);
 
 export type CreateQuestionValues = z.infer<typeof createQuestionSchema>;
-export type CreateJobValues = z.infer<typeof createJobSchema>;

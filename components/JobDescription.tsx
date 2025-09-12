@@ -1,6 +1,5 @@
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
@@ -11,27 +10,33 @@ import { Banknote, Bookmark, Clock, MapPin } from "lucide-react";
 import { Button } from "./ui/button";
 import ApplyButton from "./ApplyButton";
 import { Prisma } from "@prisma/client";
+import { formatSalary } from "@/lib/utils";
 
-type JobWithQuestions = Prisma.JobGetPayload<{
+type JobWithRelations = Prisma.JobGetPayload<{
   include: {
-    employerQuestions: true;
     company: true;
+    questions: {
+      include: {
+        question: true;
+      };
+    };
   };
 }>;
 
 const JobDescription = ({
   company,
   createdAt,
-  employerQuestions,
+  questions,
   id,
   location,
   qualifications,
   responsibilities,
-  salary,
   summary,
   title,
   type,
-}: JobWithQuestions) => {
+  minSalary,
+  maxSalary,
+}: JobWithRelations) => {
   return (
     <Card className="bg-card text-card-foreground  border-none md:border-border   flex flex-col p-4 rounded-t-2xl  md:fixed md:w-[58%] lg:w-[63%] h-fit  md:rounded-2xl">
       <CardHeader className="p-2">
@@ -50,7 +55,7 @@ const JobDescription = ({
               jobId={id}
               title={title}
               summary={summary}
-              questions={employerQuestions}
+              questions={questions}
               className="bg-purple-600 text-purple-foreground hover:bg-purple-600/90 dark:bg-purple-500 dark:hover:bg-purple-500/90"
             />
             <Button variant="outline" className="flex items-center gap-2">
@@ -72,7 +77,9 @@ const JobDescription = ({
           </div>
           <div className="flex items-center gap-3">
             <Banknote size={18} className="text-muted-foreground" />
-            <span>{salary}</span>
+            <span>{`${minSalary ? formatSalary(minSalary) : ""}${
+              minSalary && maxSalary ? "-" : ""
+            }${maxSalary ? formatSalary(maxSalary) : ""}`}</span>
           </div>
           <p className="text-sm text-muted-foreground mt-2">
             Posted {formatDistanceToNow(createdAt, { addSuffix: true })}

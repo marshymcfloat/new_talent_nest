@@ -22,3 +22,11 @@ export function objectToFormData(obj: Record<string, any>): FormData {
 
   return formData;
 }
+
+export function formatSalary(amount: number) {
+  return amount.toLocaleString("en-PH", {
+    currency: "PHP",
+    style: "currency",
+    minimumFractionDigits: 2,
+  });
+}

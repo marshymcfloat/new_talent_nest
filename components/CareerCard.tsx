@@ -1,34 +1,30 @@
+// components/CareerCard.tsx
+"use client";
+
 import { Button } from "./ui/button";
-import { Edit, Building2, CalendarDays, Trash2 } from "lucide-react";
+import { Edit, Building2, CalendarDays } from "lucide-react";
 import { format } from "date-fns";
 import DeleteButton from "./DeleteButton";
-import { deleteUserCareer } from "@/lib/actions/profileActions";
+import { CareerHistory } from "@prisma/client"; // Import CareerHistory from Prisma
 
-export type CareerCardProps = {
-  id: string;
-  company: string;
-  title: string;
-  dateStarted: Date;
-  dateEnded: Date | null;
-  description?: string;
+// Define CareerCardProps to be a full CareerHistory object,
+// plus the specific callback props needed by the component.
+export type CareerCardProps = CareerHistory & {
+  onDelete: (id: string) => void;
+  // When 'onUpdate' is called, it should pass the entire CareerHistory object.
+  // Since this component *is* a CareerHistory object (plus callbacks),
+  // it can just pass itself.
+  onUpdate: (careerHistoryData: CareerHistory) => void;
 };
 
-const CareerCard = ({
-  id,
-  company,
-  title,
-  dateStarted,
-  dateEnded,
-  description,
-  onDelete,
-  onUpdate,
-}: CareerCardProps & {
-  onDelete: (id: string) => void;
-  onUpdate: (careerHistoryData: CareerCardProps) => void;
-}) => {
-  const startDateFormatted = format(new Date(dateStarted), "MMM yyyy");
-  const endDateFormatted = dateEnded
-    ? format(new Date(dateEnded), "MMM yyyy")
+// Destructure the props. We can collect all CareerHistory fields into 'careerData'
+// and destructure 'onDelete' and 'onUpdate' separately.
+const CareerCard = ({ onDelete, onUpdate, ...careerData }: CareerCardProps) => {
+  // `careerData` now contains all fields of CareerHistory (id, company, title, dateStarted, dateEnded, description, userId, createdAt, updatedAt, deletedAt).
+
+  const startDateFormatted = format(careerData.dateStarted, "MMM yyyy");
+  const endDateFormatted = careerData.dateEnded
+    ? format(careerData.dateEnded, "MMM yyyy")
     : "Present";
 
   return (
@@ -38,35 +34,29 @@ const CareerCard = ({
       <div className="flex flex-col space-y-2">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            {title}
+            {careerData.title}
           </h3>
-          <div className="flex  gap-1">
+          <div className="flex gap-1">
             <Button
               variant="ghost"
               size="icon"
               className="h-8 w-8"
               aria-label="Edit career history"
-              onClick={() =>
-                onUpdate({
-                  id,
-                  company,
-                  title,
-                  dateStarted,
-                  dateEnded,
-                  description,
-                })
-              }
+              onClick={() => onUpdate(careerData)} // Pass the full careerData object
             >
               <Edit size={16} className="text-gray-500 dark:text-gray-400" />
             </Button>
-            <DeleteButton title={title} onDelete={() => onDelete(id)} />
+            <DeleteButton
+              title={careerData.title}
+              onDelete={() => onDelete(careerData.id)}
+            />
           </div>
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-center gap-x-5 gap-y-1 text-sm text-gray-600 dark:text-gray-400">
           <div className="flex items-center gap-2">
             <Building2 size={14} />
-            <span>{company}</span>
+            <span>{careerData.company}</span>
           </div>
           <div className="flex items-center gap-2">
             <CalendarDays size={14} />
@@ -76,9 +66,9 @@ const CareerCard = ({
           </div>
         </div>
 
-        {description && (
+        {careerData.description && (
           <p className="prose prose-sm max-w-none text-gray-700 dark:text-gray-300 pt-2">
-            {description}
+            {careerData.description}
           </p>
         )}
       </div>

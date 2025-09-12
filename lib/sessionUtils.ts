@@ -7,6 +7,8 @@ type ActionResponse<T> = {
   data?: T;
   error?: string;
   validationErrors?: z.ZodIssue[];
+  success?: boolean;
+  message?: string;
 };
 
 export function createValidatedAuthedAction<

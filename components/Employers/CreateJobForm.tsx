@@ -101,7 +101,7 @@ export const CreateJobForm = ({ onSuccess }: { onSuccess: () => void }) => {
       responsibilities: "",
       benefits: "",
       minSalary: 0,
-      maxSalary: 0, // Use empty string instead of undefined
+      maxSalary: 0,
       currency: "PHP",
       payPeriod: SalaryPeriod.MONTHLY,
       questions: [],
