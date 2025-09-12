@@ -1,4 +1,3 @@
-// components/AddRoleForm.tsx - THIS IS THE CORRECTED VERSION TO USE
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -22,16 +21,13 @@ import { Calendar } from "./ui/calendar";
 import { Textarea } from "./ui/textarea";
 import { format } from "date-fns";
 import { z } from "zod";
-import { CareerHistory } from "@prisma/client"; // Import CareerHistory directly here
+import { CareerHistory } from "@prisma/client";
 import { addCareerSchema } from "@/lib/zod schemas/profileSchema";
 import {
   AddUserCareerHistory,
   updateUserCareerHistory,
 } from "@/lib/actions/profileActions";
 import { useEffect } from "react";
-
-// The `data` prop will now directly be of type `CareerHistory | null`.
-// No need for CareerCardPropsWithDates or any Omit-based type here anymore.
 
 type CareerFormValue = z.infer<typeof addCareerSchema>;
 
@@ -47,10 +43,10 @@ type UpdateCareerVariables = {
 
 const AddRoleForm = ({
   onCancel,
-  data, // Now data is explicitly CareerHistory | null | undefined
+  data,
 }: {
   onCancel: () => void;
-  data?: CareerHistory | null; // Use CareerHistory directly for the incoming data
+  data?: CareerHistory | null;
 }) => {
   const queryClient = useQueryClient();
 
@@ -59,27 +55,24 @@ const AddRoleForm = ({
     defaultValues: {
       title: "",
       company: "",
-      dateStarted: undefined, // undefined for optional/initial empty state
-      dateEnded: undefined, // undefined for optional/initial empty state
+      dateStarted: undefined,
+      dateEnded: undefined,
       description: "",
     },
   });
 
-  // Effect to populate the form when 'data' is provided for editing
   useEffect(() => {
     if (data) {
-      // Data is now guaranteed to be a CareerHistory object (or null/undefined)
       form.reset({
         title: data.title,
         company: data.company,
         description: data.description || "",
-        // Dates from Prisma are Date objects, so no need for `new Date()`
+
         dateStarted: data.dateStarted,
-        // Convert null to undefined for `selected` prop of Calendar / react-hook-form's optional Date
+
         dateEnded: data.dateEnded ?? undefined,
       });
     } else {
-      // Clear form when no data is provided (e.g., for adding a new role)
       form.reset({
         title: "",
         company: "",
@@ -88,7 +81,7 @@ const AddRoleForm = ({
         description: "",
       });
     }
-  }, [data, form]); // `form` is stable, `data` is the dependency
+  }, [data, form]);
 
   const { mutate: mutateAdd, isPending: pendingAdd } = useMutation({
     mutationFn: AddUserCareerHistory,
@@ -350,7 +343,7 @@ const AddRoleForm = ({
                   placeholder="Describe your role and accomplishments..."
                   className="resize-none"
                   {...field}
-                  value={field.value || ""} // Ensure controlled component if value can be null/undefined
+                  value={field.value || ""}
                 />
               </FormControl>
               <FormMessage />

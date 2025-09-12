@@ -1,4 +1,3 @@
-// components/DeleteButton.tsx
 "use client";
 
 import {
@@ -12,29 +11,27 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Trash2, Loader2 } from "lucide-react"; // Import Loader2
+import { Trash2, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 
 const DeleteButton = ({
   onDelete,
   title,
-  isPending = false, // Add isPending prop with a default value of false
+  isPending = false,
 }: {
   title: string;
   onDelete?: () => void;
-  isPending?: boolean; // Define the type for isPending
+  isPending?: boolean;
 }) => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger
-        asChild // Use asChild to pass the trigger behavior to the Button
-      >
+      <AlertDialogTrigger asChild>
         <Button
-          variant="ghost" // Use a button for accessibility and consistent styling
+          variant="ghost"
           size="icon"
           className="h-8 w-8 text-red-500 hover:text-red-600"
           aria-label={`Delete ${title}`}
-          disabled={isPending} // Disable the trigger button if pending
+          disabled={isPending}
         >
           {isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />

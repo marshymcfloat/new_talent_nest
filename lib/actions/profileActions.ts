@@ -14,10 +14,6 @@ import { revalidatePath } from "next/cache";
 import { Language, Prisma } from "@prisma/client";
 import { put } from "@vercel/blob";
 
-// FIX 1: Removed the unused helper function. If you plan to use it later, you can keep it,
-// but for now, removing it resolves the ESLint warning.
-// function getFormDataValue<T extends z.ZodTypeAny>( ... )
-
 const monthNameToNumber: { [key: string]: number } = {
   Jan: 1,
   Feb: 2,
@@ -35,7 +31,6 @@ const monthNameToNumber: { [key: string]: number } = {
 
 type AddEducationValue = z.infer<typeof addEducationSchema>;
 
-// --- Centralized Error Handling Helper ---
 const handleError = (
   err: unknown,
   functionName: string = "An action"
@@ -67,7 +62,6 @@ const handleError = (
   return { error: "An unexpected error occurred." };
 };
 
-// --- Helper for Session Check ---
 const getSessionUserId = async () => {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
@@ -75,8 +69,6 @@ const getSessionUserId = async () => {
   }
   return session.user.id;
 };
-
-// --- Refactored Functions ---
 
 export const addUserSummary = async (formData: FormData) => {
   try {
@@ -145,8 +137,6 @@ export const addUserEducation = async (values: AddEducationValue) => {
       throw validationResult.error;
     }
 
-    // FIX 2: Changed `let` to `const` for all destructured variables
-    // because their values are not reassigned.
     const {
       course,
       institution,
@@ -189,8 +179,7 @@ export const addUserEducation = async (values: AddEducationValue) => {
 export const updateUserLanguages = async (languages: Language[]) => {
   try {
     const userId = await getSessionUserId();
-    // FIX: Changed id validation from z.string() to z.number() to align with
-    // the database schema type inferred from the TypeScript error message.
+
     const languageSchema = z.array(
       z.object({ id: z.number(), name: z.string() })
     );
@@ -204,9 +193,6 @@ export const updateUserLanguages = async (languages: Language[]) => {
       id: lang.id,
     }));
 
-    // FIX: Changed 'include' to 'select' to fetch only the languages relation.
-    // This provides a correctly typed result, resolving the issue where
-    // the 'languages' property was not found on the returned user object.
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: { languages: { set: languagesToConnect } },
@@ -328,7 +314,6 @@ export const updateUserEducation = async ({
       throw validationResult.error;
     }
 
-    // FIX 3: Changed `let` to `const` for all destructured variables.
     const {
       course,
       institution,

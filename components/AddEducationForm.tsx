@@ -35,7 +35,6 @@ import {
 import { toast } from "sonner";
 import { User, Education, CareerHistory } from "@prisma/client";
 
-// --- Type Definitions ---
 type University = {
   name: string;
   country: string;
@@ -47,21 +46,20 @@ type ProfileData = User & {
   summary?: string;
 };
 
-type AddEducationFormValue = z.infer<typeof addEducationSchema>; // Renamed for clarity
+type AddEducationFormValue = z.infer<typeof addEducationSchema>;
 
 type UpdateEducationVariables = {
   values: AddEducationFormValue;
   id: string;
 };
 
-// --- Year and Month Constants ---
 const currentYear = new Date().getFullYear();
 const pastYears = Array.from({ length: 100 }, (_, i) => currentYear - i);
-// Ensure expectedFinishYear includes future years as per schema
-const futureYears = Array.from({ length: 3 }, (_, i) => currentYear + i); // currentYear, currentYear+1, currentYear+2
+
+const futureYears = Array.from({ length: 3 }, (_, i) => currentYear + i);
 const allYearsForSelect = [...new Set([...pastYears, ...futureYears])].sort(
   (a, b) => b - a
-); // Sort descending
+);
 
 const monthNumberToName: { [key: number]: string } = {
   1: "Jan",
@@ -79,7 +77,6 @@ const monthNumberToName: { [key: number]: string } = {
 };
 const months = Object.values(monthNumberToName);
 
-// This is needed for optimistic UI updates where month names are passed
 const monthNameToNumber: { [key: string]: number } = {
   Jan: 1,
   Feb: 2,
@@ -95,24 +92,21 @@ const monthNameToNumber: { [key: string]: number } = {
   Dec: 12,
 };
 
-// --- API Fetch Function ---
 const fetchUniversities = async (query: string): Promise<University[]> => {
   if (!query) return [];
-  // Use encodeURIComponent to properly encode the query string
+
   const response = await fetch(
     `http://universities.hipolabs.com/search?name=${encodeURIComponent(query)}`
   );
   if (!response.ok) {
-    // Better error message
     throw new Error(`Failed to fetch universities: ${response.statusText}`);
   }
   return response.json();
 };
 
-// --- AddEducationForm Component ---
 const AddEducationForm = ({
   onCancel,
-  data, // Optional existing Education data for editing
+  data,
 }: {
   onCancel: () => void;
   data?: Education;
@@ -123,24 +117,22 @@ const AddEducationForm = ({
     defaultValues: {
       course: "",
       institution: "",
-      isComplete: false, // Default to false for better UX (often adding incomplete)
+      isComplete: false,
       expectedFinishMonth: "",
       expectedFinishYear: "",
       finishedYear: "",
-      highlights: "", // Should be empty string, not undefined for controlled component
+      highlights: "",
     },
   });
 
   const isCompleteValue = useWatch({
     control: form.control,
     name: "isComplete",
-    // default for useWatch should match schema default
+
     defaultValue: form.getValues("isComplete"),
   });
 
-  // Effect to clear dependent fields based on `isComplete`
   useEffect(() => {
-    // Only reset if the value actually changed to prevent unnecessary resets
     if (isCompleteValue) {
       if (
         form.getValues("expectedFinishMonth") !== "" ||
@@ -154,17 +146,15 @@ const AddEducationForm = ({
         form.setValue("finishedYear", "");
       }
     }
-    // No need to include form.setValue in dependencies, it's a stable function
-  }, [isCompleteValue, form]); // Pass form object to access its methods without lint warning
+  }, [isCompleteValue, form]);
 
-  // Effect to populate form when `data` is provided for editing
   useEffect(() => {
     if (data) {
       form.reset({
         course: data.course,
         institution: data.institution,
         isComplete: data.isComplete,
-        highlights: data.highlight || "", // Ensure it's an empty string if null
+        highlights: data.highlight || "",
         finishedYear: data.finishedYear ? String(data.finishedYear) : "",
         expectedFinishMonth: data.expectedFinishMonth
           ? monthNumberToName[data.expectedFinishMonth]
@@ -173,15 +163,13 @@ const AddEducationForm = ({
           ? String(data.expectedFinishYear)
           : "",
       });
-      setSearchQuery(data.institution); // Set search query if editing to show institution name
+      setSearchQuery(data.institution);
     } else {
-      // Reset to default values for a new entry
       form.reset();
-      setSearchQuery(""); // Clear search query for new entries
+      setSearchQuery("");
     }
   }, [data, form]);
 
-  // --- Institution Search Logic ---
   const [searchQuery, setSearchQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
@@ -191,16 +179,14 @@ const AddEducationForm = ({
     isLoading,
     isError,
   } = useQuery<University[], Error>({
-    // Explicitly type generic parameters
     queryKey: ["universities", debouncedSearchQuery],
     queryFn: () => fetchUniversities(debouncedSearchQuery),
-    enabled: !!debouncedSearchQuery, // Only fetch if there's a debounced query
-    staleTime: 5 * 60 * 1000, // Cache results for 5 minutes
+    enabled: !!debouncedSearchQuery,
+    staleTime: 5 * 60 * 1000,
   });
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -214,27 +200,25 @@ const AddEducationForm = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []); // Empty dependency array, attaches once
+  }, []);
 
-  // --- Mutations (Add/Update) ---
   const { mutate: mutateAdd, isPending: pendingAdd } = useMutation({
     mutationFn: addUserEducation,
     onMutate: async (newEducationData: AddEducationFormValue) => {
-      onCancel(); // Close form immediately
+      onCancel();
       await queryClient.cancelQueries({ queryKey: ["profile"] });
       const previousProfile = queryClient.getQueryData<ProfileData>([
         "profile",
       ]);
 
-      // Optimistic update: manually create a temporary Education object
       const tempEducation: Education = {
         id: `temp-${Date.now()}`,
-        userId: previousProfile?.id || "temp-user-id", // Fallback for userId
+        userId: previousProfile?.id || "temp-user-id",
         course: newEducationData.course,
         institution: newEducationData.institution,
         isComplete: newEducationData.isComplete,
         highlight: newEducationData.highlights || null,
-        // Convert string years/months from form values to numbers for optimistic UI
+
         finishedYear: newEducationData.finishedYear
           ? parseInt(newEducationData.finishedYear, 10)
           : null,
@@ -244,13 +228,13 @@ const AddEducationForm = ({
         expectedFinishYear: newEducationData.expectedFinishYear
           ? parseInt(newEducationData.expectedFinishYear, 10)
           : null,
-        deletedAt: null, // Default value as it's soft-deleted
+        deletedAt: null,
       };
       queryClient.setQueryData<ProfileData | undefined>(["profile"], (old) => {
         if (!old) return undefined;
         return { ...old, education: [...(old.education || []), tempEducation] };
       });
-      toast.success("Education added successfully!"); // Toast on mutate is more immediate
+      toast.success("Education added successfully!");
       return { previousProfile };
     },
     onError: (err, newEducation, context) => {
@@ -267,7 +251,7 @@ const AddEducationForm = ({
   const { mutate: mutateUpdate, isPending: pendingUpdate } = useMutation({
     mutationFn: updateUserEducation,
     onMutate: async ({ values, id }: UpdateEducationVariables) => {
-      onCancel(); // Close form immediately
+      onCancel();
       await queryClient.cancelQueries({ queryKey: ["profile"] });
       const previousProfile = queryClient.getQueryData<ProfileData>([
         "profile",
@@ -300,7 +284,7 @@ const AddEducationForm = ({
 
         return { ...old, education: updatedEducationList };
       });
-      toast.success("Education updated successfully!"); // Toast on mutate is more immediate
+      toast.success("Education updated successfully!");
       return { previousProfile };
     },
     onError: (err, variables, context) => {
@@ -359,7 +343,7 @@ const AddEducationForm = ({
                     {...field}
                     placeholder="Start typing your institution's name..."
                     autoComplete="off"
-                    value={field.value} // Ensure value is explicitly set for controlled input
+                    value={field.value}
                     onChange={(e) => {
                       field.onChange(e);
                       setSearchQuery(e.target.value);
@@ -367,57 +351,55 @@ const AddEducationForm = ({
                     }}
                     onFocus={() => {
                       setIsDropdownOpen(true);
-                      setSearchQuery(field.value); // Set query to current input value on focus
+                      setSearchQuery(field.value);
                     }}
                     onBlur={() => {
-                      // Small delay to allow click on dropdown items
                       setTimeout(() => setIsDropdownOpen(false), 100);
                     }}
                   />
                 </FormControl>
-                {isDropdownOpen &&
-                  searchQuery && ( // Only show dropdown if there's a query
-                    <Card className="absolute top-full mt-2 w-full z-10 max-h-60 overflow-y-auto">
-                      <CardContent className="p-1">
-                        {isLoading && (
-                          <div className="flex items-center justify-center p-4">
-                            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                          </div>
-                        )}
-                        {isError && (
-                          <p className="p-4 text-sm text-destructive">
-                            Failed to load results.
+                {isDropdownOpen && searchQuery && (
+                  <Card className="absolute top-full mt-2 w-full z-10 max-h-60 overflow-y-auto">
+                    <CardContent className="p-1">
+                      {isLoading && (
+                        <div className="flex items-center justify-center p-4">
+                          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                        </div>
+                      )}
+                      {isError && (
+                        <p className="p-4 text-sm text-destructive">
+                          Failed to load results.
+                        </p>
+                      )}
+                      {!isLoading &&
+                        universities &&
+                        universities.length === 0 && (
+                          <p className="p-4 text-sm text-muted-foreground">
+                            No institutions found.
                           </p>
                         )}
-                        {!isLoading &&
-                          universities &&
-                          universities.length === 0 && (
-                            <p className="p-4 text-sm text-muted-foreground">
-                              No institutions found.
-                            </p>
-                          )}
-                        {universities?.map((uni, index) => (
-                          <div
-                            key={`${uni.name}-${uni.country}-${index}`} // More robust key
-                            className="p-2 hover:bg-accent rounded-md cursor-pointer text-sm"
-                            onClick={() => {
-                              form.setValue("institution", uni.name, {
-                                shouldValidate: true,
-                              });
-                              setSearchQuery(uni.name); // Update search query to reflect selection
-                              setIsDropdownOpen(false);
-                              form.trigger("institution"); // Manually trigger validation for institution
-                            }}
-                          >
-                            <p className="font-medium">{uni.name}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {uni.country}
-                            </p>
-                          </div>
-                        ))}
-                      </CardContent>
-                    </Card>
-                  )}
+                      {universities?.map((uni, index) => (
+                        <div
+                          key={`${uni.name}-${uni.country}-${index}`}
+                          className="p-2 hover:bg-accent rounded-md cursor-pointer text-sm"
+                          onClick={() => {
+                            form.setValue("institution", uni.name, {
+                              shouldValidate: true,
+                            });
+                            setSearchQuery(uni.name);
+                            setIsDropdownOpen(false);
+                            form.trigger("institution");
+                          }}
+                        >
+                          <p className="font-medium">{uni.name}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {uni.country}
+                          </p>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                )}
               </div>
               <FormMessage />
             </FormItem>
@@ -458,15 +440,11 @@ const AddEducationForm = ({
                       <SelectValue placeholder="Select year..." />
                     </SelectTrigger>
                     <SelectContent>
-                      {allYearsForSelect.map(
-                        (
-                          year // Use allYearsForSelect here
-                        ) => (
-                          <SelectItem value={year.toString()} key={year}>
-                            {year}
-                          </SelectItem>
-                        )
-                      )}
+                      {allYearsForSelect.map((year) => (
+                        <SelectItem value={year.toString()} key={year}>
+                          {year}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -493,7 +471,6 @@ const AddEducationForm = ({
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Month" />{" "}
-                          {/* Capitalized for consistency */}
                         </SelectTrigger>
                         <SelectContent>
                           {months.map((month) => (
@@ -520,18 +497,13 @@ const AddEducationForm = ({
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Year" />{" "}
-                          {/* Capitalized for consistency */}
                         </SelectTrigger>
                         <SelectContent>
-                          {allYearsForSelect.map(
-                            (
-                              year // Use allYearsForSelect here
-                            ) => (
-                              <SelectItem value={year.toString()} key={year}>
-                                {year}
-                              </SelectItem>
-                            )
-                          )}
+                          {allYearsForSelect.map((year) => (
+                            <SelectItem value={year.toString()} key={year}>
+                              {year}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -556,7 +528,7 @@ const AddEducationForm = ({
                 <Textarea
                   {...field}
                   placeholder="Add activities, projects, awards or achievements during your study."
-                  value={field.value || ""} // Ensure value is always a string for controlled component
+                  value={field.value || ""}
                 />
               </FormControl>
               <FormMessage />
@@ -566,7 +538,6 @@ const AddEducationForm = ({
 
         <p className="text-xs font-light text-muted-foreground">
           {" "}
-          {/* Added text-muted-foreground for styling */}
           Stay safe. Don’t include sensitive personal information such as
           identity documents, health, race, religion or financial data.
         </p>

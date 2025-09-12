@@ -5,7 +5,7 @@ import { createApplicationSchema } from "../zod schemas/applicationSchema";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 import { put } from "@vercel/blob";
-import { z } from "zod"; // Import z for ZodError handling
+import { z } from "zod";
 
 export const submitApplication = async (formData: FormData) => {
   try {
@@ -17,10 +17,9 @@ export const submitApplication = async (formData: FormData) => {
     const userId = session.user.id;
     const jobId = formData.get("jobId") as string;
     const answersString = formData.get("answers") as string;
-    const resumeFile = formData.get("resume") as File | null; // This will be the File object if uploaded
-    const resumeId = formData.get("resumeId") as string | null; // This will be the string ID if selected
+    const resumeFile = formData.get("resume") as File | null;
+    const resumeId = formData.get("resumeId") as string | null;
 
-    // Basic validation for existence of critical data
     if (!jobId || !answersString) {
       return { error: "Missing required form data (Job ID or answers)." };
     }
@@ -30,17 +29,15 @@ export const submitApplication = async (formData: FormData) => {
       };
     }
 
-    // Fetch the job and its associated questions
     const jobWithQuestions = await prisma.job.findUnique({
       where: { id: jobId },
       select: {
         id: true,
         questions: {
-          // Select the QuestionsOnJobs relationship
           include: {
-            question: true, // Include the actual CompanyQuestion details
+            question: true,
           },
-          orderBy: { sortOrder: "asc" }, // Optional: order questions if you display them in a specific order
+          orderBy: { sortOrder: "asc" },
         },
       },
     });
@@ -49,14 +46,12 @@ export const submitApplication = async (formData: FormData) => {
       return { error: "The job you are applying for no longer exists." };
     }
 
-    // Prepare data for schema validation
     const applicationData = {
       jobId: jobId,
-      resume: resumeFile || resumeId, // Pass either the File object or the string ID
+      resume: resumeFile || resumeId,
       answers: answersString ? JSON.parse(answersString) : {},
     };
 
-    // Initialize the schema with the job's questions
     const applicationSchema = createApplicationSchema(
       jobWithQuestions.questions
     );
@@ -68,7 +63,7 @@ export const submitApplication = async (formData: FormData) => {
         "Server-side validation failed:",
         validationResult.error.flatten()
       );
-      // Construct a more user-friendly error message from Zod errors
+
       const fieldErrors = validationResult.error.flatten().fieldErrors;
       const formErrors = validationResult.error.flatten().formErrors;
 
@@ -76,9 +71,8 @@ export const submitApplication = async (formData: FormData) => {
       if (formErrors.length > 0) {
         errorMessage = formErrors.join(", ");
       } else if (Object.keys(fieldErrors).length > 0) {
-        // Find the first error message and return it
         const firstFieldKey = Object.keys(fieldErrors)[0];
-        // Assert that firstFieldKey is a key of fieldErrors
+
         const specificErrors =
           fieldErrors[firstFieldKey as keyof typeof fieldErrors];
         errorMessage = specificErrors?.[0] || errorMessage;
@@ -92,7 +86,6 @@ export const submitApplication = async (formData: FormData) => {
 
     await prisma.$transaction(async (tx) => {
       if (validatedResume instanceof File) {
-        // Handle new resume upload
         const uniqueFilename = `resumes/${userId}-${Date.now()}-${validatedResume.name.replace(/\s+/g, "_")}`;
         const blob = await put(uniqueFilename, validatedResume, {
           access: "public",
@@ -101,20 +94,19 @@ export const submitApplication = async (formData: FormData) => {
           data: {
             title: validatedResume.name,
             url: blob.url,
-            isPrimary: false, // Newly uploaded resumes are not primary by default
+            isPrimary: false,
             userId: userId,
           },
         });
         finalResumeId = newResume.id;
       } else {
-        // Handle existing resume selection
         const existingResumeId = validatedResume;
 
         const resumeToUse = await tx.resume.findFirst({
           where: {
             id: existingResumeId,
             userId: userId,
-            deletedAt: null, // Ensure resume is not deleted
+            deletedAt: null,
           },
         });
 
@@ -126,22 +118,20 @@ export const submitApplication = async (formData: FormData) => {
         finalResumeId = resumeToUse.id;
       }
 
-      // Create the JobApplication
       const newApplication = await tx.jobApplication.create({
         data: {
           jobId,
           userId,
           resumeId: finalResumeId,
-          status: "NEW", // Default status, explicitly set for clarity
+          status: "NEW",
         },
       });
 
-      // Create answers for the application
       const answerCreationTasks = Object.entries(validatedAnswers).map(
         ([questionId, text]) =>
           tx.answer.create({
             data: {
-              text: text as string, // Cast to string as Zod ensures it
+              text: text as string,
               questionId,
               jobApplicationId: newApplication.id,
             },

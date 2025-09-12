@@ -26,17 +26,15 @@ import {
 } from "@prisma/client";
 import { Textarea } from "@/components/ui/textarea";
 import CareerCard from "@/components/CareerCard";
-import { z } from "zod"; // Ensure z is imported from zod directly
+import { z } from "zod";
 import Spinner from "@/components/Spinner";
 import AddRoleForm from "@/components/AddRoleForm";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// Assuming CareerCardProps is defined correctly in CareerCard.tsx
-// It should match the data structure used by AddRoleForm's `data` prop
+
 import { type CareerCardProps } from "@/components/CareerCard";
 import {
-  // Explicitly import type CareerCardProps
   addUserResume,
   addUserSummary,
   deleteUserCareer,
@@ -59,7 +57,7 @@ import {
   PlusCircle,
   UploadCloud,
   X,
-} from "lucide-react"; // Removed Trash2 as DeleteButton component is used
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -68,7 +66,7 @@ import {
   addResumeSchema,
   summarySchema,
   languageSchema,
-} from "@/lib/zod schemas/profileSchema"; // Import all schemas needed
+} from "@/lib/zod schemas/profileSchema";
 import DeleteButton from "@/components/DeleteButton";
 import {
   Form,
@@ -79,7 +77,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-// --- Animation Variants ---
 const sectionFade = {
   initial: { opacity: 0, y: 10 },
   animate: { opacity: 1, y: 0 },
@@ -109,15 +106,12 @@ const itemStagger = {
   transition: { duration: 0.3, ease: "easeInOut" },
 };
 
-// --- Resume File Types (should match profileSchema.ts) ---
 const ACCEPTED_RESUME_TYPES_EXTENSIONS = ".pdf, .doc, .docx";
 
-// --- Zod Types ---
 type SummaryFormValue = z.infer<typeof summarySchema>;
 type LanguageFormValue = z.infer<typeof languageSchema>;
 type ResumeFormValue = z.infer<typeof addResumeSchema>;
 
-// --- Component State Types ---
 type SheetContentType =
   | "addRole"
   | "editRole"
@@ -125,14 +119,12 @@ type SheetContentType =
   | "editEducation"
   | null;
 
-// --- Profile Data Type (for react-query) ---
-// Omit 'languages' from User as 'userLanguages' is the custom field returned
 type ProfileData = Omit<User, "languages"> & {
-  summary?: string | null; // summary can be null
+  summary?: string | null;
   previousCareers: CareerHistory[];
   education: Education[];
   userLanguages: Language[];
-  allLanguages: Language[]; // Assuming this comes from the API fetch
+  allLanguages: Language[];
   resumes: Resume[];
 };
 
@@ -140,7 +132,6 @@ const InterceptedProfilePage = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  // --- State Management ---
   const [editingSummary, setEditingSummary] = useState(false);
   const [sheetContent, setSheetContent] = useState<SheetContentType>(null);
   const [addingLanguage, setAddingLanguage] = useState(false);
@@ -156,7 +147,7 @@ const InterceptedProfilePage = () => {
     useState<Education | null>(null);
   const [careerHistoryUpdateData, setCareerHistoryUpdateData] =
     useState<CareerHistory | null>(null);
-  // --- Form Hooks ---
+
   const summaryForm = useForm<SummaryFormValue>({
     resolver: zodResolver(summarySchema),
     defaultValues: { summary: "" },
@@ -171,31 +162,24 @@ const InterceptedProfilePage = () => {
     resolver: zodResolver(addResumeSchema),
     defaultValues: {
       name: "",
-      resume: undefined, // Must be undefined for optional File input
+      resume: undefined,
     },
   });
 
-  // --- Data Fetching ---
   const { data: profileData, isLoading } = useQuery<ProfileData, Error>({
-    // Explicitly type generic parameters
     queryKey: ["profile"],
     queryFn: async () => {
-      const response = await fetch(
-        `/api/profile` // Use relative path for internal API calls
-      );
+      const response = await fetch(`/api/profile`);
       if (!response.ok) {
-        // You might want to get the error message from the response body
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to fetch profile data");
       }
       const data = await response.json();
-      // Ensure the returned data matches ProfileData type
+
       return data.data as ProfileData;
     },
-    // Optional: Add refetchOnWindowFocus: false if you don't want it refetching constantly
   });
 
-  // --- Sheet Content Render Logic ---
   const renderSheetTitle = () => {
     switch (sheetContent) {
       case "addRole":
@@ -221,14 +205,14 @@ const InterceptedProfilePage = () => {
         return (
           <AddRoleForm
             onCancel={() => setSheetContent(null)}
-            data={careerHistoryUpdateData} // Pass the data for editing
+            data={careerHistoryUpdateData}
           />
         );
       case "editEducation":
         return (
           <AddEducationForm
             onCancel={() => setSheetContent(null)}
-            data={educationUpdateData || undefined} // Ensure undefined if null
+            data={educationUpdateData || undefined}
           />
         );
       default:
@@ -236,22 +220,21 @@ const InterceptedProfilePage = () => {
     }
   };
 
-  // --- Mutations ---
   const { mutate: mutateSummary, isPending: isSummaryPending } = useMutation({
     mutationFn: addUserSummary,
     onMutate: async (summaryFormData: FormData) => {
-      setEditingSummary(false); // Close editor optimistically
+      setEditingSummary(false);
 
       await queryClient.cancelQueries({ queryKey: ["profile"] });
       const previousProfile = queryClient.getQueryData<ProfileData>([
         "profile",
       ]);
-      const newSummary = summaryFormData.get("summary") as string | null; // summary can be null
+      const newSummary = summaryFormData.get("summary") as string | null;
       queryClient.setQueryData<ProfileData | undefined>(["profile"], (old) => {
         if (!old) return undefined;
         return { ...old, summary: newSummary };
       });
-      toast.success("Summary updated!"); // Optimistic toast
+      toast.success("Summary updated!");
       return { previousProfile };
     },
     onError: (err, _, context) => {
@@ -269,7 +252,7 @@ const InterceptedProfilePage = () => {
     useMutation({
       mutationFn: updateUserLanguages,
       onMutate: async (newLanguages: Language[]) => {
-        setAddingLanguage(false); // Close editor optimistically
+        setAddingLanguage(false);
         await queryClient.cancelQueries({ queryKey: ["profile"] });
         const previousProfile = queryClient.getQueryData<ProfileData>([
           "profile",
@@ -281,7 +264,7 @@ const InterceptedProfilePage = () => {
             return { ...old, userLanguages: newLanguages };
           }
         );
-        toast.success("Languages updated!"); // Optimistic toast
+        toast.success("Languages updated!");
         return { previousProfile };
       },
       onError: (err, _, context) => {
@@ -298,7 +281,7 @@ const InterceptedProfilePage = () => {
   const { mutate: mutateResume, isPending: isUploadingResume } = useMutation({
     mutationFn: addUserResume,
     onMutate: async (newResumeData: FormData) => {
-      setIsAddingResume(false); // Close form optimistically
+      setIsAddingResume(false);
 
       await queryClient.cancelQueries({ queryKey: ["profile"] });
 
@@ -307,7 +290,7 @@ const InterceptedProfilePage = () => {
       ]);
 
       const resumeFileForOptimistic = newResumeData.get("resume");
-      // Ensure resumeFileForOptimistic is a File before creating object URL
+
       let optimisticResumeUrl = "";
       if (resumeFileForOptimistic instanceof File) {
         optimisticResumeUrl = URL.createObjectURL(resumeFileForOptimistic);
@@ -324,7 +307,7 @@ const InterceptedProfilePage = () => {
         url: optimisticResumeUrl,
         createdAt: new Date(),
         updatedAt: new Date(),
-        userId: previousProfile?.id || "temp-user-id", // Fallback for userId
+        userId: previousProfile?.id || "temp-user-id",
         deletedAt: null,
       };
 
@@ -336,11 +319,11 @@ const InterceptedProfilePage = () => {
         };
       });
 
-      setResumeFile(null); // Clear local file state
-      setResumePreview(null); // Clear preview
-      resumeForm.reset(); // Reset form fields
+      setResumeFile(null);
+      setResumePreview(null);
+      resumeForm.reset();
 
-      toast.success("Resume added!"); // Optimistic toast
+      toast.success("Resume added!");
       return { previousProfile };
     },
     onError: (err, _, context) => {
@@ -376,7 +359,7 @@ const InterceptedProfilePage = () => {
             return { ...oldData, previousCareers: updatedCareers };
           }
         );
-        toast.success("Career history deleted!"); // Optimistic toast
+        toast.success("Career history deleted!");
         return { previousProfileData };
       },
       onError: (error, variables, context) => {
@@ -415,7 +398,7 @@ const InterceptedProfilePage = () => {
             return { ...oldData, education: updatedEducation };
           }
         );
-        toast.success("Education record deleted!"); // Optimistic toast
+        toast.success("Education record deleted!");
         return { previousProfileData };
       },
       onError: (err, variables, context) => {
@@ -451,12 +434,12 @@ const InterceptedProfilePage = () => {
             return { ...oldData, resumes: updatedResumes };
           }
         );
-        toast.success("Resume deleted!"); // Optimistic toast
+        toast.success("Resume deleted!");
         return { previousProfileData };
       },
       onError: (err, variables, context) => {
         toast.error("Failed to delete resume.", {
-          description: (err as Error).message, // Explicitly cast to Error
+          description: (err as Error).message,
         });
         if (context?.previousProfileData) {
           queryClient.setQueryData(["profile"], context.previousProfileData);
@@ -467,52 +450,46 @@ const InterceptedProfilePage = () => {
       },
     });
 
-  // --- Effects ---
-  const languageInput = languageForm.watch("language"); // Watch language input for suggestions
+  const languageInput = languageForm.watch("language");
 
   useEffect(() => {
-    // Logic for language suggestions
     if (languageInput && profileData?.allLanguages) {
       const availableLanguages = profileData.allLanguages.filter(
         (serverLang) =>
-          !addedLanguage.some((addedLang) => addedLang.id === serverLang.id) // Use .some for efficiency
+          !addedLanguage.some((addedLang) => addedLang.id === serverLang.id)
       );
       const suggestionLanguage = availableLanguages.filter((language) =>
         language.name.toLowerCase().startsWith(languageInput.toLowerCase())
       );
       setLanguageSuggestion(suggestionLanguage);
     } else {
-      setLanguageSuggestion(null); // Clear suggestions if input is empty
+      setLanguageSuggestion(null);
     }
   }, [languageInput, profileData, addedLanguage]);
 
   useEffect(() => {
-    // Resume file preview cleanup
     if (!resumeFile) {
       setResumePreview(null);
       return;
     }
     const resumeURL = URL.createObjectURL(resumeFile);
     setResumePreview(resumeURL);
-    return () => URL.revokeObjectURL(resumeURL); // Cleanup on unmount or file change
+    return () => URL.revokeObjectURL(resumeURL);
   }, [resumeFile]);
 
   useEffect(() => {
-    // Initialize addedLanguage state with user's languages from profileData
     if (profileData?.userLanguages && !isInitialLanguagesSet) {
       setAddedLanguage(profileData.userLanguages);
       setIsInitialLanguagesSet(true);
     }
   }, [profileData, isInitialLanguagesSet]);
 
-  // --- Handlers ---
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     setResumeFile(file);
     if (file) {
       resumeForm.setValue("resume", file, { shouldValidate: true });
     } else {
-      // If no file selected, set resume to undefined to match Zod optional type
       resumeForm.setValue("resume", undefined, { shouldValidate: true });
     }
   };
@@ -525,7 +502,7 @@ const InterceptedProfilePage = () => {
     setIsAddingResume(false);
     setResumeFile(null);
     setResumePreview(null);
-    resumeForm.reset(); // Reset form fields
+    resumeForm.reset();
   };
 
   const handleSubmissionSummary = async (values: SummaryFormValue) => {
@@ -536,18 +513,16 @@ const InterceptedProfilePage = () => {
 
   const handleAddLanguage = (language: Language) => {
     if (!addedLanguage.some((lang) => lang.id === language.id)) {
-      // Use .some
       setAddedLanguage((prev) => [...prev, language]);
     }
-    languageForm.setValue("language", ""); // Clear input after adding
-    setLanguageSuggestion(null); // Clear suggestions
+    languageForm.setValue("language", "");
+    setLanguageSuggestion(null);
   };
 
   const onSubmitResume = (values: ResumeFormValue) => {
     const newFormData = new FormData();
     newFormData.append("name", values.name);
     if (values.resume) {
-      // values.resume is a File object here
       newFormData.append("resume", values.resume);
     }
     mutateResume(newFormData);
@@ -574,7 +549,6 @@ const InterceptedProfilePage = () => {
     setEducationUpdateData(educationData);
   };
 
-  // --- Render ---
   return (
     <>
       <Dialog
@@ -610,7 +584,7 @@ const InterceptedProfilePage = () => {
                           summaryForm.setValue(
                             "summary",
                             profileData?.summary || ""
-                          ); // Ensure string for Textarea
+                          );
                           setEditingSummary(true);
                         }}
                         aria-label="Edit Summary"
@@ -645,10 +619,10 @@ const InterceptedProfilePage = () => {
                                     {...field}
                                     rows={5}
                                     placeholder="e.g., A highly motivated and detail-oriented professional with 5 years of experience in project management..."
-                                    value={field.value || ""} // Ensure controlled component
+                                    value={field.value || ""}
                                   />
                                 </FormControl>
-                                <FormMessage /> {/* Add FormMessage */}
+                                <FormMessage />
                               </FormItem>
                             )}
                           />
@@ -660,7 +634,7 @@ const InterceptedProfilePage = () => {
                                 setEditingSummary(false);
                                 summaryForm.reset({
                                   summary: profileData?.summary || "",
-                                }); // Reset to actual data
+                                });
                               }}
                             >
                               Cancel
@@ -720,7 +694,6 @@ const InterceptedProfilePage = () => {
               </Form>
             </div>
 
-            {/* Career History Section */}
             <div className="bg-white dark:bg-gray-800/50 rounded-lg shadow-md">
               <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -730,7 +703,7 @@ const InterceptedProfilePage = () => {
                   variant="outline"
                   onClick={() => {
                     setSheetContent("addRole");
-                    setCareerHistoryUpdateData(null); // Ensure no old data is passed for add
+                    setCareerHistoryUpdateData(null);
                   }}
                   className="flex items-center gap-2"
                 >
@@ -800,7 +773,6 @@ const InterceptedProfilePage = () => {
               </div>
             </div>
 
-            {/* Education Section */}
             <div className="bg-white dark:bg-gray-800/50 rounded-lg shadow-md">
               <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -810,7 +782,7 @@ const InterceptedProfilePage = () => {
                   variant="outline"
                   onClick={() => {
                     setSheetContent("addEducation");
-                    setEducationUpdateData(null); // Ensure no old data is passed for add
+                    setEducationUpdateData(null);
                   }}
                   className="flex items-center gap-2"
                 >
@@ -875,11 +847,10 @@ const InterceptedProfilePage = () => {
               </div>
             </div>
 
-            {/* Languages Section */}
             <div className="bg-white dark:bg-gray-800/50 rounded-lg shadow-md">
               <Form {...languageForm}>
                 <form
-                  onSubmit={(e) => e.preventDefault()} // Prevent default form submission for language form
+                  onSubmit={(e) => e.preventDefault()}
                   className="flex flex-col"
                 >
                   <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
@@ -888,7 +859,7 @@ const InterceptedProfilePage = () => {
                     </h2>
                     {!addingLanguage &&
                       profileData &&
-                      profileData.userLanguages?.length > 0 && ( // Check length for initial edit button
+                      profileData.userLanguages?.length > 0 && (
                         <Button
                           type="button"
                           variant="ghost"
@@ -967,10 +938,10 @@ const InterceptedProfilePage = () => {
                                       {...field}
                                       placeholder="e.g., Spanish"
                                       autoComplete="off"
-                                      value={field.value || ""} // Ensure controlled component
+                                      value={field.value || ""}
                                     />
                                   </FormControl>
-                                  <FormMessage /> {/* Add FormMessage */}
+                                  <FormMessage />
                                 </FormItem>
                               )}
                             />
@@ -1069,7 +1040,7 @@ const InterceptedProfilePage = () => {
                         variant="ghost"
                         onClick={() => {
                           setAddingLanguage(false);
-                          // Reset addedLanguage to the original userLanguages on cancel
+
                           setAddedLanguage(profileData?.userLanguages || []);
                         }}
                       >
@@ -1091,7 +1062,6 @@ const InterceptedProfilePage = () => {
               </Form>
             </div>
 
-            {/* Resume Section */}
             <div className="bg-white dark:bg-gray-800/50 rounded-lg shadow-md p-6 space-y-4">
               <div className="flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-700">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -1149,7 +1119,6 @@ const InterceptedProfilePage = () => {
                           </span>
                         </div>
                         <div className="flex items-center gap-1">
-                          {/* Ideally, this button should link to a view/download of the resume URL */}
                           <Button
                             variant="ghost"
                             size="icon"
@@ -1162,7 +1131,7 @@ const InterceptedProfilePage = () => {
                           <DeleteButton
                             title={resume.title}
                             onDelete={() => handleResumeDeletion(resume.id)}
-                            isPending={isDeletingResume} // Pass pending state
+                            isPending={isDeletingResume}
                           />
                         </div>
                       </motion.div>
@@ -1218,7 +1187,7 @@ const InterceptedProfilePage = () => {
                                 <Input
                                   placeholder="e.g., Senior Developer Resume"
                                   {...field}
-                                  value={field.value || ""} // Ensure controlled
+                                  value={field.value || ""}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -1246,13 +1215,12 @@ const InterceptedProfilePage = () => {
                                   </span>
                                   <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                                     {`PDF, Word Document (MAX. 5MB)`}{" "}
-                                    {/* Updated message */}
                                   </p>
                                   <Input
                                     id="resume-upload"
                                     type="file"
                                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                    accept={ACCEPTED_RESUME_TYPES_EXTENSIONS} // Updated accept prop
+                                    accept={ACCEPTED_RESUME_TYPES_EXTENSIONS}
                                     onChange={handleFileChange}
                                   />
                                 </label>
@@ -1260,7 +1228,6 @@ const InterceptedProfilePage = () => {
                               {fieldState.error && (
                                 <p className="text-sm font-medium text-destructive mt-2">
                                   {" "}
-                                  {/* Added mt-2 for spacing */}
                                   {fieldState.error.message}
                                 </p>
                               )}
@@ -1312,7 +1279,7 @@ const InterceptedProfilePage = () => {
                 )}
               </AnimatePresence>
             </div>
-            {/* About your next role - This section is empty in the original code */}
+
             <div className="bg-white dark:bg-gray-800/50 rounded-lg shadow-md p-6">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                 About your next role

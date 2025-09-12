@@ -8,10 +8,8 @@ const ACCEPTED_RESUME_TYPES = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
 
-// We now need to pass the QuestionsOnJobs array, which contains the isRequired flag
-// and references to the actual CompanyQuestion details if needed for display.
 export const createApplicationSchema = (
-  jobQuestions: (QuestionsOnJobs & { question: CompanyQuestion })[] // This type now includes the question details
+  jobQuestions: (QuestionsOnJobs & { question: CompanyQuestion })[]
 ) => {
   const fileSchema = z
     .instanceof(File, { message: "Please upload a resume file." })
@@ -27,8 +25,8 @@ export const createApplicationSchema = (
     resume: z.union([fileSchema, idSchema], {
       message: "A resume is required. Please select one or upload a new file.",
     }),
-    jobId: z.string().min(1, "Job ID is required."), // Added jobId to the schema for validation context
-    answers: z.record(z.string(), z.string()), // answers: { [questionId: string]: string }
+    jobId: z.string().min(1, "Job ID is required."),
+    answers: z.record(z.string(), z.string()),
   });
 
   return schema.superRefine((data, ctx) => {
@@ -36,7 +34,6 @@ export const createApplicationSchema = (
       if (jobQuestion.isRequired) {
         const answer = data.answers[jobQuestion.questionId];
 
-        // Check for empty or whitespace-only answers for required questions
         if (!answer || answer.trim() === "") {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
@@ -45,8 +42,6 @@ export const createApplicationSchema = (
           });
         }
 
-        // Additional validation based on question type (if needed)
-        // For example, for NUMBER type, ensure it's a valid number
         if (jobQuestion.question.type === "NUMBER") {
           if (isNaN(Number(answer))) {
             ctx.addIssue({
@@ -56,7 +51,7 @@ export const createApplicationSchema = (
             });
           }
         }
-        // For MULTIPLE_CHOICE, you might want to check if the answer is one of the options
+
         if (
           jobQuestion.question.type === "MULTIPLE_CHOICE" &&
           jobQuestion.question.options.length > 0
@@ -69,7 +64,7 @@ export const createApplicationSchema = (
             });
           }
         }
-        // For YES_NO, ensure it's 'yes' or 'no'
+
         if (jobQuestion.question.type === "YES_NO") {
           if (!["yes", "no"].includes(answer.toLowerCase())) {
             ctx.addIssue({

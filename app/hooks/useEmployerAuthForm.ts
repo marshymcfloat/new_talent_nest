@@ -25,7 +25,6 @@ import {
 import { objectToFormData } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
-// FIX: Defined a specific type for the registration data to avoid using `any`.
 type RegistrationStep1Data = EmployerSignUpValues1 & {
   suggestedCompany?: {
     name: string;
@@ -171,7 +170,15 @@ export const useEmployerAuthForm = () => {
   };
   const handleCreateCompany = (values: EmployerSignUpValues2) => {
     const combinedData = { ...registrationData, ...values };
-    const formData = objectToFormData(combinedData);
+
+    const safeData = {
+      ...combinedData,
+      suggestedCompany: combinedData.suggestedCompany
+        ? combinedData.suggestedCompany.name
+        : null,
+    };
+
+    const formData = objectToFormData(safeData);
     mutateCreateCompany(formData);
   };
 
