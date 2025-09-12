@@ -261,91 +261,93 @@ export const EmployerAuthForm = ({ header }: EmployerAuthFormProps) => {
                 </div>
               </div>
             )}
-          {registerStep === "3_joined" && registrationData.suggestedCompany && (
-            <>
-              {registrationProfilePictureURL && (
-                <Image
-                  src={registrationProfilePictureURL}
-                  alt="employer profile picture"
-                  className="rounded-full mx-auto border-2 border-purple-500 p-1 object-cover size-[70px]"
-                  width={70}
-                  height={70}
-                />
-              )}
-              <Form {...signUpConfirmedCompanyForm}>
-                <form
-                  className="space-y-4"
-                  onSubmit={signUpConfirmedCompanyForm.handleSubmit(
-                    handleJoinedComppanyRegisterEmployer
-                  )}
-                >
-                  {signUpConfirmedCompanyForm.formState.errors.root
-                    ?.serverError && (
-                    <p className="text-sm font-medium text-destructive">
-                      {
-                        signUpConfirmedCompanyForm.formState.errors.root
-                          .serverError.message
-                      }
-                    </p>
-                  )}
-                  <FormField
-                    name="confirmUserLogo"
-                    control={signUpConfirmedCompanyForm.control}
-                    render={({ field: { onChange, onBlur, name, ref } }) => (
-                      <FormItem>
-                        <FormLabel>Profile Picture</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="file"
-                            accept="image/*"
-                            name={name}
-                            ref={ref}
-                            onBlur={onBlur}
-                            onChange={(e) => {
-                              const file = e.target.files?.[0] || null;
-                              onChange(file);
-                              setRegistrationProfilePicture(file);
-                            }}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
+          {registerStep === "3_joined" &&
+            registrationData &&
+            registrationData.suggestedCompany && (
+              <>
+                {registrationProfilePictureURL && (
+                  <Image
+                    src={registrationProfilePictureURL}
+                    alt="employer profile picture"
+                    className="rounded-full mx-auto border-2 border-purple-500 p-1 object-cover size-[70px]"
+                    width={70}
+                    height={70}
                   />
-                  {signupJoinedCompanyFields.map((input) => (
+                )}
+                <Form {...signUpConfirmedCompanyForm}>
+                  <form
+                    className="space-y-4"
+                    onSubmit={signUpConfirmedCompanyForm.handleSubmit(
+                      handleJoinedComppanyRegisterEmployer
+                    )}
+                  >
+                    {signUpConfirmedCompanyForm.formState.errors.root
+                      ?.serverError && (
+                      <p className="text-sm font-medium text-destructive">
+                        {
+                          signUpConfirmedCompanyForm.formState.errors.root
+                            .serverError.message
+                        }
+                      </p>
+                    )}
                     <FormField
-                      key={input.name}
+                      name="confirmUserLogo"
                       control={signUpConfirmedCompanyForm.control}
-                      name={input.name}
-                      render={({ field }) => (
+                      render={({ field: { onChange, onBlur, name, ref } }) => (
                         <FormItem>
-                          <FormLabel className="capitalize">
-                            {input.label}
-                          </FormLabel>
+                          <FormLabel>Profile Picture</FormLabel>
                           <FormControl>
                             <Input
-                              {...field}
-                              placeholder={input.placeholder}
-                              type={input.type}
+                              type="file"
+                              accept="image/*"
+                              name={name}
+                              ref={ref}
+                              onBlur={onBlur}
+                              onChange={(e) => {
+                                const file = e.target.files?.[0] || null;
+                                onChange(file);
+                                setRegistrationProfilePicture(file);
+                              }}
                             />
                           </FormControl>
                         </FormItem>
                       )}
                     />
-                  ))}
-                  <Button
-                    type="submit"
-                    className="mx-auto w-full mt-8"
-                    disabled={isPendingJoinedFinalSignUp}
-                  >
-                    {isPendingJoinedFinalSignUp && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    Complete Sign Up
-                  </Button>
-                </form>
-              </Form>
-            </>
-          )}
+                    {signupJoinedCompanyFields.map((input) => (
+                      <FormField
+                        key={input.name}
+                        control={signUpConfirmedCompanyForm.control}
+                        name={input.name}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="capitalize">
+                              {input.label}
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                placeholder={input.placeholder}
+                                type={input.type}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    ))}
+                    <Button
+                      type="submit"
+                      className="mx-auto w-full mt-8"
+                      disabled={isPendingJoinedFinalSignUp}
+                    >
+                      {isPendingJoinedFinalSignUp && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      Complete Sign Up
+                    </Button>
+                  </form>
+                </Form>
+              </>
+            )}
           {registerStep === "2_create" && (
             <>
               {registrationProfilePictureURL && (
@@ -435,7 +437,7 @@ export const EmployerAuthForm = ({ header }: EmployerAuthFormProps) => {
 
       {dialogContent === "signIn" && (
         <Button variant="link" onClick={() => setDialogContent("signUp")}>
-          Don't have an account?
+          Don&apos;t have an account?
         </Button>
       )}
     </>

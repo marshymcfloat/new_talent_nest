@@ -25,6 +25,13 @@ import {
 import { objectToFormData } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
+// FIX: Defined a specific type for the registration data to avoid using `any`.
+type RegistrationStep1Data = EmployerSignUpValues1 & {
+  suggestedCompany?: {
+    name: string;
+  } | null;
+};
+
 export const useEmployerAuthForm = () => {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
@@ -34,7 +41,8 @@ export const useEmployerAuthForm = () => {
   const [registerStep, setRegisterStep] = useState<
     "1" | "2_confirm" | "3_joined" | "2_create"
   >("1");
-  const [registrationData, setRegistrationData] = useState<any | null>(null);
+  const [registrationData, setRegistrationData] =
+    useState<RegistrationStep1Data | null>(null);
   const [registrationProfilePicture, setRegistrationProfilePicture] =
     useState<File | null>(null);
   const [registrationProfilePictureURL, setRegistrationProfilePictureURL] =
