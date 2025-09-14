@@ -31,6 +31,8 @@ import { FormJobQuestions } from "./FormJobQuestions";
 import { useMutation } from "@tanstack/react-query";
 import { createNewJob } from "@/lib/actions/employerDashboardActions";
 import Spinner from "../Spinner";
+import { JobResultType } from "@/prisma/generated/schemas";
+import { JobsResponse } from "@/app/(employer)/[id]/jobs/EmployerJobsTableList";
 const jobClassArray = [
   { title: "Accounting", value: JobClass.ACCOUNTING },
   { title: "Administration", value: JobClass.ADMINISTRATION },
@@ -88,23 +90,29 @@ const textAreaFields = [
   { name: "benefits", label: "Benefits", placeholder: "e.g; 13th month pay" },
 ] as const;
 
-export const CreateJobForm = ({ onSuccess }: { onSuccess: () => void }) => {
+export const CreateJobForm = ({
+  onSuccess,
+  job,
+}: {
+  onSuccess: () => void;
+  job?: JobsResponse;
+}) => {
   const form: UseFormReturn<CreateJobValues> = useForm<CreateJobValues>({
     resolver: zodResolver(createJobSchema),
     defaultValues: {
-      title: "",
-      location: "",
-      class: JobClass.IT,
-      type: JobType.FULL_TIME,
-      summary: "",
-      qualifications: "",
-      responsibilities: "",
-      benefits: "",
-      minSalary: 0,
-      maxSalary: 0,
-      currency: "PHP",
-      payPeriod: SalaryPeriod.MONTHLY,
-      questions: [],
+      title: job?.title ?? "",
+      location: job?.location ?? "",
+      class: job?.jobClass ?? JobClass.IT,
+      type: job?.type ?? JobType.FULL_TIME,
+      summary: job?.summary ?? "",
+      qualifications: job?.qualifications ?? "",
+      responsibilities: job?.responsibilities ?? "",
+      benefits: job?.benefits ?? "",
+      minSalary: job?.minSalary ?? 0,
+      maxSalary: job?.maxSalary ?? 0,
+      currency: job?.currency ?? "PHP",
+      payPeriod: job?.payPeriod ?? SalaryPeriod.MONTHLY,
+      questions: job?.questions ?? [],
       tags: [],
     },
   });

@@ -8,6 +8,7 @@ import {
   createQuestionSchema,
 } from "../zod schemas/employerDashboardSchema";
 import { prisma } from "@/lib/prisma";
+import { formatCapitalizeString } from "../utils";
 
 export const getCompanyQuestions = createValidatedAuthedAction(
   z.void(),
@@ -116,10 +117,12 @@ export const createNewJob = createValidatedAuthedAction(
         class: jobClass,
       } = validatedData;
 
+      const formattedJobTitle = formatCapitalizeString(title);
+
       const newJob = await prisma.$transaction(async (tx) => {
         const createdJob = await tx.job.create({
           data: {
-            title,
+            title: formattedJobTitle,
             location,
             jobClass,
             type,

@@ -39,3 +39,13 @@ export function formatSalary(amount: number) {
     minimumFractionDigits: 2,
   });
 }
+
+export function formatCapitalizeString(input: string): string {
+  return input
+    .trim()
+    .split(" ")
+    .map((word) =>
+      word.length > 0 ? word[0].toUpperCase() + word.slice(1).toLowerCase() : ""
+    )
+    .join(" ");
+}

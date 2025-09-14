@@ -1,10 +1,11 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CreateQuestionButton from "./CreateQuestionButton";
 import CreateJobButton from "./CreateJobButton";
+import { useOnClickOutside } from "@/app/hooks/UseOnClickOutside";
 
 const containerVariants = {
   closed: {
@@ -74,6 +75,10 @@ const QuickActionnDashboardButton = () => {
   const [isJobDialogOpen, setIsJobDialogOpen] = useState(false);
   const [isQuestionDialogOpen, setIsQuestionDialogOpen] = useState(false);
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useOnClickOutside(containerRef, () => setIsOpen(false));
+
   const handleCreateJobClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsOpen(false);
@@ -86,15 +91,10 @@ const QuickActionnDashboardButton = () => {
     setIsQuestionDialogOpen(true);
   };
 
-  const handleMenuClick = (e: React.MouseEvent, action: string) => {
-    e.stopPropagation();
-    console.log(`Action: ${action}`);
-    setIsOpen(false);
-  };
-
   return (
     <>
       <motion.div
+        ref={containerRef}
         variants={containerVariants}
         initial="closed"
         animate={isOpen ? "open" : "closed"}

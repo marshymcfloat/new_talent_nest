@@ -1,4 +1,3 @@
-// Imports remain mostly the same, but you no longer need prisma or the specific icons here
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import QuickActionnDashboardButton from "./QuickActionDashboardButton";
@@ -7,7 +6,6 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 import { ApplicantChart } from "./ApplicantChartComponent";
 import { RecentApplicants } from "./RecentApplicants";
-// Import your new component
 import { DashboardStatCards } from "./DashboardStatCard";
 
 const StatCardSkeleton = () => {

@@ -1,7 +1,7 @@
 import EmployerDashboard from "@/components/Employers/EmployerDashboard";
 import React from "react";
 
-const EmployerDashboardPage = () => {
+const EmployersDashboardTab = () => {
   return (
     <>
       <EmployerDashboard />
@@ -9,4 +9,4 @@ const EmployerDashboardPage = () => {
   );
 };
 
-export default EmployerDashboardPage;
+export default EmployersDashboardTab;
