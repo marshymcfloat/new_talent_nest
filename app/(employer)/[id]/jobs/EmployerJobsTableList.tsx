@@ -31,10 +31,7 @@ const getJobs = async (userId: string) => {
     include: {
       JobApplication: true,
       company: true,
-      // 👇 CORRECTED INCLUDE CLAUSE BASED ON YOUR SCHEMA
-      // The relation on the 'Job' model is named `questions`, which links to `QuestionsOnJobs`.
       questions: {
-        // We select only the fields needed by the form
         select: {
           questionId: true,
           isRequired: true,
@@ -43,8 +40,6 @@ const getJobs = async (userId: string) => {
     },
   });
 
-  // No mapping is needed because the relation name 'questions'
-  // already matches what the form expects.
   return jobs;
 };
 

@@ -4,7 +4,7 @@ import { z } from "zod";
 export const createJobSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters."),
   location: z.string().min(3, "Location is required."),
-  class: z.nativeEnum(JobClass),
+  jobClass: z.nativeEnum(JobClass),
   type: z.nativeEnum(JobType),
   summary: z.string().min(20, "Summary must be at least 20 characters."),
   qualifications: z

@@ -31,8 +31,18 @@ import { Separator } from "@/components/ui/separator"; // <-- Import Separator
 import { JobsResponse } from "@/app/(employer)/[id]/jobs/EmployerJobsTableList";
 import { cn } from "@/lib/utils";
 import { CreateJobForm } from "./CreateJobForm";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
-// Helper function to format salary nicely
 const formatSalary = (
   min: number | null,
   max: number | null,
@@ -81,7 +91,7 @@ const DetailItem = ({
 const TableActionButton = ({ job }: { job?: JobsResponse }) => {
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   return (
     <>
       <DropdownMenu>
@@ -90,21 +100,43 @@ const TableActionButton = ({ job }: { job?: JobsResponse }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem onSelect={() => setIsViewDialogOpen(true)}>
-            <Eye className="mr-2 h-4 w-4" />
+            <Eye className="mr-2 size-4" />
             <span>View</span>
           </DropdownMenuItem>
 
           <DropdownMenuItem onSelect={() => setIsEditDialogOpen(true)}>
-            <EditIcon className="mr-2 h-4 w-4" />
+            <EditIcon className="mr-2 size-4" />
             <span>Edit</span>
           </DropdownMenuItem>
 
-          <DropdownMenuItem className="text-red-500 focus:text-red-500">
-            <Trash className="mr-2 h-4 w-4" />
+          <DropdownMenuItem
+            className="text-red-500 focus:text-red-500"
+            onClick={() => setIsDeleteDialogOpen(true)}
+          >
+            <Trash className="mr-2 size-4" />
             <span>Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete{" "}
+              <span className="font-medium capitalize">{job?.title}</span>.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-4xl">

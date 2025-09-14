@@ -114,7 +114,7 @@ export const createNewJob = createValidatedAuthedAction(
         payPeriod,
         questions,
         tags,
-        class: jobClass,
+        jobClass,
       } = validatedData;
 
       const formattedJobTitle = formatCapitalizeString(title);

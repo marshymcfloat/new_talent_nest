@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm, FormProvider, UseFormReturn } from "react-hook-form";
-import { JobClass, JobType, SalaryPeriod } from "@prisma/client";
+import { JobClass, JobStatus, JobType, SalaryPeriod } from "@prisma/client";
 import {
   createJobSchema,
   CreateJobValues,
@@ -31,8 +31,12 @@ import { FormJobQuestions } from "./FormJobQuestions";
 import { useMutation } from "@tanstack/react-query";
 import { createNewJob } from "@/lib/actions/employerDashboardActions";
 import Spinner from "../Spinner";
-import { JobResultType } from "@/prisma/generated/schemas";
 import { JobsResponse } from "@/app/(employer)/[id]/jobs/EmployerJobsTableList";
+import { updateEmployerJob } from "@/app/(employer)/[id]/jobs/employerJobsTabActions";
+import {
+  updateJobSchema,
+  UpdateJobValues,
+} from "@/app/(employer)/[id]/jobs/employerJobsTabSchema";
 const jobClassArray = [
   { title: "Accounting", value: JobClass.ACCOUNTING },
   { title: "Administration", value: JobClass.ADMINISTRATION },
@@ -70,6 +74,12 @@ const jobSalaryPeriodArray = [
   { title: "Hourly", value: SalaryPeriod.HOURLY },
   { title: "Annually", value: SalaryPeriod.ANNUAL },
 ];
+
+const jobStatusArray = [
+  { title: "Active", value: JobStatus.ACTIVE },
+  { title: "Closed", value: JobStatus.CLOSED },
+  { title: "Paused", value: JobStatus.PAUSED },
+];
 const availableCurrencies = ["PHP", "USD", "EUR"];
 const textAreaFields = [
   {
@@ -97,27 +107,54 @@ export const CreateJobForm = ({
   onSuccess: () => void;
   job?: JobsResponse;
 }) => {
-  const form: UseFormReturn<CreateJobValues> = useForm<CreateJobValues>({
-    resolver: zodResolver(createJobSchema),
-    defaultValues: {
-      title: job?.title ?? "",
-      location: job?.location ?? "",
-      class: job?.jobClass ?? JobClass.IT,
-      type: job?.type ?? JobType.FULL_TIME,
-      summary: job?.summary ?? "",
-      qualifications: job?.qualifications ?? "",
-      responsibilities: job?.responsibilities ?? "",
-      benefits: job?.benefits ?? "",
-      minSalary: job?.minSalary ?? 0,
-      maxSalary: job?.maxSalary ?? 0,
-      currency: job?.currency ?? "PHP",
-      payPeriod: job?.payPeriod ?? SalaryPeriod.MONTHLY,
-      questions: job?.questions ?? [],
-      tags: [],
-    },
+  const isEdit = !!job;
+
+  const schema = isEdit ? updateJobSchema : createJobSchema;
+
+  type FormValues = CreateJobValues | UpdateJobValues;
+
+  const form: UseFormReturn<FormValues> = useForm<
+    CreateJobValues | UpdateJobValues
+  >({
+    resolver: zodResolver(schema),
+    defaultValues: isEdit
+      ? {
+          id: job.id,
+          title: job?.title ?? "",
+          location: job?.location ?? "",
+          jobClass: job?.jobClass ?? JobClass.IT,
+          type: job?.type ?? JobType.FULL_TIME,
+          summary: job?.summary ?? "",
+          qualifications: job?.qualifications ?? "",
+          responsibilities: job?.responsibilities ?? "",
+          benefits: job?.benefits ?? "",
+          minSalary: job?.minSalary ?? 0,
+          maxSalary: job?.maxSalary ?? 0,
+          currency: job?.currency ?? "PHP",
+          payPeriod: job?.payPeriod ?? SalaryPeriod.MONTHLY,
+          questions: job?.questions ?? [],
+          tags: [],
+          status: job.status,
+        }
+      : {
+          title: "",
+          location: "",
+          jobClass: JobClass.IT,
+          type: JobType.FULL_TIME,
+          summary: "",
+          qualifications: "",
+          responsibilities: "",
+          benefits: "",
+          minSalary: 0,
+          maxSalary: 0,
+          currency: "PHP",
+          payPeriod: SalaryPeriod.MONTHLY,
+          questions: [],
+          tags: [],
+        },
   });
 
-  const { mutate, isPending } = useMutation({
+  const { mutate: mutateCreate, isPending: isPendingCreate } = useMutation({
     mutationFn: createNewJob,
     onSuccess: async (data) => {
       if (data.success) {
@@ -132,11 +169,28 @@ export const CreateJobForm = ({
       toast.error(error.message || "Failed to create question.");
     },
   });
+  const { mutate: mutateUpdate, isPending: isPendingUpdate } = useMutation({
+    mutationFn: updateEmployerJob,
+    onSuccess: (data) => {
+      if (data.data) {
+        toast.success("Job updated successfully!");
+        onSuccess();
+      } else {
+        toast.error(data.error || "Failed to update job.");
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message || "An unexpected error occurred.");
+    },
+  });
 
-  const onSubmit = (values: CreateJobValues) => {
-    mutate(values);
+  const onSubmit = (values: FormValues) => {
+    if (isEdit) {
+      mutateUpdate(values as UpdateJobValues);
+    } else {
+      mutateCreate(values as CreateJobValues);
+    }
   };
-
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -159,13 +213,13 @@ export const CreateJobForm = ({
                 </FormItem>
               )}
             />
-            <div className="flex gap-4">
+            <div className="flex justify-between ">
               <FormField
-                name="class"
+                name="jobClass"
                 control={form.control}
                 render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Class</FormLabel>
+                  <FormItem className=" ">
+                    <FormLabel className="">Class</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -194,7 +248,7 @@ export const CreateJobForm = ({
                 name="type"
                 control={form.control}
                 render={({ field }) => (
-                  <FormItem className="flex-1">
+                  <FormItem className="">
                     <FormLabel>Type</FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -217,6 +271,36 @@ export const CreateJobForm = ({
                   </FormItem>
                 )}
               />
+
+              {job && isEdit && (
+                <FormField
+                  control={form.control}
+                  name="status"
+                  render={({ field }) => (
+                    <FormItem className="">
+                      <FormLabel>Status</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {jobStatusArray.map((status) => (
+                            <SelectItem key={status.value} value={status.value}>
+                              {status.title}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
             </div>
             <FormField
               name="location"
@@ -343,10 +427,11 @@ export const CreateJobForm = ({
           </div>
         </div>
         <div className="flex justify-end">
-          <Button type="submit" disabled={isPending}>
+          <Button type="submit" disabled={isPendingUpdate || isPendingCreate}>
             {" "}
-            {isPending && <Spinner className="animate-spin" />}Create Job
-            Posting
+            {isPendingCreate ||
+              (isPendingUpdate && <Spinner className="animate-spin" />)}
+            {job ? "Update Job" : "Create Job Post"}
           </Button>
         </div>
       </form>
