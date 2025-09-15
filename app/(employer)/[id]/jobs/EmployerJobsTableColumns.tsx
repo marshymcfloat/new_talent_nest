@@ -35,6 +35,11 @@ import { ApplicationStatus } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+type ActionResult = {
+  success: boolean;
+  error?: string;
+};
+
 const JobActions = ({
   job,
   onEdit,
@@ -55,7 +60,7 @@ const JobActions = ({
   const router = useRouter();
 
   const handleStatusChange = (
-    action: (jobId: string) => Promise<any>,
+    action: (jobId: string) => Promise<ActionResult>,
     successMessage: string
   ) => {
     startTransition(async () => {
@@ -223,7 +228,10 @@ export const createColumns = (
     header: "Type",
     cell: ({ row }) => (
       <div className="capitalize">
-        {row.getValue("type")?.toString().replace("_", " ").toLowerCase()}
+        {(row.getValue("type") as string)
+          ?.toString()
+          .replace("_", " ")
+          .toLowerCase()}
       </div>
     ),
   },
@@ -235,7 +243,7 @@ export const createColumns = (
     accessorKey: "createdAt",
     header: "Date Posted",
     cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt"));
+      const date = new Date(row.getValue("createdAt") as string);
       return date.toLocaleDateString("en-US", {
         year: "numeric",
         month: "short",

@@ -68,10 +68,14 @@ export const closeEmployerJob = async (jobId: string) => {
     });
 
     revalidatePath(`/${session.user.id}/jobs`);
+    // This success return is fine as it is.
     return { success: true, data: updatedJob.id };
   } catch (err) {
     console.error(err);
-    return { error: "There is an unexpected error occured" };
+    // ✨ THE FIX: Explicitly return `success: false` in the error case.
+    const errorMessage =
+      err instanceof Error ? err.message : "An unexpected error occurred";
+    return { success: false, error: errorMessage };
   }
 };
 
@@ -89,8 +93,10 @@ export async function pauseEmployerJob(jobId: string) {
     revalidatePath(`/${session.user.id}/jobs`);
 
     return { success: true };
-  } catch (error) {
-    return { success: false, error: "Database error." };
+  } catch (err) {
+    const errorMessage =
+      err instanceof Error ? err.message : "An unexpected error occurred";
+    return { success: false, error: errorMessage };
   }
 }
 
@@ -109,7 +115,9 @@ export async function activateEmployerJob(jobId: string) {
     revalidatePath(`/${session.user.id}/jobs`);
 
     return { success: true };
-  } catch (error) {
-    return { success: false, error: "Database error." };
+  } catch (err) {
+    const errorMessage =
+      err instanceof Error ? err.message : "An unexpected error occurred";
+    return { success: false, error: errorMessage };
   }
 }

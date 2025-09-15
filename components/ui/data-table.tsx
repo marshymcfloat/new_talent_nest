@@ -15,15 +15,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-// ✨ MODIFIED: Props now accept the table instance directly from the parent
 interface DataTableProps<TData> {
   table: TanstackTable<TData>;
-  columns: ColumnDef<TData, any>[]; // Pass columns for the colspan calculation
+  columns: ColumnDef<TData, unknown>[];
 }
 
 export function DataTable<TData>({ table, columns }: DataTableProps<TData>) {
-  // ✨ REMOVED: The useReactTable hook is no longer here.
-
   return (
     <div className="overflow-hidden rounded-md border">
       <Table>
