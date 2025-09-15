@@ -1,101 +1,53 @@
+"use client";
+
+import { useState, useMemo } from "react";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { prisma } from "@/lib/prisma";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import TableActionButton from "@/components/Employers/TableActionButton";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { CreateJobForm } from "@/components/Employers/CreateJobForm";
+import { DataTable } from "@/components/ui/data-table";
+import { JobWithDetails } from "./page";
+import { createColumns } from "./EmployerJobsTableColumns";
+interface EmployerJobsTableListProps {
+  jobs: JobWithDetails[];
+}
 
-// This type will automatically update to include the new `questions` array
-export type JobsResponse = Awaited<ReturnType<typeof getJobs>>[number];
+export default function EmployerJobsTableList({
+  jobs,
+}: EmployerJobsTableListProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingJob, setEditingJob] = useState<JobWithDetails | null>(null);
 
-const getJobs = async (userId: string) => {
-  const userInfo = await prisma.companyMember.findFirst({ where: { userId } });
+  const handleEdit = (job: JobWithDetails) => {
+    setEditingJob(job);
+    setIsModalOpen(true);
+  };
 
-  if (!userInfo?.companyId) {
-    return [];
-  }
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingJob(null);
+  };
 
-  const jobs = await prisma.job.findMany({
-    where: {
-      companyId: userInfo.companyId,
-    },
-    include: {
-      JobApplication: true,
-      company: true,
-      questions: {
-        select: {
-          questionId: true,
-          isRequired: true,
-        },
-      },
-    },
-  });
-
-  return jobs;
-};
-
-const EmployerJobsTableList = async () => {
-  const session = await getServerSession(authOptions);
-
-  if (!session?.user.id) {
-    return <p className="p-4 text-center">Please log in to view jobs.</p>;
-  }
-
-  const response = await getJobs(session.user.id);
+  const columns = useMemo(() => createColumns(handleEdit), []);
 
   return (
-    <Table>
-      <TableCaption>A list of the recent jobs.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="lg:w-[25%]">Job Title</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Applicants</TableHead>
-          <TableHead>New Applicants</TableHead>
-          <TableHead>Location</TableHead>
-          <TableHead>Date Posted</TableHead>
-          <TableHead className="text-right">Action</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {response.map((job) => (
-          <TableRow key={job.id}>
-            <TableCell className="font-medium lg:w-[25%] capitalize">
-              {job.title}
-            </TableCell>
-            <TableCell className="lowercase">
-              <Badge
-                className={cn(
-                  job.status === "PAUSED" && "bg-amber-200",
-                  job.status === "ACTIVE" && "bg-green-300 text-black",
-                  job.status === "CLOSED" && "bg-red-400"
-                )}
-              >
-                {job.status}
-              </Badge>
-            </TableCell>
-            <TableCell>{job.JobApplication.length}</TableCell>
-            <TableCell>{job.JobApplication.length}</TableCell>
-            <TableCell>{job.location}</TableCell>
-            <TableCell>{job.createdAt.toLocaleDateString("en-PH")}</TableCell>
-            <TableCell>
-              {/* This component will now receive the job prop with the `questions` array */}
-              <TableActionButton job={job} />
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-};
+    <div>
+      <DataTable columns={columns} data={jobs} />
 
-export default EmployerJobsTableList;
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="sm:max-w-[80vw] max-h-[95vh] overflow-y-auto md:max-w-[60vw] lg:max-w-[50vw]">
+          <DialogHeader>
+            <DialogTitle>Edit Job: {editingJob?.title}</DialogTitle>
+          </DialogHeader>
+
+          {editingJob && (
+            <CreateJobForm job={editingJob} onSuccess={handleCloseModal} />
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}

@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
-import { CreateQuestionForm } from "./CreateQuestionForm"; // Import the new form component
+import { CreateQuestionForm } from "./CreateQuestionForm";
 
 interface CreateQuestionDialogProps {
   open: boolean;

@@ -5,17 +5,16 @@ import { updateJobSchema } from "./employerJobsTabSchema";
 import { createValidatedAuthedAction } from "@/lib/sessionUtils";
 import { revalidatePath } from "next/cache";
 import { formatCapitalizeString } from "@/lib/utils";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 export const updateEmployerJob = createValidatedAuthedAction(
   updateJobSchema,
   async (validatedData, session) => {
-    // 1. Separate the questions array from the rest of the job data
     const { questions, id, ...jobData } = validatedData;
     const { user } = session;
 
     try {
-      // 2. Use a Prisma transaction to ensure atomicity
       const updatedJob = await prisma.$transaction(async (tx) => {
-        // Action A: Update the simple fields of the Job model itself
         const updatedJobDetails = await tx.job.update({
           where: { id },
           data: {
@@ -24,18 +23,16 @@ export const updateEmployerJob = createValidatedAuthedAction(
           },
         });
 
-        // Action B: Delete all existing question connections for this job
         await tx.questionsOnJobs.deleteMany({
           where: {
             jobId: id,
           },
         });
 
-        // Action C: Create the new question connections from the form data
         if (questions && questions.length > 0) {
           await tx.questionsOnJobs.createMany({
             data: questions.map((q) => ({
-              jobId: id, // Link to the current job
+              jobId: id,
               questionId: q.questionId,
               isRequired: q.isRequired,
             })),
@@ -47,7 +44,6 @@ export const updateEmployerJob = createValidatedAuthedAction(
 
       revalidatePath(`/${user.id}/jobs`);
 
-      // Return the successfully updated job data (without the relation details)
       return { data: { ...updatedJob, questions } };
     } catch (err) {
       console.error("Failed to update job:", err);
@@ -55,3 +51,27 @@ export const updateEmployerJob = createValidatedAuthedAction(
     }
   }
 );
+
+export const closeEmployerJob = async (jobId: string) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    console.log(session);
+    if (!session?.user.id || session?.user.role !== "EMPLOYER") {
+      throw new Error("You must log in first or you must be an Employer");
+    }
+
+    const updatedJob = await prisma.job.update({
+      where: { id: jobId },
+      data: {
+        status: "CLOSED",
+      },
+    });
+
+    revalidatePath(`/${session.user.id}/jobs`);
+    return { success: true, data: updatedJob.id };
+  } catch (err) {
+    console.error(err);
+    return { error: "There is an unexpected error occured" };
+  }
+};

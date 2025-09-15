@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 
 import { useState } from "react";
 import {
@@ -26,9 +26,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge"; // <-- Import Badge
-import { Separator } from "@/components/ui/separator"; // <-- Import Separator
-import { JobsResponse } from "@/app/(employer)/[id]/jobs/EmployerJobsTableList";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { JobWithDetails } from "@/app/(employer)/[id]/jobs/page";
 import { cn } from "@/lib/utils";
 import { CreateJobForm } from "./CreateJobForm";
 import {
@@ -42,6 +42,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useMutation } from "@tanstack/react-query";
+import { closeEmployerJob } from "@/app/(employer)/[id]/jobs/employerJobsTabActions";
 
 const formatSalary = (
   min: number | null,
@@ -88,10 +90,22 @@ const DetailItem = ({
   </div>
 );
 
-const TableActionButton = ({ job }: { job?: JobsResponse }) => {
+const TableActionButton = ({ job }: { job?: JobWithDetails }) => {
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: closeEmployerJob,
+    onSuccess: () => {
+      setIsDeleteDialogOpen(false);
+    },
+  });
+
+  const handleDeleteConfirmation = (jobId: string) => {
+    mutate(jobId);
+  };
+
   return (
     <>
       <DropdownMenu>
@@ -114,7 +128,7 @@ const TableActionButton = ({ job }: { job?: JobsResponse }) => {
             onClick={() => setIsDeleteDialogOpen(true)}
           >
             <Trash className="mr-2 size-4" />
-            <span>Delete</span>
+            <span>Close Job</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -127,13 +141,18 @@ const TableActionButton = ({ job }: { job?: JobsResponse }) => {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete{" "}
-              <span className="font-medium capitalize">{job?.title}</span>.
+              This job's status will be set to "close", that means, this job{" "}
+              <span className="font-medium capitalize">{job?.title}</span> will
+              not be visible to job seekers .
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction>Continue</AlertDialogAction>
+            <AlertDialogAction
+              onClick={() => handleDeleteConfirmation(job?.id!)}
+            >
+              Confirm
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -147,7 +166,10 @@ const TableActionButton = ({ job }: { job?: JobsResponse }) => {
           </DialogHeader>
 
           <div className="px-1 py-4">
-            <CreateJobForm job={job} onSuccess={() => {}} />
+            <CreateJobForm
+              job={job}
+              onSuccess={() => setIsViewDialogOpen(false)}
+            />
           </div>
         </DialogContent>
       </Dialog>
@@ -254,3 +276,4 @@ const TableActionButton = ({ job }: { job?: JobsResponse }) => {
 };
 
 export default TableActionButton;
+ */

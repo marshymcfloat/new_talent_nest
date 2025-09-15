@@ -31,8 +31,8 @@ import { FormJobQuestions } from "./FormJobQuestions";
 import { useMutation } from "@tanstack/react-query";
 import { createNewJob } from "@/lib/actions/employerDashboardActions";
 import Spinner from "../Spinner";
-import { JobsResponse } from "@/app/(employer)/[id]/jobs/EmployerJobsTableList";
 import { updateEmployerJob } from "@/app/(employer)/[id]/jobs/employerJobsTabActions";
+import { JobWithDetails } from "@/app/(employer)/[id]/jobs/page";
 import {
   updateJobSchema,
   UpdateJobValues,
@@ -105,7 +105,7 @@ export const CreateJobForm = ({
   job,
 }: {
   onSuccess: () => void;
-  job?: JobsResponse;
+  job?: JobWithDetails;
 }) => {
   const isEdit = !!job;
 
@@ -206,7 +206,7 @@ export const CreateJobForm = ({
                     <Input
                       placeholder="e.g., Senior Software Engineer"
                       {...field}
-                      className="capitalize"
+                      className=""
                     />
                   </FormControl>
                   <FormMessage />
@@ -310,7 +310,7 @@ export const CreateJobForm = ({
                   <FormLabel>Location</FormLabel>
                   <FormControl>
                     <Input
-                      className="capitalize"
+                      className=""
                       placeholder="e.g., Manila, Philippines"
                       {...field}
                     />
