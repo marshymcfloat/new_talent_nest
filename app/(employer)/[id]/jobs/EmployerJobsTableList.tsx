@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { CreateJobForm } from "@/components/Employers/CreateJobForm";
 import { DataTable } from "@/components/ui/data-table";
-import { JobWithDetails } from "./page";
+import { JobWithDetails } from "./JobsDataContainer";
 import { createColumns } from "./EmployerJobsTableColumns";
 interface EmployerJobsTableListProps {
   jobs: JobWithDetails[];

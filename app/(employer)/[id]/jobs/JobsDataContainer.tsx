@@ -2,7 +2,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import EmployerJobsTableList from "./EmployerJobsTableList";
-import { JobWithDetails } from "./page";
 
 const getJobsForCompany = async (userId: string) => {
   const userInfo = await prisma.companyMember.findFirst({ where: { userId } });
@@ -19,6 +18,10 @@ const getJobsForCompany = async (userId: string) => {
 
   return JSON.parse(JSON.stringify(jobs));
 };
+
+export type JobWithDetails = Awaited<
+  ReturnType<typeof getJobsForCompany>
+>[number];
 
 export const JobsDataContainer = async () => {
   const session = await getServerSession(authOptions);

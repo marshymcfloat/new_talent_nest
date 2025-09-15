@@ -1,13 +1,8 @@
 import React, { Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { JobListTableSkeleton } from "./EmployerJobsTableListSkeleton";
-import { JobsDataContainer } from "./JobsDataContainer";
+import { JobsDataContainer } from "./JobsDataContainer"; // Import the new component
 import { Job as PrismaJob, Company, JobApplication } from "@prisma/client";
-
-export type JobWithDetails = PrismaJob & {
-  company: Company;
-  JobApplication: Pick<JobApplication, "status">[];
-};
+import { JobListTableSkeleton } from "./EmployerJobsTableListSkeleton";
 
 const EmployersJobsTab = () => {
   return (
@@ -17,6 +12,10 @@ const EmployersJobsTab = () => {
       </CardHeader>
       <CardContent>
         <Suspense fallback={<JobListTableSkeleton />}>
+          {/* 
+            React will render the shell, see this async component, 
+            show the fallback, and wait for JobsDataContainer to resolve.
+          */}
           <JobsDataContainer />
         </Suspense>
       </CardContent>

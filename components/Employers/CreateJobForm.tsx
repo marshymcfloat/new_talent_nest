@@ -32,7 +32,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createNewJob } from "@/lib/actions/employerDashboardActions";
 import Spinner from "../Spinner";
 import { updateEmployerJob } from "@/app/(employer)/[id]/jobs/employerJobsTabActions";
-import { JobWithDetails } from "@/app/(employer)/[id]/jobs/page";
+import { JobWithDetails } from "@/app/(employer)/[id]/jobs/JobsDataContainer";
 import {
   updateJobSchema,
   UpdateJobValues,
