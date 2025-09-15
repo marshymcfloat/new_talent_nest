@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { ApplicantsDataContainer } from "./ApplicantsDataContainer";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ApplicantsPageSkeleton } from "./ApplicantsPageSkeleton";
 
 export default async function ApplicantsPage({
   searchParams,
@@ -9,7 +10,7 @@ export default async function ApplicantsPage({
 }) {
   return (
     <div className="p-4 md:p-6 lg:p-8">
-      <Suspense fallback={<Skeleton className="h-[600px] w-full rounded-lg" />}>
+      <Suspense fallback={<ApplicantsPageSkeleton />}>
         <ApplicantsDataContainer searchParams={searchParams} />
       </Suspense>
     </div>
