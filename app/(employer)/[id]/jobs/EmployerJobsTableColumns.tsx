@@ -25,7 +25,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
 const JobActions = ({
@@ -85,9 +84,9 @@ const JobActions = ({
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will set the job status to "CLOSED". Applicants will no
-              longer be able to see or apply for this position. This action can
-              be changed later by editing the job.
+              This will set the job status to &ldquo;CLOSED&ldquo;. Applicants
+              will no longer be able to see or apply for this position. This
+              action can be changed later by editing the job.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
