@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { JobWithDetails } from "./page";
+import { JobWithDetails } from "./JobsDataContainer";
 import {
   DropdownMenu,
   DropdownMenuContent,
