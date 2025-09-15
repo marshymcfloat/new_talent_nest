@@ -1,6 +1,7 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
+// ✨ 1. Import CellContext from the library
+import { ColumnDef, CellContext } from "@tanstack/react-table";
 import { ApplicantWithDetails } from "./ApplicantsDataContainer";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -25,7 +26,9 @@ import { toast } from "sonner";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-const StatusSelector = ({ row }: { row: any }) => {
+const StatusSelector = ({
+  row,
+}: CellContext<ApplicantWithDetails, unknown>) => {
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
   const application: ApplicantWithDetails = row.original;

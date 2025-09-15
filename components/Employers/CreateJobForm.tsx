@@ -1,6 +1,11 @@
 "use client";
 
-import { useForm, FormProvider, UseFormReturn } from "react-hook-form";
+import {
+  useForm,
+  FormProvider,
+  UseFormReturn,
+  DefaultValues,
+} from "react-hook-form";
 import { JobClass, JobStatus, JobType, SalaryPeriod } from "@prisma/client";
 import {
   createJobSchema,
@@ -153,7 +158,7 @@ export const CreateJobForm = ({
 
   const form: UseFormReturn<FormValues> = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: defaultValues as any,
+    defaultValues: defaultValues as DefaultValues<FormValues>,
   });
 
   const { mutate: mutateCreate, isPending: isPendingCreate } = useMutation({
