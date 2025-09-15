@@ -3,18 +3,23 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { JobWithDetails } from "./JobsDataContainer";
+import { JobWithApplicantCounts } from "./JobsDataContainer";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { useTransition, useState } from "react";
-import { closeEmployerJob } from "./employerJobsTabActions";
+import {
+  closeEmployerJob,
+  pauseEmployerJob,
+  activateEmployerJob,
+} from "./employerJobsTabActions";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -26,27 +31,54 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { ApplicationStatus } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const JobActions = ({
   job,
   onEdit,
+  onDuplicate,
 }: {
-  job: JobWithDetails;
-  onEdit: (job: JobWithDetails) => void;
+  job: JobWithApplicantCounts;
+  onEdit: (job: JobWithApplicantCounts) => void;
+  onDuplicate: (job: JobWithApplicantCounts) => void;
 }) => {
   const [isPending, startTransition] = useTransition();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [alertConfig, setAlertConfig] = useState<{
+    title: string;
+    description: string;
+    onConfirm: () => void;
+  } | null>(null);
 
-  const handleCloseJob = () => {
+  const router = useRouter();
+
+  const handleStatusChange = (
+    action: (jobId: string) => Promise<any>,
+    successMessage: string
+  ) => {
     startTransition(async () => {
-      const result = await closeEmployerJob(job.id);
+      const result = await action(job.id);
       if (result.success) {
-        toast.success("Job has been closed.");
+        toast.success(successMessage);
+        router.refresh();
       } else {
-        toast.error(result.error || "Failed to close job.");
+        toast.error(result.error || "An error occurred.");
       }
       setIsAlertOpen(false);
     });
+  };
+
+  const confirmClose = () => {
+    setAlertConfig({
+      title: "Are you sure you want to close this job?",
+      description:
+        "Applicants will no longer see or apply for this position. This can be changed later by editing the job.",
+      onConfirm: () =>
+        handleStatusChange(closeEmployerJob, "Job has been closed."),
+    });
+    setIsAlertOpen(true);
   };
 
   return (
@@ -60,39 +92,64 @@ const JobActions = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={() => navigator.clipboard.writeText(job.id)}
-          >
-            Copy Job ID
+          <DropdownMenuItem asChild>
+            <Link href={`/employer/applicants?jobId=${job.id}`}>
+              View Applicants
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => onEdit(job)}>Edit</DropdownMenuItem>
-          <DropdownMenuItem>View Applicants</DropdownMenuItem>
-
-          <DropdownMenuItem
-            className="text-red-500 focus:text-red-500 focus:bg-red-50"
-            disabled={isPending || job.status === "CLOSED"}
-            onClick={() => setIsAlertOpen(true)}
-            onSelect={(e) => e.preventDefault()}
-          >
-            {isPending ? "Closing..." : "Close Job"}
+          <DropdownMenuItem onClick={() => onDuplicate(job)}>
+            Duplicate
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          {job.status !== "ACTIVE" && (
+            <DropdownMenuItem
+              onClick={() =>
+                handleStatusChange(
+                  activateEmployerJob,
+                  "Job has been activated."
+                )
+              }
+            >
+              Activate Job
+            </DropdownMenuItem>
+          )}
+          {job.status !== "PAUSED" && (
+            <DropdownMenuItem
+              onClick={() =>
+                handleStatusChange(pauseEmployerJob, "Job has been paused.")
+              }
+            >
+              Pause Job
+            </DropdownMenuItem>
+          )}
+          {job.status !== "CLOSED" && (
+            <DropdownMenuItem
+              className="text-red-500 focus:text-red-500 focus:bg-red-50"
+              onClick={confirmClose}
+              onSelect={(e) => e.preventDefault()}
+            >
+              Close Job
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 
       <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle>{alertConfig?.title}</AlertDialogTitle>
             <AlertDialogDescription>
-              This will set the job status to &ldquo;CLOSED&ldquo;. Applicants
-              will no longer be able to see or apply for this position. This
-              action can be changed later by editing the job.
+              {alertConfig?.description}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="" onClick={handleCloseJob}>
-              Continue
+            <AlertDialogAction
+              disabled={isPending}
+              onClick={alertConfig?.onConfirm}
+            >
+              {isPending ? "Updating..." : "Continue"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -102,8 +159,9 @@ const JobActions = ({
 };
 
 export const createColumns = (
-  onEdit: (job: JobWithDetails) => void
-): ColumnDef<JobWithDetails>[] => [
+  onEdit: (job: JobWithApplicantCounts) => void,
+  onDuplicate: (job: JobWithApplicantCounts) => void
+): ColumnDef<JobWithApplicantCounts>[] => [
   {
     accessorKey: "title",
     header: ({ column }) => (
@@ -141,13 +199,33 @@ export const createColumns = (
       );
     },
   },
+
   {
     accessorKey: "JobApplication",
     header: "Applicants",
     cell: ({ row }) => {
       const applications: unknown[] = row.getValue("JobApplication");
-      return <div className="text-center">{applications.length}</div>;
+      const counts = row.original._countByStatus;
+
+      const breakdown = (Object.keys(counts) as ApplicationStatus[])
+        .map((status) => `${counts[status]} ${status.toLowerCase()}`)
+        .join(", ");
+
+      return (
+        <div className="text-center" title={breakdown}>
+          {applications.length}
+        </div>
+      );
     },
+  },
+  {
+    accessorKey: "type",
+    header: "Type",
+    cell: ({ row }) => (
+      <div className="capitalize">
+        {row.getValue("type")?.toString().replace("_", " ").toLowerCase()}
+      </div>
+    ),
   },
   {
     accessorKey: "location",
@@ -169,7 +247,7 @@ export const createColumns = (
     id: "actions",
     cell: ({ row }) => {
       const job = row.original;
-      return <JobActions job={job} onEdit={onEdit} />;
+      return <JobActions job={job} onEdit={onEdit} onDuplicate={onDuplicate} />;
     },
   },
 ];

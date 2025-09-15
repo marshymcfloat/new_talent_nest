@@ -33,10 +33,13 @@ export function objectToFormData(
 }
 
 export function formatSalary(amount: number) {
+  const isWholeNumber = amount % 1 === 0;
+
   return amount.toLocaleString("en-PH", {
     currency: "PHP",
     style: "currency",
-    minimumFractionDigits: 2,
+    minimumFractionDigits: isWholeNumber ? 0 : 2,
+    maximumFractionDigits: isWholeNumber ? 0 : 2,
   });
 }
 

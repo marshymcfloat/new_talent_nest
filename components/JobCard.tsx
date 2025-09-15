@@ -59,9 +59,11 @@ const JobCard = ({
           </CardTitle>
           <p className="text-sm text-muted-foreground">{company.name}</p>
           <span>
-            {minSalary && formatSalary(minSalary)}{" "}
-            {minSalary && maxSalary && "-"}{" "}
-            {maxSalary && formatSalary(maxSalary)}
+            {minSalary && formatSalary(minSalary)}
+            {minSalary &&
+              maxSalary &&
+              maxSalary > minSalary &&
+              ` - ${formatSalary(maxSalary)}`}
           </span>
         </div>
         <button

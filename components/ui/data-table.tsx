@@ -3,8 +3,7 @@
 import {
   ColumnDef,
   flexRender,
-  getCoreRowModel,
-  useReactTable,
+  Table as TanstackTable, // Renaming to avoid conflict with our UI component
 } from "@tanstack/react-table";
 
 import {
@@ -16,20 +15,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+// ✨ MODIFIED: Props now accept the table instance directly from the parent
+interface DataTableProps<TData> {
+  table: TanstackTable<TData>;
+  columns: ColumnDef<TData, any>[]; // Pass columns for the colspan calculation
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
+export function DataTable<TData>({ table, columns }: DataTableProps<TData>) {
+  // ✨ REMOVED: The useReactTable hook is no longer here.
 
   return (
     <div className="overflow-hidden rounded-md border">

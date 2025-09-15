@@ -56,7 +56,6 @@ export const closeEmployerJob = async (jobId: string) => {
   try {
     const session = await getServerSession(authOptions);
 
-    console.log(session);
     if (!session?.user.id || session?.user.role !== "EMPLOYER") {
       throw new Error("You must log in first or you must be an Employer");
     }
@@ -75,3 +74,42 @@ export const closeEmployerJob = async (jobId: string) => {
     return { error: "There is an unexpected error occured" };
   }
 };
+
+export async function pauseEmployerJob(jobId: string) {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user.id || session?.user.role !== "EMPLOYER") {
+      throw new Error("You must log in first or you must be an Employer");
+    }
+    await prisma.job.update({
+      where: { id: jobId },
+      data: { status: "PAUSED" },
+    });
+    revalidatePath(`/${session.user.id}/jobs`);
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: "Database error." };
+  }
+}
+
+export async function activateEmployerJob(jobId: string) {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user.id || session?.user.role !== "EMPLOYER") {
+      throw new Error("You must log in first or you must be an Employer");
+    }
+
+    await prisma.job.update({
+      where: { id: jobId },
+      data: { status: "ACTIVE" },
+    });
+    revalidatePath(`/${session.user.id}/jobs`);
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: "Database error." };
+  }
+}
