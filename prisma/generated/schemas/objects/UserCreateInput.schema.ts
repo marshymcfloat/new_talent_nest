@@ -2,11 +2,13 @@ import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { UserRoleSchema } from '../enums/UserRole.schema';
 import { UserAvailabilityTypeSchema } from '../enums/UserAvailabilityType.schema';
+import { UserCreatepreferredWorkTypesInputObjectSchema } from './UserCreatepreferredWorkTypesInput.schema';
 import { JobTypeSchema } from '../enums/JobType.schema';
 import { UserCreatepreferredLocationInputObjectSchema } from './UserCreatepreferredLocationInput.schema';
 import { UserCreaterightToWorkInputObjectSchema } from './UserCreaterightToWorkInput.schema';
 import { UserCreatejobClassificationInputObjectSchema } from './UserCreatejobClassificationInput.schema';
 import { JobClassSchema } from '../enums/JobClass.schema';
+import { UserApproachabilitySchema } from '../enums/UserApproachability.schema';
 import { CompanyMemberCreateNestedManyWithoutUserInputObjectSchema } from './CompanyMemberCreateNestedManyWithoutUserInput.schema';
 import { ResumeCreateNestedManyWithoutUserInputObjectSchema } from './ResumeCreateNestedManyWithoutUserInput.schema';
 import { JobApplicationCreateNestedManyWithoutUserInputObjectSchema } from './JobApplicationCreateNestedManyWithoutUserInput.schema';
@@ -28,11 +30,12 @@ const makeSchema = () => z.object({
   role: UserRoleSchema.optional(),
   summary: z.string().optional().nullable(),
   availability: UserAvailabilityTypeSchema.optional().nullable(),
-  preferredWorkType: JobTypeSchema.optional().nullable(),
+  preferredWorkTypes: z.union([z.lazy(() => UserCreatepreferredWorkTypesInputObjectSchema), JobTypeSchema.array()]).optional(),
   preferredLocation: z.union([z.lazy(() => UserCreatepreferredLocationInputObjectSchema), z.string().array()]),
   rightToWork: z.union([z.lazy(() => UserCreaterightToWorkInputObjectSchema), z.string().array()]),
   expectedSalary: z.string().optional().nullable(),
   jobClassification: z.union([z.lazy(() => UserCreatejobClassificationInputObjectSchema), JobClassSchema.array()]),
+  approachability: UserApproachabilitySchema.optional().nullable(),
   companies: z.lazy(() => CompanyMemberCreateNestedManyWithoutUserInputObjectSchema),
   resumes: z.lazy(() => ResumeCreateNestedManyWithoutUserInputObjectSchema),
   JobApplication: z.lazy(() => JobApplicationCreateNestedManyWithoutUserInputObjectSchema),

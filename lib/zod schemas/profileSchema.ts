@@ -1,3 +1,9 @@
+import {
+  JobClass,
+  JobType,
+  UserApproachability,
+  UserAvailabilityType,
+} from "@prisma/client";
 import { z } from "zod";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -34,38 +40,20 @@ export const addCareerSchema = z
       .min(1, { message: "Company name is required." })
       .max(50, { message: "Company name cannot exceed 50 characters." }),
 
-    dateStarted: z.preprocess(
-      (arg) => {
-        if (typeof arg === "string" && arg.trim() !== "") {
-          const date = new Date(arg);
+    // FIX: Use z.coerce.date() to handle both Date objects (client)
+    // and date strings (server).
+    dateStarted: z.coerce.date({
+      required_error: "A start date is required.",
+      invalid_type_error: "Invalid start date format.",
+    }),
 
-          return isNaN(date.getTime()) ? undefined : date;
-        }
-        return undefined;
-      },
-
-      z.date({
-        required_error: "A start date is required.",
-        invalid_type_error: "Invalid start date format.",
+    // FIX: Use z.coerce.date() here as well.
+    dateEnded: z.coerce
+      .date({
+        invalid_type_error: "Invalid end date format.",
       })
-    ),
-
-    dateEnded: z.preprocess(
-      (arg) => {
-        if (typeof arg === "string" && arg.trim() !== "") {
-          const date = new Date(arg);
-          return isNaN(date.getTime()) ? undefined : date;
-        }
-        return undefined;
-      },
-
-      z
-        .date({
-          invalid_type_error: "Invalid end date format.",
-        })
-        .nullable()
-        .optional()
-    ),
+      .nullable()
+      .optional(),
 
     description: z
       .string()
@@ -177,4 +165,18 @@ export const addResumeSchema = z.object({
     .refine((file) => file && ACCEPTED_RESUME_TYPES.includes(file.type), {
       message: "Only .pdf, .doc, and .docx files are accepted.",
     }),
+});
+
+export const skillSchema = z.object({
+  skill: z.string().optional(),
+});
+
+export const userPreferencesSchema = z.object({
+  availability: z.nativeEnum(UserAvailabilityType).optional().nullable(),
+  preferredWorkTypes: z.array(z.nativeEnum(JobType)).optional(),
+  preferredLocation: z.array(z.string()).optional(),
+  rightToWork: z.array(z.string()).optional(),
+  expectedSalary: z.string().optional().nullable(),
+  jobClassification: z.array(z.nativeEnum(JobClass)).optional(),
+  approachability: z.nativeEnum(UserApproachability).optional().nullable(),
 });

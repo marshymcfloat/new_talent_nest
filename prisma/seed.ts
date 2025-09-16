@@ -470,3 +470,116 @@ main()
     await prisma.$disconnect();
   });
  */
+/* 
+
+// Instantiate Prisma Client
+
+// A list of languages to seed into the database
+const languagesToSeed = [
+  "English",
+  "Tagalog (Filipino)",
+  "Cebuano",
+  "Ilocano",
+  "Hiligaynon",
+  "Bikol",
+  "Waray",
+  "Mandarin Chinese",
+  "Spanish",
+  "Japanese",
+  "Korean",
+  "Arabic",
+  "Hindi",
+  "German",
+  "French",
+  "Portuguese",
+  "Russian",
+  "Italian",
+  "Dutch",
+  "Vietnamese",
+  "Thai",
+  "Malay",
+];
+
+async function main() {
+  console.log(`Start seeding languages...`);
+
+  // Use createMany for bulk insertion.
+  // The 'skipDuplicates' option prevents errors if you run the seed script multiple times.
+  const createdLanguages = await prisma.language.createMany({
+    data: languagesToSeed.map((name) => ({ name })),
+    skipDuplicates: true,
+  });
+
+  console.log(`Seeding finished.`);
+  console.log(
+    `${createdLanguages.count} languages were added to the database.`
+  );
+}
+
+// Execute the main function
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    // Close the Prisma Client connection
+    await prisma.$disconnect();
+  });
+ */
+
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+
+const skillsToSeed = [
+  "JavaScript",
+  "TypeScript",
+  "React",
+  "Next.js",
+  "Node.js",
+  "Python",
+  "Go",
+  "HTML5",
+  "CSS3",
+  "Tailwind CSS",
+  "SQL",
+  "PostgreSQL",
+  "MongoDB",
+  "Docker",
+  "Git",
+  "Project Management",
+  "Agile Methodologies",
+  "Scrum",
+  "Leadership",
+  "Communication",
+  "Digital Marketing",
+  "SEO",
+  "Content Writing",
+  "Graphic Design",
+  "UI/UX Design",
+  "Figma",
+  "Sales",
+  "Customer Support",
+  "Financial Analysis",
+];
+
+async function main() {
+  console.log(`Start seeding...`);
+
+  const createdSkills = await prisma.skill.createMany({
+    data: skillsToSeed.map((name) => ({ name })),
+    skipDuplicates: true,
+  });
+  console.log(`${createdSkills.count} skills were added.`);
+
+  console.log(`Seeding finished.`);
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

@@ -7,10 +7,11 @@ import { EnumUserRoleFilterObjectSchema } from './EnumUserRoleFilter.schema';
 import { UserRoleSchema } from '../enums/UserRole.schema';
 import { EnumUserAvailabilityTypeNullableFilterObjectSchema } from './EnumUserAvailabilityTypeNullableFilter.schema';
 import { UserAvailabilityTypeSchema } from '../enums/UserAvailabilityType.schema';
-import { EnumJobTypeNullableFilterObjectSchema } from './EnumJobTypeNullableFilter.schema';
-import { JobTypeSchema } from '../enums/JobType.schema';
+import { EnumJobTypeNullableListFilterObjectSchema } from './EnumJobTypeNullableListFilter.schema';
 import { StringNullableListFilterObjectSchema } from './StringNullableListFilter.schema';
 import { EnumJobClassNullableListFilterObjectSchema } from './EnumJobClassNullableListFilter.schema';
+import { EnumUserApproachabilityNullableFilterObjectSchema } from './EnumUserApproachabilityNullableFilter.schema';
+import { UserApproachabilitySchema } from '../enums/UserApproachability.schema';
 import { CompanyMemberListRelationFilterObjectSchema } from './CompanyMemberListRelationFilter.schema';
 import { ResumeListRelationFilterObjectSchema } from './ResumeListRelationFilter.schema';
 import { JobApplicationListRelationFilterObjectSchema } from './JobApplicationListRelationFilter.schema';
@@ -35,11 +36,12 @@ const schema = z.object({
   role: z.union([z.lazy(() => EnumUserRoleFilterObjectSchema), UserRoleSchema]).optional(),
   summary: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
   availability: z.union([z.lazy(() => EnumUserAvailabilityTypeNullableFilterObjectSchema), UserAvailabilityTypeSchema]).optional().nullable(),
-  preferredWorkType: z.union([z.lazy(() => EnumJobTypeNullableFilterObjectSchema), JobTypeSchema]).optional().nullable(),
+  preferredWorkTypes: z.lazy(() => EnumJobTypeNullableListFilterObjectSchema).optional(),
   preferredLocation: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
   rightToWork: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
   expectedSalary: z.union([z.lazy(() => StringNullableFilterObjectSchema), z.string()]).optional().nullable(),
   jobClassification: z.lazy(() => EnumJobClassNullableListFilterObjectSchema).optional(),
+  approachability: z.union([z.lazy(() => EnumUserApproachabilityNullableFilterObjectSchema), UserApproachabilitySchema]).optional().nullable(),
   companies: z.lazy(() => CompanyMemberListRelationFilterObjectSchema).optional(),
   resumes: z.lazy(() => ResumeListRelationFilterObjectSchema).optional(),
   JobApplication: z.lazy(() => JobApplicationListRelationFilterObjectSchema).optional(),

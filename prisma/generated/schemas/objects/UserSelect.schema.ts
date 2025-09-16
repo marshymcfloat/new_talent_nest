@@ -29,11 +29,12 @@ const makeSchema = () => z.object({
   skills: z.union([z.boolean(), z.lazy(() => SkillFindManySchema)]).optional(),
   languages: z.union([z.boolean(), z.lazy(() => LanguageFindManySchema)]).optional(),
   availability: z.boolean().optional(),
-  preferredWorkType: z.boolean().optional(),
+  preferredWorkTypes: z.boolean().optional(),
   preferredLocation: z.boolean().optional(),
   rightToWork: z.boolean().optional(),
   expectedSalary: z.boolean().optional(),
   jobClassification: z.boolean().optional(),
+  approachability: z.boolean().optional(),
   accounts: z.union([z.boolean(), z.lazy(() => AccountFindManySchema)]).optional(),
   sessions: z.union([z.boolean(), z.lazy(() => SessionFindManySchema)]).optional(),
   _count: z.union([z.boolean(), z.lazy(() => UserCountOutputTypeArgsObjectSchema)]).optional()

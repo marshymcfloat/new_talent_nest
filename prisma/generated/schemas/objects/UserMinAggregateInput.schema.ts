@@ -13,8 +13,8 @@ const makeSchema = () => z.object({
   role: z.literal(true).optional(),
   summary: z.literal(true).optional(),
   availability: z.literal(true).optional(),
-  preferredWorkType: z.literal(true).optional(),
-  expectedSalary: z.literal(true).optional()
+  expectedSalary: z.literal(true).optional(),
+  approachability: z.literal(true).optional()
 }).strict();
 export const UserMinAggregateInputObjectSchema: z.ZodType<Prisma.UserMinAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.UserMinAggregateInputType>;
 export const UserMinAggregateInputObjectZodSchema = makeSchema();

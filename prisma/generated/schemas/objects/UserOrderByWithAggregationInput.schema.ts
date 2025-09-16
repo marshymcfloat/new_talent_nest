@@ -17,11 +17,12 @@ const makeSchema = () => z.object({
   role: SortOrderSchema.optional(),
   summary: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   availability: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
-  preferredWorkType: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  preferredWorkTypes: SortOrderSchema.optional(),
   preferredLocation: SortOrderSchema.optional(),
   rightToWork: SortOrderSchema.optional(),
   expectedSalary: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   jobClassification: SortOrderSchema.optional(),
+  approachability: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   _count: z.lazy(() => UserCountOrderByAggregateInputObjectSchema).optional(),
   _max: z.lazy(() => UserMaxOrderByAggregateInputObjectSchema).optional(),
   _min: z.lazy(() => UserMinOrderByAggregateInputObjectSchema).optional()

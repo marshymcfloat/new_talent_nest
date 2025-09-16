@@ -7,12 +7,14 @@ import { UserRoleSchema } from '../enums/UserRole.schema';
 import { EnumUserRoleFieldUpdateOperationsInputObjectSchema } from './EnumUserRoleFieldUpdateOperationsInput.schema';
 import { UserAvailabilityTypeSchema } from '../enums/UserAvailabilityType.schema';
 import { NullableEnumUserAvailabilityTypeFieldUpdateOperationsInputObjectSchema } from './NullableEnumUserAvailabilityTypeFieldUpdateOperationsInput.schema';
+import { UserUpdatepreferredWorkTypesInputObjectSchema } from './UserUpdatepreferredWorkTypesInput.schema';
 import { JobTypeSchema } from '../enums/JobType.schema';
-import { NullableEnumJobTypeFieldUpdateOperationsInputObjectSchema } from './NullableEnumJobTypeFieldUpdateOperationsInput.schema';
 import { UserUpdatepreferredLocationInputObjectSchema } from './UserUpdatepreferredLocationInput.schema';
 import { UserUpdaterightToWorkInputObjectSchema } from './UserUpdaterightToWorkInput.schema';
 import { UserUpdatejobClassificationInputObjectSchema } from './UserUpdatejobClassificationInput.schema';
 import { JobClassSchema } from '../enums/JobClass.schema';
+import { UserApproachabilitySchema } from '../enums/UserApproachability.schema';
+import { NullableEnumUserApproachabilityFieldUpdateOperationsInputObjectSchema } from './NullableEnumUserApproachabilityFieldUpdateOperationsInput.schema';
 import { CompanyMemberUpdateManyWithoutUserNestedInputObjectSchema } from './CompanyMemberUpdateManyWithoutUserNestedInput.schema';
 import { ResumeUpdateManyWithoutUserNestedInputObjectSchema } from './ResumeUpdateManyWithoutUserNestedInput.schema';
 import { CareerHistoryUpdateManyWithoutUserNestedInputObjectSchema } from './CareerHistoryUpdateManyWithoutUserNestedInput.schema';
@@ -33,11 +35,12 @@ const makeSchema = () => z.object({
   role: z.union([UserRoleSchema, z.lazy(() => EnumUserRoleFieldUpdateOperationsInputObjectSchema)]).optional(),
   summary: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
   availability: z.union([UserAvailabilityTypeSchema, z.lazy(() => NullableEnumUserAvailabilityTypeFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
-  preferredWorkType: z.union([JobTypeSchema, z.lazy(() => NullableEnumJobTypeFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
+  preferredWorkTypes: z.union([z.lazy(() => UserUpdatepreferredWorkTypesInputObjectSchema), JobTypeSchema.array()]).optional(),
   preferredLocation: z.union([z.lazy(() => UserUpdatepreferredLocationInputObjectSchema), z.string().array()]).optional(),
   rightToWork: z.union([z.lazy(() => UserUpdaterightToWorkInputObjectSchema), z.string().array()]).optional(),
   expectedSalary: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
   jobClassification: z.union([z.lazy(() => UserUpdatejobClassificationInputObjectSchema), JobClassSchema.array()]).optional(),
+  approachability: z.union([UserApproachabilitySchema, z.lazy(() => NullableEnumUserApproachabilityFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
   companies: z.lazy(() => CompanyMemberUpdateManyWithoutUserNestedInputObjectSchema).optional(),
   resumes: z.lazy(() => ResumeUpdateManyWithoutUserNestedInputObjectSchema).optional(),
   previousCareers: z.lazy(() => CareerHistoryUpdateManyWithoutUserNestedInputObjectSchema).optional(),

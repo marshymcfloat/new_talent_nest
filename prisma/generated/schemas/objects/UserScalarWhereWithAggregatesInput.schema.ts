@@ -7,10 +7,11 @@ import { EnumUserRoleWithAggregatesFilterObjectSchema } from './EnumUserRoleWith
 import { UserRoleSchema } from '../enums/UserRole.schema';
 import { EnumUserAvailabilityTypeNullableWithAggregatesFilterObjectSchema } from './EnumUserAvailabilityTypeNullableWithAggregatesFilter.schema';
 import { UserAvailabilityTypeSchema } from '../enums/UserAvailabilityType.schema';
-import { EnumJobTypeNullableWithAggregatesFilterObjectSchema } from './EnumJobTypeNullableWithAggregatesFilter.schema';
-import { JobTypeSchema } from '../enums/JobType.schema';
+import { EnumJobTypeNullableListFilterObjectSchema } from './EnumJobTypeNullableListFilter.schema';
 import { StringNullableListFilterObjectSchema } from './StringNullableListFilter.schema';
-import { EnumJobClassNullableListFilterObjectSchema } from './EnumJobClassNullableListFilter.schema'
+import { EnumJobClassNullableListFilterObjectSchema } from './EnumJobClassNullableListFilter.schema';
+import { EnumUserApproachabilityNullableWithAggregatesFilterObjectSchema } from './EnumUserApproachabilityNullableWithAggregatesFilter.schema';
+import { UserApproachabilitySchema } from '../enums/UserApproachability.schema'
 
 const schema = z.object({
   AND: z.union([z.lazy(() => UserScalarWhereWithAggregatesInputObjectSchema), z.lazy(() => UserScalarWhereWithAggregatesInputObjectSchema).array()]).optional(),
@@ -26,11 +27,12 @@ const schema = z.object({
   role: z.union([z.lazy(() => EnumUserRoleWithAggregatesFilterObjectSchema), UserRoleSchema]).optional(),
   summary: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).optional().nullable(),
   availability: z.union([z.lazy(() => EnumUserAvailabilityTypeNullableWithAggregatesFilterObjectSchema), UserAvailabilityTypeSchema]).optional().nullable(),
-  preferredWorkType: z.union([z.lazy(() => EnumJobTypeNullableWithAggregatesFilterObjectSchema), JobTypeSchema]).optional().nullable(),
+  preferredWorkTypes: z.lazy(() => EnumJobTypeNullableListFilterObjectSchema).optional(),
   preferredLocation: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
   rightToWork: z.lazy(() => StringNullableListFilterObjectSchema).optional(),
   expectedSalary: z.union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()]).optional().nullable(),
-  jobClassification: z.lazy(() => EnumJobClassNullableListFilterObjectSchema).optional()
+  jobClassification: z.lazy(() => EnumJobClassNullableListFilterObjectSchema).optional(),
+  approachability: z.union([z.lazy(() => EnumUserApproachabilityNullableWithAggregatesFilterObjectSchema), UserApproachabilitySchema]).optional().nullable()
 }).strict();
 export const UserScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.UserScalarWhereWithAggregatesInput> = schema as unknown as z.ZodType<Prisma.UserScalarWhereWithAggregatesInput>;
 export const UserScalarWhereWithAggregatesInputObjectZodSchema = schema;

@@ -29,11 +29,12 @@ export const UserGroupByResultSchema = z.array(z.object({
     skills: z.number(),
     languages: z.number(),
     availability: z.number(),
-    preferredWorkType: z.number(),
+    preferredWorkTypes: z.number(),
     preferredLocation: z.number(),
     rightToWork: z.number(),
     expectedSalary: z.number(),
     jobClassification: z.number(),
+    approachability: z.number(),
     accounts: z.number(),
     sessions: z.number()
   }).optional(),

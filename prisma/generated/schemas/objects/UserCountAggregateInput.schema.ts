@@ -13,11 +13,12 @@ const makeSchema = () => z.object({
   role: z.literal(true).optional(),
   summary: z.literal(true).optional(),
   availability: z.literal(true).optional(),
-  preferredWorkType: z.literal(true).optional(),
+  preferredWorkTypes: z.literal(true).optional(),
   preferredLocation: z.literal(true).optional(),
   rightToWork: z.literal(true).optional(),
   expectedSalary: z.literal(true).optional(),
   jobClassification: z.literal(true).optional(),
+  approachability: z.literal(true).optional(),
   _all: z.literal(true).optional()
 }).strict();
 export const UserCountAggregateInputObjectSchema: z.ZodType<Prisma.UserCountAggregateInputType> = makeSchema() as unknown as z.ZodType<Prisma.UserCountAggregateInputType>;

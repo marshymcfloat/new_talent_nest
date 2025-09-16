@@ -97,11 +97,14 @@ model User {
   skills              Skill[]
   languages           Language[]
   availability        UserAvailabilityType?
-  preferredWorkType   JobType?
+  preferredWorkTypes  JobType[]             @default([]) 
   preferredLocation   String[]
   rightToWork         String[]
   expectedSalary      String?
   jobClassification   JobClass[]
+
+    approachability     UserApproachability?  @default(OPEN)
+  
   
   accounts            Account[]
   sessions            Session[]
@@ -330,4 +333,10 @@ enum SalaryPeriod {
   HOURLY
   MONTHLY
   ANNUAL
+}
+
+enum UserApproachability {
+  OPEN      // Open to all opportunities
+  RECRUITERS_ONLY // Only wants to be contacted by recruiters
+  CLOSED    // Not looking for opportunities right now
 }

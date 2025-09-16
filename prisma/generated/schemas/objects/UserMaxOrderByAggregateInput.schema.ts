@@ -13,8 +13,8 @@ const makeSchema = () => z.object({
   role: SortOrderSchema.optional(),
   summary: SortOrderSchema.optional(),
   availability: SortOrderSchema.optional(),
-  preferredWorkType: SortOrderSchema.optional(),
-  expectedSalary: SortOrderSchema.optional()
+  expectedSalary: SortOrderSchema.optional(),
+  approachability: SortOrderSchema.optional()
 }).strict();
 export const UserMaxOrderByAggregateInputObjectSchema: z.ZodType<Prisma.UserMaxOrderByAggregateInput> = makeSchema() as unknown as z.ZodType<Prisma.UserMaxOrderByAggregateInput>;
 export const UserMaxOrderByAggregateInputObjectZodSchema = makeSchema();

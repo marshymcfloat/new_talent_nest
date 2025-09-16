@@ -17,11 +17,12 @@ export const UserCreateResultSchema = z.object({
   skills: z.array(z.unknown()),
   languages: z.array(z.unknown()),
   availability: z.unknown().optional(),
-  preferredWorkType: z.unknown().optional(),
+  preferredWorkTypes: z.array(z.unknown()),
   preferredLocation: z.array(z.string()),
   rightToWork: z.array(z.string()),
   expectedSalary: z.string().optional(),
   jobClassification: z.array(z.unknown()),
+  approachability: z.unknown().optional(),
   accounts: z.array(z.unknown()),
   sessions: z.array(z.unknown())
 });

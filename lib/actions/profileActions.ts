@@ -9,9 +9,10 @@ import {
   addEducationSchema,
   addResumeSchema,
   summarySchema,
+  userPreferencesSchema,
 } from "../zod schemas/profileSchema";
 import { revalidatePath } from "next/cache";
-import { Language, Prisma } from "@prisma/client";
+import { Language, Prisma, Skill, User } from "@prisma/client";
 import { put } from "@vercel/blob";
 
 const monthNameToNumber: { [key: string]: number } = {
@@ -358,10 +359,17 @@ export const updateUserEducation = async ({
 export const deleteUserEducation = async (id: string) => {
   try {
     const userId = await getSessionUserId();
+
     const softDeletedEducation = await prisma.education.update({
-      where: { id, userId },
+      where: {
+        id_userId: {
+          id,
+          userId,
+        },
+      },
       data: { deletedAt: new Date() },
     });
+
     revalidatePath("/profile");
     return { success: true, data: softDeletedEducation };
   } catch (err) {
@@ -391,5 +399,67 @@ export const deleteUserResume = async (id: string) => {
     return { success: true, data: softDeletedResume };
   } catch (err) {
     return handleError(err, "deleteUserResume");
+  }
+};
+
+export const updateUserSkills = async (skills: Skill[]) => {
+  try {
+    const userId = await getSessionUserId();
+
+    const skillSchema = z.array(z.object({ id: z.number(), name: z.string() }));
+    const validationResult = skillSchema.safeParse(skills);
+
+    if (!validationResult.success) {
+      throw validationResult.error;
+    }
+
+    const skillsToConnect = validationResult.data.map((skill) => ({
+      id: skill.id,
+    }));
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { skills: { set: skillsToConnect } },
+      select: { skills: true },
+    });
+
+    revalidatePath("/profile");
+    return { success: true, data: updatedUser.skills };
+  } catch (err) {
+    return handleError(err, "updateUserSkills");
+  }
+};
+
+export const updateUserPreferences = async (
+  values: Partial<
+    Pick<
+      User,
+      | "availability"
+      | "preferredWorkTypes"
+      | "preferredLocation"
+      | "rightToWork"
+      | "expectedSalary"
+      | "jobClassification"
+      | "approachability"
+    >
+  >
+) => {
+  try {
+    const userId = await getSessionUserId();
+    const validationResult = userPreferencesSchema.safeParse(values);
+
+    if (!validationResult.success) {
+      throw validationResult.error;
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: validationResult.data,
+    });
+
+    revalidatePath("/profile");
+    return { success: true, data: updatedUser };
+  } catch (err) {
+    return handleError(err, "updateUserPreferences");
   }
 };

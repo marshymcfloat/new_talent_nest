@@ -4,6 +4,7 @@ import { UserRoleSchema } from '../../enums/UserRole.schema';
 import { UserAvailabilityTypeSchema } from '../../enums/UserAvailabilityType.schema';
 import { JobTypeSchema } from '../../enums/JobType.schema';
 import { JobClassSchema } from '../../enums/JobClass.schema';
+import { UserApproachabilitySchema } from '../../enums/UserApproachability.schema';
 // prettier-ignore
 export const UserResultSchema = z.object({
     id: z.string(),
@@ -23,11 +24,12 @@ export const UserResultSchema = z.object({
     skills: z.array(z.unknown()),
     languages: z.array(z.unknown()),
     availability: UserAvailabilityTypeSchema.nullable(),
-    preferredWorkType: JobTypeSchema.nullable(),
+    preferredWorkTypes: JobTypeSchema,
     preferredLocation: z.array(z.string()),
     rightToWork: z.array(z.string()),
     expectedSalary: z.string().nullable(),
     jobClassification: JobClassSchema,
+    approachability: UserApproachabilitySchema.nullable(),
     accounts: z.array(z.unknown()),
     sessions: z.array(z.unknown())
 }).strict();
