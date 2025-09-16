@@ -2,9 +2,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator zod {
-  provider = "prisma-zod-generator"
-}
+
 
 datasource db {
   provider = "postgresql"
@@ -24,6 +22,9 @@ model Company {
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 }
+
+
+
 
 model CompanyMember {
   userId    String
@@ -185,7 +186,6 @@ model Answer {
   jobApplicationId String
   JobApplication   JobApplication @relation(fields: [jobApplicationId], references: [id], onDelete: Cascade)
   
-  // Update this relationship
   questionId       String
   Question         CompanyQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
@@ -239,6 +239,11 @@ model Account {
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+model Location {
+  id   Int    @id @default(autoincrement())
+  name String @unique
 }
 
 model Session {
@@ -336,7 +341,7 @@ enum SalaryPeriod {
 }
 
 enum UserApproachability {
-  OPEN      // Open to all opportunities
-  RECRUITERS_ONLY // Only wants to be contacted by recruiters
-  CLOSED    // Not looking for opportunities right now
+  OPEN      
+  RECRUITERS_ONLY
+  CLOSED    
 }

@@ -8,6 +8,7 @@ import {
   JobType,
   Skill,
   UserApproachability,
+  Location,
   UserAvailabilityType,
 } from "@prisma/client"; // Import Skill type
 
@@ -18,7 +19,7 @@ export type AllLanguages = NonNullable<
   Awaited<ReturnType<typeof getProfileData>>
 >["allLanguages"];
 export type AllSkills = Skill[]; // Add a type for all skills
-
+export type AllLocations = Location[];
 export type PreferenceEnums = {
   jobTypes: JobType[];
   jobClasses: JobClass[];
@@ -27,31 +28,36 @@ export type PreferenceEnums = {
 };
 
 async function getProfileData(userId: string) {
-  const [userProfile, allLanguages, allSkills] = await Promise.all([
-    // Add allSkills
-    prisma.user.findUnique({
-      where: { id: userId },
-      include: {
-        previousCareers: {
-          where: { deletedAt: null },
-          orderBy: { dateStarted: "desc" },
+  const [userProfile, allLanguages, allSkills, allLocations] =
+    await Promise.all([
+      // Add allSkills
+      prisma.user.findUnique({
+        where: { id: userId },
+        include: {
+          previousCareers: {
+            where: { deletedAt: null },
+            orderBy: { dateStarted: "desc" },
+          },
+          education: {
+            where: { deletedAt: null },
+            orderBy: { finishedYear: "desc" },
+          },
+          resumes: {
+            where: { deletedAt: null },
+            orderBy: { createdAt: "desc" },
+          },
+          languages: true,
+          skills: true, // Make sure to include skills
         },
-        education: {
-          where: { deletedAt: null },
-          orderBy: { finishedYear: "desc" },
-        },
-        resumes: { where: { deletedAt: null }, orderBy: { createdAt: "desc" } },
-        languages: true,
-        skills: true, // Make sure to include skills
-      },
-    }),
-    prisma.language.findMany({ orderBy: { name: "asc" } }),
-    prisma.skill.findMany({ orderBy: { name: "asc" } }), // Add query to fetch all skills
-  ]);
+      }),
+      prisma.language.findMany({ orderBy: { name: "asc" } }),
+      prisma.skill.findMany({ orderBy: { name: "asc" } }), // Add query to fetch all skills
+      prisma.location.findMany({ orderBy: { name: "asc" } }),
+    ]);
 
   if (!userProfile) return null;
 
-  return { userProfile, allLanguages, allSkills }; // Return allSkills
+  return { userProfile, allLanguages, allSkills, allLocations }; // Return allSkills
 }
 
 const ProfileDataWrapper = async () => {
@@ -78,6 +84,7 @@ const ProfileDataWrapper = async () => {
       allLanguages={data.allLanguages}
       allSkills={data.allSkills}
       preferenceEnums={preferenceEnums}
+      allLocations={data.allLocations}
     />
   );
 };

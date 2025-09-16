@@ -7,11 +7,12 @@ import { User } from "@prisma/client";
 import { updateUserPreferences } from "@/lib/actions/profileActions";
 import { Button } from "@/components/ui/button";
 import { Loader2, Pencil } from "lucide-react";
-import { PreferenceEnums } from "../ProfileDataWrapper";
+import { PreferenceEnums, AllLocations } from "../ProfileDataWrapper";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { PreferenceChipGroup } from "./PreferenceChipGroup"; // Import our new component
+import { MultiSelectWithSuggestions } from "./MultiSelectWithSuggestions";
 
 type EditableField =
   | "availability"
@@ -81,9 +82,11 @@ const formatEnum = (value: string) =>
 const ProfilePreferencesSection = ({
   initialPreferences,
   enums,
+  allLocations,
 }: {
   initialPreferences: Partial<User>;
   enums: PreferenceEnums;
+  allLocations: AllLocations;
 }) => {
   const queryClient = useQueryClient();
   const [editingField, setEditingField] = useState<EditableField | null>(null);
@@ -94,8 +97,8 @@ const ProfilePreferencesSection = ({
   const [workTypes, setWorkTypes] = useState(
     initialPreferences.preferredWorkTypes || []
   );
-  const [locations, setLocations] = useState(
-    (initialPreferences.preferredLocation || []).join("\n")
+  const [locations, setLocations] = useState<string[]>(
+    initialPreferences.preferredLocation || []
   );
   const [rightToWork, setRightToWork] = useState(
     (initialPreferences.rightToWork || []).join("\n")
@@ -128,12 +131,7 @@ const ProfilePreferencesSection = ({
         mutate({ preferredWorkTypes: workTypes });
         break;
       case "locations":
-        mutate({
-          preferredLocation: locations
-            .split("\n")
-            .map((l) => l.trim())
-            .filter(Boolean),
-        });
+        mutate({ preferredLocation: locations });
         break;
       case "rightToWork":
         mutate({
@@ -217,19 +215,18 @@ const ProfilePreferencesSection = ({
             />
           </EditorWrapper>
         );
-      // Text-based inputs remain the same
       case "locations":
         return (
           <EditorWrapper
             onSave={() => handleSave("locations")}
             {...commonProps}
           >
-            <Label htmlFor="locations">Enter one location per line</Label>
-            <Textarea
-              id="locations"
+            <MultiSelectWithSuggestions
+              label="Add preferred locations"
+              placeholder="e.g., Makati City, Metro Manila"
+              options={allLocations.map((loc) => loc.name)}
               value={locations}
-              onChange={(e) => setLocations(e.target.value)}
-              rows={5}
+              onChange={setLocations}
             />
           </EditorWrapper>
         );

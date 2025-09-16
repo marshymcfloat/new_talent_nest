@@ -1,3 +1,6 @@
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+
 /* import { PrismaClient, JobClass, JobType, QuestionType } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -526,10 +529,7 @@ main()
     // Close the Prisma Client connection
     await prisma.$disconnect();
   });
- */
-
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+ 
 
 const skillsToSeed = [
   "JavaScript",
@@ -562,15 +562,50 @@ const skillsToSeed = [
   "Customer Support",
   "Financial Analysis",
 ];
+*/
+
+const locationsToSeed = [
+  "Alabang, Metro Manila",
+  "Angeles City, Pampanga",
+  "Antipolo City, Rizal",
+  "Bagumbayan, Metro Manila",
+  "Binan City, Laguna",
+  "Bonifacio Global City, Metro Manila",
+  "Cebu City, Cebu",
+  "Clark Freeport Zone, Pampanga",
+  "Eastwood, Metro Manila",
+  "Greenhills, Metro Manila",
+  "Laguna Technopark, Laguna",
+  "Magallanes, Metro Manila",
+  "Makati City, Metro Manila",
+  "Malate, Metro Manila",
+  "Mandaluyong City, Metro Manila",
+  "Mandaue City, Cebu",
+  "Manila City, Metro Manila",
+  "Muntinlupa City, Metro Manila",
+  "Ortigas, Metro Manila",
+  "Paranaque City, Metro Manila",
+  "Pasay City, Metro Manila",
+  "Pasig City, Metro Manila",
+  "Quezon City, Metro Manila",
+  "San Juan, Metro Manila",
+  "Santa Rosa, Laguna",
+  "Taguig City, Metro Manila",
+  "Valenzuela City, Metro Manila",
+  "Zamboanga City, Zamboanga Del Sur",
+  "Baguio City, Benguet",
+  "Davao City, Davao Del Sur",
+  "Iloilo City, Iloilo",
+  "Cagayan de Oro, Misamis Oriental",
+];
 
 async function main() {
   console.log(`Start seeding...`);
-
-  const createdSkills = await prisma.skill.createMany({
-    data: skillsToSeed.map((name) => ({ name })),
+  const createdLocations = await prisma.location.createMany({
+    data: locationsToSeed.map((name) => ({ name })),
     skipDuplicates: true,
   });
-  console.log(`${createdSkills.count} skills were added.`);
+  console.log(`${createdLocations.count} locations were added.`);
 
   console.log(`Seeding finished.`);
 }

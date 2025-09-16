@@ -21,6 +21,7 @@ import AddEducationForm from "@/components/AddEducationForm";
 import { CareerHistory, Education } from "@prisma/client";
 import {
   AllLanguages,
+  AllLocations,
   AllSkills,
   FullUserProfile,
   PreferenceEnums,
@@ -48,12 +49,14 @@ interface ProfileClientPageProps {
   allLanguages: AllLanguages;
   allSkills: AllSkills;
   preferenceEnums: PreferenceEnums;
+  allLocations: AllLocations;
 }
 
 const ProfileClientPage = ({
   initialProfileData,
   allLanguages,
   allSkills,
+  allLocations,
   preferenceEnums,
 }: ProfileClientPageProps) => {
   const router = useRouter();
@@ -165,15 +168,8 @@ const ProfileClientPage = ({
             <ProfilePreferencesSection
               initialPreferences={initialProfileData}
               enums={preferenceEnums}
+              allLocations={allLocations}
             />
-            <div className="bg-white dark:bg-gray-800/50 rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                About your next role
-              </h2>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                (This section is under construction)
-              </p>
-            </div>
           </div>
         </DialogContent>
       </Dialog>
