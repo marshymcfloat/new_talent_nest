@@ -33,7 +33,7 @@ const ProfileResumeSection = ({
 }) => {
   const queryClient = useQueryClient();
   const [isAddingResume, setIsAddingResume] = useState(false);
-  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [resumeFile, setResumeFile] = useState<File | undefined>();
   const [resumePreview, setResumePreview] = useState<string | null>(null);
 
   const form = useForm<ResumeFormValue>({
@@ -73,14 +73,14 @@ const ProfileResumeSection = ({
   });
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
+    const file = e.target.files?.[0];
     setResumeFile(file);
-    form.setValue("resume", file as any, { shouldValidate: true });
+    form.setValue("resume", file, { shouldValidate: true });
   };
 
   const handleCancelAdd = () => {
     setIsAddingResume(false);
-    setResumeFile(null);
+    setResumeFile(undefined);
     form.reset();
   };
 

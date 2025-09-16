@@ -3,7 +3,13 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { User } from "@prisma/client";
+import {
+  User,
+  UserAvailabilityType,
+  JobType,
+  JobClass,
+  UserApproachability,
+} from "@prisma/client";
 import { updateUserPreferences } from "@/lib/actions/profileActions";
 import { Button } from "@/components/ui/button";
 import { Loader2, Pencil } from "lucide-react";
@@ -169,7 +175,7 @@ const ProfilePreferencesSection = ({
               mode="single"
               options={enums.availabilityTypes}
               value={availability}
-              onChange={(v) => setAvailability(v as any)}
+              onChange={(v) => setAvailability(v as UserAvailabilityType)}
             />
           </EditorWrapper>
         );
@@ -183,7 +189,7 @@ const ProfilePreferencesSection = ({
               mode="multiple"
               options={enums.jobTypes}
               value={workTypes}
-              onChange={(v) => setWorkTypes(v as any)}
+              onChange={(v) => setWorkTypes(v as JobType[])}
             />
           </EditorWrapper>
         );
@@ -197,7 +203,7 @@ const ProfilePreferencesSection = ({
               mode="multiple"
               options={enums.jobClasses}
               value={classification}
-              onChange={(v) => setClassification(v as any)}
+              onChange={(v) => setClassification(v as JobClass[])}
             />
           </EditorWrapper>
         );
@@ -211,7 +217,7 @@ const ProfilePreferencesSection = ({
               mode="single"
               options={enums.approachabilityTypes}
               value={approachability}
-              onChange={(v) => setApproachability(v as any)}
+              onChange={(v) => setApproachability(v as UserApproachability)}
             />
           </EditorWrapper>
         );
@@ -237,8 +243,8 @@ const ProfilePreferencesSection = ({
             {...commonProps}
           >
             <Label htmlFor="rightToWork">
-              Enter one item per line (e.g., "Philippines", "Philippines
-              Citizen")
+              Enter one item per line (e.g., &quot;Philippines&quot;,
+              &quot;Philippines Citizen&quot;)
             </Label>
             <Textarea
               id="rightToWork"
@@ -252,7 +258,7 @@ const ProfilePreferencesSection = ({
         return (
           <EditorWrapper onSave={() => handleSave("salary")} {...commonProps}>
             <Label htmlFor="salary">
-              Salary expectation (e.g., "PHP 80,000/month")
+              Salary expectation (e.g., &quot;PHP 80,000/month&quot;)
             </Label>
             <Input
               id="salary"
