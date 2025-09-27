@@ -131,7 +131,7 @@ export const submitApplication = async (formData: FormData) => {
         ([questionId, text]) =>
           tx.answer.create({
             data: {
-              text: text as string,
+              text: String(text),
               questionId,
               jobApplicationId: newApplication.id,
             },

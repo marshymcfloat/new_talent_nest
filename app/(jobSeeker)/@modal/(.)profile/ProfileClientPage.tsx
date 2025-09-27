@@ -27,7 +27,6 @@ import {
   PreferenceEnums,
 } from "./ProfileDataWrapper";
 
-// Import the new section components
 import ProfileSummarySection from "./sections/ProfileSummarySection";
 import ProfileEducationSection from "./sections/ProfileEducationSection";
 import ProfileResumeSection from "./sections/ProfileResumeSection";
