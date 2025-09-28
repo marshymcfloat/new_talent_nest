@@ -104,7 +104,7 @@ const AuthButton = ({ signOutRedirectUrl = "/" }: AuthButtonProps) => {
 
   return (
     <Button
-      onClick={() => signIn()}
+      onClick={() => signIn("google")}
       className="bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600"
     >
       Sign In
